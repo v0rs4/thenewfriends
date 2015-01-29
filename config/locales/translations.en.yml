@@ -1,0 +1,63 @@
+en:
+  translations:
+    sign_up: Sign up
+    sign_in: Sign in
+    sign_out: Sign out
+    logout: Logout
+    password: Password
+    password_confirmation: Password confirmation
+    regular_user: Regular user
+    profile: Profile
+    not_given: not given
+    not_given_what: '%{what} not given'
+    edit: Edit
+    full_name: Full name
+    first_name: First name
+    last_name: Last name
+    about: About
+    country: Country
+    city: City
+    contact_phone: Contact phone
+    contact_email: Contact email
+    vkontakte_id: Vkontakte personal page ID
+    facebook_id: Facebook personal page ID
+    twitter_id: Twitter personal page ID
+    skype: Skype
+    dashboard: Dashboard
+    vk_contacts_collector: Vkontakte Contacts Collector
+    vkontakte: Vkontakte
+    actions: Actions
+    my_friends: My friends
+    my_communities: My communities
+    search_people: Search people
+    search_communities: Search communities
+    search: Search
+    name: Name
+    members_quantity: Members quantity
+    see_all: See all
+    files: Files
+    refresh: Refresh
+    active_processes: Active processes
+    archived: Archived
+    news: News
+    language: Language
+    to_archive: Archive
+    ago: ago
+    created: Created
+    last_n_files: Last %{number} files
+    download: Download
+    new_ones: New ones
+    current_ones: Current ones
+    user_vk_contacts_file:
+      no_permission:
+        create: You have no permission to use collect VK contacts
+    go_to: Go to
+    pricing_n_plans: Pricing & Plans
+    admin: Admin
+    users: Users
+    pmm_accounts: PM Accounts
+    create: Create
+    update: Update
+    delete: Delete
+    activate: Activate
+    activated: Activated

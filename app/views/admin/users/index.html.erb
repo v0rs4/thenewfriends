@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-lg-8">
+    <%= ah_ibox do -%>
+        <%= ah_ibox_title('Users') -%>
+        <%= ah_ibox_content do -%>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Email</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <%- @users.each do |_user| -%>
+                  <tr>
+                    <td><%= _user.id -%></td>
+                    <td><%= _user.email -%></td>
+                    <td><%= _user.user_profile.first_name -%></td>
+                    <td><%= _user.user_profile.last_name -%></td>
+                    <td class="text-right">
+                      <%= link_to admin_user_path(_user), class: 'btn btn-white btn-sm' do -%>
+                          <%= fa_icon('eye') -%>
+                      <%- end -%>
+                      <%= link_to edit_admin_user_path(_user), class: 'btn btn-white btn-sm' do -%>
+                          <%= fa_icon('pencil') -%>
+                      <%- end -%>
+                    </td>
+                  </tr>
+              <%- end -%>
+              </tbody>
+            </table>
+        <%- end -%>
+    <%- end -%>
+  </div>
+</div>

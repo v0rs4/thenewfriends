@@ -1,0 +1,37 @@
+<div class="row">
+  <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+    <ul class="nav navbar-top-links navbar-right">
+      <li class="dropdown">
+        <a href="" class="" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+          <%= fa_icon('flag') -%>
+          <!--<%= t('translations.language') -%>-->
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+          <li role="presentation">
+            <%= link_to 'English', url_for(params.merge(locale: :en)), role: 'menuitem' %>
+          </li>
+          <li role="presentation">
+            <%= link_to 'Русский', url_for(params.merge(locale: :ru)), role: 'menuitem' %>
+          </li>
+          <li role="presentation"></li>
+        </ul>
+      </li>
+      <li>
+        <%= link_to root_path do %>
+            <%= fa_icon('dashboard') %>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to edit_user_profile_path do %>
+            <%= fa_icon('user') %>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' } do %>
+            <i class="fa fa-sign-out"></i>
+        <% end %>
+      </li>
+    </ul>
+  </nav>
+</div>

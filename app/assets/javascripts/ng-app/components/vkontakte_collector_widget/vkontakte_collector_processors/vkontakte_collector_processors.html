@@ -1,0 +1,34 @@
+<table class="table no-margin" ng-if="activeProcessors.length > 0">
+	<thead>
+	<tr class="table-head-alt">
+		<th style="max-width: 150px; min-width: 150px; width: 150px;">Название</th>
+		<th colspan="3">Процент</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr ng-repeat="activeProcessor in activeProcessors">
+		<td style="max-width: 200px; min-width: 150px; width: 150px; overflow: hidden;">{{activeProcessor.name}}</td>
+		<td style="min-width: 150px;">
+			<div class="progress">
+				<div class="progress-bar progress-bar-info" role="progressbar"
+					 aria-valuenow="{{activeProcessor.collectingProgress}}"
+					 aria-valuemin="0" aria-valuemax="100"
+					 ng-style="{width: activeProcessor.collectingProgress+'%'}">
+				</div>
+			</div>
+		</td>
+		<td class="text-center text-info" ng-bind="activeProcessor.collectingProgress+'%'"></td>
+		<td class="text-center">
+			<button type="button" class="close" ng-click="stopProcessor(activeProcessor)"
+					style="float: none;">
+				<i class="fa fa-trash-o"></i>
+			</button>
+		</td>
+	</tr>
+	<tr ng-if="activeProcessors.length == 0">
+		<td colspan="4" class="text-center">
+			Нет активных процессов
+		</td>
+	</tr>
+	</tbody>
+</table>

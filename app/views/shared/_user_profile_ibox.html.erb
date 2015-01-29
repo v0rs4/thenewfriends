@@ -1,0 +1,47 @@
+<%= ah_ibox do -%>
+    <%= ah_ibox_title(t('translations.profile')) -%>
+    <%= ah_ibox_content do -%>
+        <h4><strong><%= user.full_name -%></strong></h4>
+
+        <p>
+          <%= fa_icon('map-marker') -%>
+          <%= user.address -%>
+        </p>
+        <p>
+          <%= fa_icon('phone') -%>
+          <%= user.contact_phone -%>
+        </p>
+
+        <p>
+          <%= fa_icon('envelope') -%>
+          <%= user.contact_email -%>
+        </p>
+
+        <p>
+          <%= fa_icon('skype') -%>
+          <%= user.skype -%>
+        </p>
+
+        <p>
+          <%= fa_icon('vk') -%>
+          <%= user.vkontakte_id -%>
+        </p>
+        <p>
+          <%= fa_icon('facebook') -%>
+          <%= user.facebook_id -%>
+        </p>
+        <p>
+          <%= fa_icon('twitter') -%>
+          <%= user.twitter_id -%>
+        </p>
+
+
+        <div class="m-t">
+          <%= link_to edit_user_profile_path, class: 'btn btn-white btn-block' do -%>
+              <%= fa_icon('pencil') -%>
+              <%= t('translations.edit') -%>
+          <%- end -%>
+        </div>
+
+    <%- end -%>
+<%- end -%>

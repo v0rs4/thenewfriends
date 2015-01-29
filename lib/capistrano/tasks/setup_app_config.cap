@@ -1,0 +1,16 @@
+namespace :deploy do
+	desc 'Setup application config files in shared/config'
+	task :setup_app_config do
+		on roles(:app) do
+			execute :mkdir, "-p #{shared_path}/config"
+
+			fetch(:app_config_files).each do |_config_file_path|
+				erb_upload!(_config_file_path)
+			end
+
+			fetch(:app_config_symlinks).each do |_symlink|
+				sudo :ln, "-nfs #{_symlink[:source]} #{_symlink[:destination]}"
+			end
+		end
+	end
+end

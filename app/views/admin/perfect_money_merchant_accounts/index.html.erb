@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-lg-8">
+    <%= ah_ibox do -%>
+        <%= ah_ibox_title('Perfect Money Merchant Accounts') -%>
+        <%= ah_ibox_content do -%>
+            <%= link_to t('translations.create'), new_admin_perfect_money_merchant_account_path, class: 'btn btn-white' -%>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Login</th>
+                <th>Password</th>
+                <th>Secret key</th>
+                <th>Units quantity</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <%- @accounts.each do |_account| -%>
+                  <tr>
+                    <td><%= _account.id -%></td>
+                    <td><%= _account.login -%></td>
+                    <td><%= _account.password -%></td>
+                    <td><%= _account.secret_key -%></td>
+                    <td><%= _account.units.count -%></td>
+                    <td class="text-right">
+                      <%= link_to admin_perfect_money_merchant_account_path(_account), class: 'btn btn-white btn-sm' do -%>
+                          <%= fa_icon('eye') -%>
+                      <%- end -%>
+                      <%= link_to edit_admin_perfect_money_merchant_account_path(_account), class: 'btn btn-white btn-sm' do -%>
+                          <%= fa_icon('pencil') -%>
+                      <%- end -%>
+                    </td>
+                  </tr>
+              <%- end -%>
+              </tbody>
+            </table>
+        <%- end -%>
+    <%- end -%>
+  </div>
+</div>

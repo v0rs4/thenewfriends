@@ -1,0 +1,640 @@
+#= depend_on_asset "ng-app/components/vkontakte_collector_widget/vkontakte_collector_processors/vkontakte_collector_processors.html"
+angular.module('vkontakteCollectorWidget', ['ngResource'])
+.directive('vkontakteCollectorProcessors',
+		[
+			'$rootScope'
+			'VkontakteCollectorService',
+			($rootScope, VkontakteCollectorService) ->
+				restrict: 'E'
+				templateUrl: '<%= asset_path('ng-app/components/vkontakte_collector_widget/vkontakte_collector_processors/vkontakte_collector_processors.html') %>'
+				controller: [
+					'$scope', '$element', '$attrs',
+					($scope, $element, $attrs) ->
+						$scope.activeProcessors = VkontakteCollectorService.getActiveProcessors()
+						$scope.stopProcessor = (contactsProcessor) ->
+							VkontakteCollectorService.stopCollection(contactsProcessor)
+				]
+		]
+)
+#.directive('vkontakteCollectorSearch',
+#		[
+#			() ->
+#				restrict: "E"
+#				scope: {}
+#				templateUrl: '<%= asset_path('ng-app/components/vkontakte_collector_widget/vkontakte_collector_search/vkontakte_collector_search.html') %>'
+#				link: ($scope, $element, $attrs) ->
+#					$scope.communitiesEnabled = false
+#					$scope.usersEnabled = false
+#
+#					$scope.toggleCommunities = () ->
+#						$scope.communitiesEnabled = !$scope.communitiesEnabled
+#					$scope.toggleUsers = () ->
+#						$scope.usersEnabled = !$scope.usersEnabled
+#		]
+#)
+#.directive('vkontakteCollectorSearchUsers',
+#		[
+#			'$compile'
+#			'$cookies'
+#			'$timeout'
+#			'$uiblock'
+#			'VkontakteApiResource'
+#			'VkontakteCollectorService'
+#			($compile, $cookies, $timeout, $uiblock, VkontakteApiResource, VkontakteCollectorService) ->
+#				restrict: "E"
+#				scope: {}
+#				templateUrl: '<%= asset_path('ng-app/components/vkontakte_collector_widget/vkontakte_collector_search/vkontakte_collector_search_users/vkontakte_collector_search_users.html') %>'
+#				link: ($scope, $element, $attrs) ->
+#					jqTable = $element.find('table')
+#					dt = jqTable.DataTable(
+#						lengthChange: false
+#						searching: false
+#						pagingType: 'simple'
+#						columns: [
+#							{
+#								data: "photo_50"
+#								render: (photo_50) ->
+#									"<img src=\"#{photo_50}\" alt=\"Аватар\"/>"
+#							},
+#							{data: "first_name"},
+#							{data: "last_name"},
+#							{
+#								className: 'table-action'
+#								data: (row) ->
+#									id: row.id
+#									name: "#{row.first_name} #{row.last_name}"
+#								render: (data) ->
+#									"<a href=\"\" ng-click=\"startCollecting(#{data.id},'#{data.name}')\"><i class=\"fa fa-download\"></i></a>"
+#								createdCell: (td) ->
+#									$compile(td)($scope)
+#								orderable: false
+#							}
+#						]
+#					)
+#
+#					$scope.query = ""
+#					queryChangedTimeout = undefined
+#					$scope.queryChanged = () ->
+#						if queryChangedTimeout
+#							$timeout.cancel(queryChangedTimeout)
+#						queryChangedTimeout = $timeout () ->
+#							if $scope.query.length == 0
+#								dt.clear().draw()
+#							else
+#								$uiblock.block(jqTable)
+#								VkontakteApiResource.searchUsers(
+#									q: $scope.query
+#									access_token: $cookies.vk_access_token
+#								).$promise.then (data) ->
+#									$uiblock.unblock(jqTable)
+#									dt.clear().rows.add(data.response.items).draw()
+#						, 1000
+#
+#					$scope.startCollecting = (id, name) ->
+#						VkontakteCollectorService.collectFromAccount(name, id)
+#		]
+#)
+#.directive('vkontakteCollectorSearchCommunities',
+#		[
+#			'$compile'
+#			'$cookies'
+#			'$timeout'
+#			'$uiblock'
+#			'VkontakteApiResource'
+#			'VkontakteCollectorService'
+#			($compile, $cookies, $timeout, $uiblock, VkontakteApiResource, VkontakteCollectorService) ->
+#				restrict: "E"
+#				scope: {}
+#				templateUrl: '<%= asset_path('ng-app/components/vkontakte_collector_widget/vkontakte_collector_search/vkontakte_collector_search_communities/vkontakte_collector_search_communities.html') %>'
+#				link: ($scope, $element, $attrs) ->
+#					jqTable = $element.find('table')
+#					dt = jqTable.DataTable(
+#						lengthChange: false
+#						searching: false
+#						pagingType: 'simple'
+#						columns: [
+#							{data: "id"},
+#							{data: "name"},
+#							{data: "members_count"},
+#							{
+#								className: 'table-action'
+#								data: (row) ->
+#									id: row.id
+#									name: (->
+#										name = row.name.replace(/[^A-zА-ф\s]/g, '').trim()
+#										if name.length < 25
+#											name
+#										else
+#											name.substring(0, 25) + "...")()
+#								render: (data) ->
+#									"<a href=\"\" ng-click=\"startCollecting(#{data.id},'#{data.name}')\"><i class=\"fa fa-download\"></i></a>"
+#								createdCell: (td) ->
+#									$compile(td)($scope)
+#								orderable: false
+#							}
+#						]
+#					)
+#
+#					$scope.query = ""
+#					queryChangedTimeout = undefined
+#					$scope.queryChanged = () ->
+#						if queryChangedTimeout
+#							$timeout.cancel(queryChangedTimeout)
+#						queryChangedTimeout = $timeout () ->
+#							if $scope.query.length == 0
+#								dt.clear().draw()
+#							else
+#								$uiblock.block(jqTable)
+#								VkontakteApiResource.searchGroups(
+#									q: $scope.query
+#									access_token: $cookies.vk_access_token
+#								).$promise.then (data) ->
+#									$uiblock.unblock(jqTable)
+#									dt.clear()
+#									_.forEach data.response.items, (x) ->
+#										if x.members_count > 100
+#											dt.row.add(x)
+#									dt.draw()
+#						, 1000
+#
+#					$scope.startCollecting = (group_id, group_name) ->
+#						VkontakteCollectorService.collectFromGroup(group_name, group_id)
+#		]
+#)
+.factory('VkontakteApiResource',
+		[
+			'$resource'
+			'$cookieStore'
+			'$rootScope'
+			($resource, $cookieStore, $rootScope) ->
+				resourceInterceptor =
+					response: (response) ->
+						if response.data.error && response.data.error.error_code == 5
+							$cookieStore.remove('vk_access_token')
+							$rootScope.$emit('user:vkontakteAccessTokenUpdated')
+						response.data
+
+				$resource 'https://api.vk.com/method/:method',
+					method: '@method'
+				,
+					getMembers:
+						method: 'JSONP'
+						interceptor: resourceInterceptor
+						params:
+							method: 'groups.getMembers'
+							offset: 0
+							count: 1000
+							fields: 'contacts,connections'
+							v: '5.24'
+							callback: 'JSON_CALLBACK'
+					getFriends:
+						method: 'JSONP'
+						interceptor: resourceInterceptor
+						params:
+							method: 'friends.get'
+							fields: 'first_name,last_name,photo_50,contacts,connections'
+							offset: 0
+							count: 1000
+							v: '5.24'
+							callback: 'JSON_CALLBACK'
+					getGroups:
+						method: 'JSONP'
+						interceptor: resourceInterceptor
+						params:
+							method: 'groups.get'
+							fields: 'members_count'
+							extended: 1
+							offset: 0
+							count: 1000
+							v: '5.24'
+							callback: 'JSON_CALLBACK'
+					searchGroups:
+						method: 'JSONP'
+						interceptor: resourceInterceptor
+						params:
+							method: 'groups.search'
+							type: 'page,group'
+							fields: 'members_count'
+							count: 1000
+							callback: 'JSON_CALLBACK'
+							v: '5.24'
+					searchUsers:
+						method: 'JSONP'
+						interceptor: resourceInterceptor
+						params:
+							method: 'users.search'
+							fields: 'photo_50'
+							count: 1000
+							callback: 'JSON_CALLBACK'
+							v: '5.24'
+		]
+)
+.factory('VkontakteContactsFilter',
+		[
+			() ->
+				is_bullshit = (str) ->
+					if str
+						str.match(/http|@/g)
+					else
+						true
+
+				filter_skype = (skype) ->
+					if is_bullshit(skype)
+						null
+					else
+						skype_filtered = skype.replace(/[^A-Za-z0-9\-\_\,\.]/g, '')
+						if skype_filtered.length.between(6, 32, true) and skype_filtered[0].match(/[A-z]/g)
+							skype_filtered
+						else
+							null
+
+				phone_filter = (phone) ->
+					if is_bullshit(phone)
+						null
+					else
+						phone_filtered = phone.replace(/[^0-9]/g, '')
+						if phone_filtered.match(/\b380\d{9}\b|\b7\d{10}\b|\b375\d{9}\b/g)
+							"+#{phone_filtered}"
+						else
+							if phone_filtered.match(/\b80\d{9}\b/g)
+								"+3#{phone_filtered}"
+							else
+								if phone_filtered.match(/\b0\d{9}\b/g)
+									"+38#{phone_filtered}"
+								else
+									null
+
+				filter_skype: filter_skype
+				phone_filter: phone_filter
+		]
+)
+.factory('VkontakteCollectorService',
+		[
+			'$rootScope'
+			'CollectorProcessor',
+			($rootScope, CollectorProcessor) ->
+				$rootScope.$on 'vkontakteCollector:removeProcessor', (e, processor) ->
+					$rootScope.vkontakteCollector.processors.removeElement(processor)
+
+				$rootScope.vkontakteCollector = $rootScope.vkontakteCollector || {processors: []}
+
+				class ContactsProcessingService
+					@getActiveProcessors: () ->
+						$rootScope.vkontakteCollector.processors
+
+					@collectFromGroup: (groupName, groupId) ->
+						groupProcessor = new CollectorProcessor(groupName, 'club', groupId)
+						groupProcessor.start()
+
+						$rootScope.vkontakteCollector.processors.push(groupProcessor)
+
+					@collectFromAccount: (accountName, accountId) ->
+						accountProcessor = new CollectorProcessor(accountName, 'id', accountId)
+						accountProcessor.start()
+
+						$rootScope.vkontakteCollector.processors.push(accountProcessor)
+
+					@stopCollection: (contactsProcessor) ->
+						contactsProcessor.stop()
+						$rootScope.vkontakteCollector.processors.removeElement(contactsProcessor)
+		]
+)
+.factory('CollectorProcessor',
+		[
+			'$q'
+			'$rootScope'
+			'VkontakteApiResource'
+			'VkontakteContactsFilter'
+			($q, $rootScope, VkApi, ContactsFilter)->
+				class CollectorProcessor
+					constructor: (name, kind, identifier) ->
+						self = this
+						# public fields
+						@name = name
+						@kind = kind
+						@identifier = identifier
+						@collectingProgress = 0
+						@stopped = 0
+
+						Object.defineProperty(self, 'source',
+							get: ->
+								self.kind + self.identifier
+						)
+
+					start: () ->
+						self = this
+						deferred = $q.defer()
+						$rootScope.$emit('vkontakteCollector:collectingStarted', self.source)
+						startCollecting.call(self).then (contacts) ->
+							$rootScope.$emit('vkontakteCollector:collectingFinished', self.name, self.source, contacts)
+							$rootScope.$emit('vkontakteCollector:removeProcessor', self)
+							deferred.resolve(contacts)
+						, (reason) ->
+							if reason == 'limit'
+								$rootScope.$emit('vkontakteCollector:countLimitExceeded', self.source)
+							$rootScope.$emit('vkontakteCollector:removeProcessor', self)
+							deferred.reject()
+						deferred.promise
+
+					stop: (reason) ->
+						self = this
+						if reason == 'stop'
+							self.stopped = 1
+						else
+							if reason == 'limit'
+								self.stopped = 2
+							else
+								self.stopped = 1
+
+					startCollecting = () ->
+						self = this
+						deferred = $q.defer()
+						collectedMembers = []
+
+						filter_contacts = (contacts) ->
+							_.forEach contacts, (contact) ->
+								contact.skype = ContactsFilter.filter_skype(contact.skype)
+								contact.mobile_phone = ContactsFilter.phone_filter(contact.mobile_phone)
+								contact.home_phone = ContactsFilter.phone_filter(contact.home_phone)
+								if contact.skype or contact.mobile_phone or contact.home_phone
+									collectedMembers.push(contact)
+
+						performCollecting = (offset, currentRequestNumber) ->
+							if self.stopped > 0
+								deferred.reject('stop')
+							else
+								contactsResource.call(self, offset).$promise.then (result) ->
+									members = result.response
+									if members.count > 100000
+										deferred.reject('limit')
+									else
+										filter_contacts(members.items)
+										totalRequestCount = Math.ceil(members.count / 1000)
+										if currentRequestNumber <= totalRequestCount
+											self.collectingProgress = Math.ceil(currentRequestNumber / totalRequestCount * 100)
+											performCollecting(currentRequestNumber * 1000, currentRequestNumber + 1)
+										else
+											deferred.resolve(collectedMembers)
+						performCollecting(0, 1)
+
+						deferred.promise
+
+					contactsResource = (offset) ->
+						self = this
+						resources =
+							club: ->
+								VkApi.getMembers(group_id: self.identifier, offset: offset)
+							id: ->
+								VkApi.getFriends(user_id: self.identifier, offset: offset)
+						resources[self.kind].call()
+
+		]
+)
+.directive('vkContactsCollectorSourcesTableDownloadAction',
+		[
+			'VkontakteCollectorService'
+			(VkontakteCollectorService) ->
+				restrict: "E"
+				scope: {},
+				replace: true,
+				template: '<button class="btn btn-white btn-sm" data-ng-click="startCollecting()"><i class="fa fa-download"></i></button>'
+				link: ($scope, $element, $attrs) ->
+					$scope.startCollecting = () ->
+						if $attrs.sourceType == 'user'
+							VkontakteCollectorService.collectFromAccount($attrs.sourceName, $attrs.sourceId)
+						if $attrs.sourceType == 'community'
+							VkontakteCollectorService.collectFromGroup($attrs.sourceName, $attrs.sourceId)
+		]
+)
+.directive('vkContactsCollectorFriendsTable',
+		[
+			'$cookies'
+			'$compile'
+			'VkontakteApiResource'
+			'VkontakteCollectorService'
+			($cookies, $compile, VkontakteApiResource, VkontakteCollectorService) ->
+				restrict: "CA"
+				scope: {}
+				link: ($scope, $element, $attrs) ->
+					dt = $element.DataTable(
+						columns: [
+							{data: "first_name"},
+							{data: "last_name"},
+							{
+								className: 'text-right'
+								data: (row) ->
+									id: row.id
+									name: "#{row.first_name} #{row.last_name} id#{row.id}"
+									.transliterate()
+									.trim()
+									.replace(/[^A-z0-9\s]/g, '')
+									.replace(/\s/g, '_')
+									.toLowerCase()
+								render: (data) ->
+									"<vk-contacts-collector-sources-table-download-action data-source-type='user' data-source-id='#{data.id}' data-source-name=\"#{data.name}\"/>"
+								createdCell: (td) ->
+									$compile(td)($scope)
+								orderable: false
+							}
+						]
+					)
+					VkontakteApiResource.getFriends(access_token: $cookies.vk_access_token).$promise.then (data) ->
+						dt.rows.add(data.response.items).draw()
+
+					$scope.startCollecting = (user_id, user_name) ->
+						VkontakteCollectorService.collectFromAccount(user_name, user_id)
+		]
+)
+.directive('vkContactsCollectorCommunitiesTable',
+		[
+			'$cookies'
+			'$compile'
+			'$uiblock'
+			'VkontakteApiResource'
+			'VkontakteCollectorService'
+			($cookies, $compile, $uiblock, VkontakteApiResource, VkontakteCollectorService) ->
+				restrict: "CA"
+				scope: {}
+				link: ($scope, $element, $attrs) ->
+					dt = $element.DataTable(
+						columns: [
+							{data: "id"},
+							{data: "name"},
+							{data: "members_count"},
+							{
+								className: 'text-right'
+								data: (row) ->
+									id: row.id
+									name: "#{row.name} club#{row.id}"
+									.transliterate()
+									.trim()
+									.replace(/[^A-z0-9\s]/g, '')
+									.replace(/\s/g, '_')
+									.toLowerCase()
+								render: (data) ->
+									"<vk-contacts-collector-sources-table-download-action data-source-type='community' data-source-id='#{data.id}' data-source-name='#{data.name}'/>"
+								createdCell: (td) ->
+									$compile(td)($scope)
+								orderable: false
+							}
+						]
+					)
+					VkontakteApiResource.getGroups(access_token: $cookies.vk_access_token).$promise.then (data) ->
+						dt.rows.add(data.response.items).draw()
+		]
+)
+.directive('vkContactsCollectorSearchUsersTable',
+		[
+			'$compile'
+			'$cookies'
+			'$timeout'
+			'$uiblock'
+			'VkontakteApiResource'
+			'VkontakteCollectorService'
+			($compile, $cookies, $timeout, $uiblock, VkontakteApiResource, VkontakteCollectorService) ->
+				restrict: "C"
+				scope: {
+					queryString: '='
+				},
+				link: ($scope, $element, $attrs) ->
+					dt = $element.DataTable(
+						lengthChange: false
+						searching: false
+						pagingType: 'simple'
+						columns: [
+							{
+								data: "photo_50"
+								render: (photo_50) ->
+									"<img src=\"#{photo_50}\" alt=\"Аватар\"/>"
+							},
+							{data: "first_name"},
+							{data: "last_name"},
+							{
+								className: 'text-right'
+								data: (row) ->
+									id: row.id
+									name: "#{row.first_name} #{row.last_name} id#{row.id}"
+									.transliterate()
+									.trim()
+									.replace(/[^A-z0-9\s]/g, '')
+									.replace(/\s/g, '_')
+									.toLowerCase()
+								render: (data) ->
+									"<vk-contacts-collector-sources-table-download-action data-source-type='user' data-source-id='#{data.id}' data-source-name='#{data.name}'/>"
+								createdCell: (td) ->
+									$compile(td)($scope)
+								orderable: false
+							}
+						]
+					)
+					queryStringChangedTimeout = undefined
+					$scope.$watch('queryString', (newQueryString) ->
+						if queryStringChangedTimeout
+							$timeout.cancel(queryStringChangedTimeout)
+						queryStringChangedTimeout = $timeout () ->
+							if newQueryString.length == 0
+								dt.clear().draw()
+							else
+								$uiblock.block($element)
+								VkontakteApiResource.searchUsers(
+									q: newQueryString
+									access_token: $cookies.vk_access_token
+								).$promise.then (data) ->
+									$uiblock.unblock($element)
+									dt.clear().rows.add(data.response.items).draw()
+						, 2000
+					)
+
+		]
+)
+.directive('vkContactsCollectorSearchCommunitiesTable',
+		[
+			'$compile'
+			'$cookies'
+			'$timeout'
+			'$uiblock'
+			'VkontakteApiResource'
+			'VkontakteCollectorService'
+			($compile, $cookies, $timeout, $uiblock, VkontakteApiResource, VkontakteCollectorService) ->
+				restrict: "C"
+				scope: {
+					queryString: '='
+				},
+				link: ($scope, $element, $attrs) ->
+					dt = $element.DataTable(
+						lengthChange: false
+						searching: false
+						pagingType: 'simple'
+						columns: [
+							{data: "id"},
+							{data: "name"},
+							{
+								data: (row) ->
+									if row.members_count
+										row.members_count
+									else
+										0
+							},
+							{
+								className: 'text-right'
+								data: (row) ->
+									id: row.id
+									name: "#{row.name} club#{row.id}"
+									.transliterate()
+									.trim()
+									.replace(/[^A-z0-9\s]/g, '')
+									.replace(/\s/g, '_')
+									.toLowerCase()
+								render: (data) ->
+									"<vk-contacts-collector-sources-table-download-action data-source-type='community' data-source-id='#{data.id}' data-source-name='#{data.name}'/>"
+								createdCell: (td) ->
+									$compile(td)($scope)
+								orderable: false
+							}
+						]
+					)
+					queryStringChangedTimeout = undefined
+					$scope.$watch('queryString', (newQueryString) ->
+						if queryStringChangedTimeout
+							$timeout.cancel(queryStringChangedTimeout)
+						queryStringChangedTimeout = $timeout () ->
+							if newQueryString.length == 0
+								dt.clear().draw()
+							else
+								$uiblock.block($element)
+								VkontakteApiResource.searchGroups(
+									q: newQueryString
+									access_token: $cookies.vk_access_token
+								).$promise.then (data) ->
+									$uiblock.unblock($element)
+									dt.clear().rows.add(data.response.items).draw()
+						, 2000
+					)
+
+		]
+)
+.directive('vkContactsCollectorParentBox',
+		[
+			'$cookies'
+			'$uiblock'
+			'VkontakteCollectorService'
+			($cookies, $uiblock, VkontakteCollectorService) ->
+				restrict: "C"
+				scope: true
+				link: ($scope, $element, $attrs) ->
+					$scope.activeProcessors = VkontakteCollectorService.getActiveProcessors()
+					$scope.$watchCollection('activeProcessors', (newVal, oldVal) ->
+						if newVal.length > 0
+							$uiblock.block($element)
+						else
+							$uiblock.unblock($element)
+					)
+		]
+)
+.controller('vkContactsCollectorParentBoxController', [
+			'$scope'
+			($scope) ->
+				$scope.searchUsersQuery = ''
+				$scope.searchCommunitiesQuery = ''
+		]
+)

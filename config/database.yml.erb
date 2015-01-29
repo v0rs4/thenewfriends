@@ -1,0 +1,20 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+development:
+  <<: *default
+  database: tnf_dev_2
+  username: kairos
+  host: localhost
+  port: 5432
+test:
+  <<: *default
+  database: tnf_test_2
+  username: kairos
+  host: localhost
+  port: 5432
+production:
+  production:
+    url:  <%= ENV["DATABASE_URL"] %>
+    pool: <%= ENV["DB_POOL"] || ENV['MAX_THREADS'] || 5 %>

@@ -1,0 +1,55 @@
+app_path = "<%= current_path %>"
+shared_path = "<%= shared_path %>"
+full_app_name = "<%= fetch(:full_app_name) %>"
+
+worker_processes <%= fetch(:unicorn_worker_count) %>
+
+working_directory app_path
+
+listen "#{shared_path}/tmp/sockets/unicorn.#{full_app_name}.sock"
+
+timeout <%= fetch(:unicorn_timeout) %>
+
+pid "#{shared_path}/tmp/pids/unicorn.pid"
+
+stderr_path "#{shared_path}/log/unicorn.log"
+stdout_path "#{shared_path}/log/unicorn.log"
+
+preload_app true
+
+GC.respond_to?(:copy_on_write_friendly=) && (GC.copy_on_write_friendly = true)
+
+before_exec do |server|
+	ENV["PWD"] = app_path
+	ENV["RBENV_DIR"] = app_path
+	ENV['BUNDLE_GEMFILE'] = "#{app_path}/Gemfile"
+end
+
+check_client_connection false
+
+before_fork do |server, worker|
+	if defined?(ActiveRecord::Base)
+		ActiveRecord::Base.connection.disconnect!
+	end
+
+	# Quit the old unicorn process
+	old_pid = "#{server.config[:pid]}.oldbin"
+	if File.exists?(old_pid) && server.pid != old_pid
+		puts "We've got an old pid and server pid is not the old pid"
+		begin
+			Process.kill("QUIT", File.read(old_pid).to_i)
+			puts "killing master process (good thing tm)"
+		rescue Errno::ENOENT, Errno::ESRCH
+			puts "unicorn master already killed"
+		end
+	end
+end
+
+after_fork do |server, worker|
+	port = 5000 + worker.nr
+	child_pid = server.config[:pid].sub('.pid', ".#{port}.pid")
+	system("echo #{Process.pid} > #{child_pid}")
+	if defined?(ActiveRecord::Base)
+		ActiveRecord::Base.establish_connection
+	end
+end

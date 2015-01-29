@@ -1,0 +1,138 @@
+// This is a manifest file that'll be compiled into application.js, which will include all the files
+// listed below.
+//
+// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
+// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
+//
+// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// compiled file.
+//
+// Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
+// about supported directives.
+//
+//= require_self
+//= require jquery
+//= require jquery_ujs
+//= require lodash
+//= require bootstrap-sprockets
+//= require jquery.dataTables
+//= require jquery.dataTables.bootstrap
+//= require jquery.blockUI.min
+//= require jquery.bootstrap-growl
+//= require angular
+//= require angular-animate
+//= require angular-resource
+//= require angular-cookies
+//= require angular-ui-router
+//= require cocoon
+//= require_tree ./ng-app
+
+VKONTAKTE_CONTACTS_UPLOAD_PATH = <%= "'#{Rails.application.routes.url_helpers.vkontakte_contacts_upload_path}'" %>;
+
+var TRANSLITERATE_RU_EN_TABLE = {
+	"Ё": "YO",
+	"Й": "y",
+	"Ц": "TS",
+	"У": "U",
+	"К": "K",
+	"Е": "E",
+	"Н": "N",
+	"Г": "G",
+	"Ш": "SH",
+	"Щ": "SCH",
+	"З": "Z",
+	"Х": "H",
+	"Ъ": "",
+	"ё": "yo",
+	"й": "y",
+	"ц": "ts",
+	"у": "u",
+	"к": "k",
+	"е": "e",
+	"н": "n",
+	"г": "g",
+	"ш": "sh",
+	"щ": "sch",
+	"з": "z",
+	"х": "h",
+	"ъ": "",
+	"Ф": "F",
+	"Ы": "YI",
+	"В": "V",
+	"А": "A",
+	"П": "P",
+	"Р": "R",
+	"О": "O",
+	"Л": "L",
+	"Д": "D",
+	"Ж": "ZH",
+	"Э": "E",
+	"ф": "f",
+	"ы": "yi",
+	"в": "v",
+	"а": "a",
+	"п": "p",
+	"р": "r",
+	"о": "o",
+	"л": "l",
+	"д": "d",
+	"ж": "zh",
+	"э": "e",
+	"Я": "Ya",
+	"Ч": "CH",
+	"С": "S",
+	"М": "M",
+	"И": "I",
+	"Т": "T",
+	"Ь": "",
+	"Б": "B",
+	"Ю": "YU",
+	"я": "ya",
+	"ч": "ch",
+	"с": "s",
+	"м": "m",
+	"и": "i",
+	"т": "t",
+	"ь": "",
+	"б": "b",
+	"ю": "yu",
+	"і": "i",
+	"ї": "i",
+	"І": "I",
+	"Ї": "I"
+};
+
+if (!String.prototype.transliterate) {
+	String.prototype.transliterate = function () {
+		return this.split('').map(function (char) {
+			return TRANSLITERATE_RU_EN_TABLE[char] || char;
+		}).join("");
+	};
+}
+
+if (!Number.prototype.between) {
+	Number.prototype.between = function (a, b, inclusive) {
+		var min = Math.min.apply(Math, [a, b]),
+				max = Math.max.apply(Math, [a, b]);
+		return inclusive ? this >= min && this <= max : this > min && this < max;
+	};
+}
+
+if (!Array.prototype.removeElement) {
+	Array.prototype.removeElement = function (element) {
+		var cache = [];
+		var cachedElement = undefined;
+		var thisLength = this.length;
+		for (var i = 0; i < thisLength; i++) {
+			cachedElement = this.pop();
+			if (cachedElement != element) {
+				cache.push(cachedElement);
+			}
+		}
+		var cacheLength = cache.length;
+		for (var j = 0; j < cacheLength; j++) {
+			cachedElement = cache.pop();
+			this.push(cachedElement);
+		}
+	};
+}

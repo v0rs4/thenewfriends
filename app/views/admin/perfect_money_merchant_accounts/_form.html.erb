@@ -1,0 +1,19 @@
+<%= simple_form_for resource, url: resource_url, html: { class: 'form-horizontal' }, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean } do |f| -%>
+    <%= field_set_tag 'Perfect Money Account' do -%>
+        <%= f.input :login -%>
+        <%= f.input :password, as: :string -%>
+        <%= f.input :secret_key -%>
+    <%- end -%>
+    <%= f.simple_fields_for :units do |_unit| -%>
+        <%= field_set_tag 'Wallet/Currency Account/Unit' do -%>
+            <%= _unit.input :currency, required: false -%>
+            <%= _unit.input :code_number, required: false -%>
+            <%= _unit.input :_destroy, as: :radio_buttons,label: 'Want to remove?' -%>
+        <%- end -%>
+    <%- end -%>
+    <div class="row">
+      <div class="col-sm-offset-3 col-sm-9">
+        <%= f.button :submit, class: 'btn-primary' %>
+      </div>
+    </div>
+<%- end -%>

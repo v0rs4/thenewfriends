@@ -1,0 +1,111 @@
+angular.module('tnf-ng-app', ['ui.router', 'ngCookies', 'ngAnimate', 'vkontakteCollectorWidget'])
+.factory('$uiblock',
+		[
+			() ->
+				block = (element) ->
+					element.block(
+						message: '<i class="fa fa-circle-o-notch  fa-spin" style="color:#999"></i>',
+						css:
+							border: 'none'
+							padding: '2px',
+							backgroundColor: 'none'
+						overlayCSS:
+							backgroundColor: '#fff'
+							opacity: 0.75
+					)
+				unblock = (element) ->
+					element.unblock()
+
+				blockPage = ->
+					block($('body'))
+
+				unBlockPage = ->
+					unblock($('body'))
+
+				block: block
+				unblock: unblock
+				blockPage: blockPage
+				unBlockPage: unBlockPage
+		]
+)
+.factory('$notification',
+		[
+			() ->
+				vkContactsUploaded: () ->
+					jQuery.growl(
+							{
+								message: "Контакты успешно загружены"
+							},
+							{
+								type: 'success'
+								placement: {
+									from: "bottom",
+									align: "left"
+								}
+							}
+					)
+				vkContactsCollectingStarted: (contacts) ->
+					jQuery.growl(
+							{
+								message: "Сбор контактов начат"
+							},
+							{
+								type: 'info'
+								placement: {
+									from: "bottom",
+									align: "left"
+								}
+							}
+					)
+				vkContactsCollectingFinished: (contacts) ->
+					jQuery.growl(
+							{
+								message: "Собрано #{contacts.length} контактов"
+							},
+							{
+								type: 'success'
+								placement: {
+									from: "bottom",
+									align: "left"
+								}
+							}
+					)
+				vkContactsCountLimitExceeded: () ->
+					jQuery.growl(
+							{
+								icon: 'fa fa-exclamation-circle'
+								message: "Укажите источник где меньше 100,000 пользователей"
+							},
+							{
+								type: 'danger'
+								placement: {
+									from: "bottom",
+									align: "left"
+								}
+							}
+					)
+		]
+)
+.run(
+		[
+			'$rootScope',
+			'$http',
+			'$notification'
+			($rootScope, $http, $notification) ->
+				$rootScope.$on 'vkontakteCollector:collectingStarted', (e, source) ->
+					$notification.vkContactsCollectingStarted()
+				$rootScope.$on 'vkontakteCollector:collectingFinished', (e, name, source, contacts) ->
+					$notification.vkContactsCollectingFinished(contacts)
+				$rootScope.$on 'vkontakteCollector:countLimitExceeded', (e, source) ->
+					$notification.vkContactsCountLimitExceeded()
+				$rootScope.$on 'vkontakteCollector:collectingFinished', (e, source_name, source_id, source_contacts) ->
+					$http.post(VKONTAKTE_CONTACTS_UPLOAD_PATH, {
+						vk_contacts_source_name: source_name
+						vk_contacts_source_identifier: source_id
+						vk_contacts_json: JSON.stringify(source_contacts)
+					}).then(
+						() ->
+							$notification.vkContactsUploaded()
+					)
+		]
+)
