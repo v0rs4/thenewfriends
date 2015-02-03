@@ -32,7 +32,6 @@ gem 'jbuilder', '~> 2.0'
 #----
 gem 'simple_form', '~> 3.1.0'
 gem 'country_select', '~> 2.1.0'
-gem 'cocoon', '~> 1.2.6'
 #----
 gem 'bh', '~> 1.2.0'
 #----
@@ -41,7 +40,8 @@ gem 'fog', '~> 1.27.0'
 #----
 gem 'multi_json', '~> 1.10.1'
 #----
-gem 'sidekiq', '~> 3.3.0'
+gem 'sidekiq', '~> 3.3'
+gem 'clockwork', '~> 1.1'
 #----
 gem 'hashie', '~> 3.3.2'
 #----
@@ -53,6 +53,8 @@ gem 'faraday_middleware', '~> 0.9.1'
 gem 'write_xlsx', '~> 0.81.1'
 #----
 gem 'perfect_money_merchant', path: '../perfect_money_merchant'
+#----
+gem 'rails-i18n', '~> 4.0.3'
 #----
 group :development, :test do
 	gem 'byebug'

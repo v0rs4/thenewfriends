@@ -61,3 +61,10 @@ en:
     delete: Delete
     activate: Activate
     activated: Activated
+    pricing_plan:
+      vk_contacts_collector: |
+        Collecting of contacts
+        Uploadig to a server
+        Storing contacts on a server
+        Downloading from a server
+        Archiving of contacts

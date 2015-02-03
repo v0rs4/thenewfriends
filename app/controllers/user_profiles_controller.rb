@@ -8,7 +8,7 @@ class UserProfilesController < ApplicationController
 		respond_to do |format|
 			if @user_profile.update_attributes(update_params)
 				format.html do
-					redirect_to :root, notice: 'Your profile was successfully updated.'
+					redirect_to :work_root, notice: 'Your profile was successfully updated.'
 				end
 				format.json { head :no_content }
 			else

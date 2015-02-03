@@ -11,7 +11,7 @@ class StaticPagesController < ApplicationController
 				:groups,
 				:offline
 			].join(','),
-			redirect_uri: vk_o_auth_authorize_url,
+			redirect_uri: work_vk_o_auth_authorize_url,
 			v: '5.24',
 			response_type: :code
 		}.map { |k, v| "#{k}=#{v}" }.join('&')
@@ -21,20 +21,24 @@ class StaticPagesController < ApplicationController
 
 	def pricing_plans
 		@pricing_plan_sci = {
-			vk_contacts_collector: generate_pricing_plan_pm_sci('vk_contacts_collector', 20)
+			vk_contacts_collector: generate_pricing_plan_pm_sci('vk_contacts_collector', 0.01)
 		}
+	end
+
+	def pmvf
+
 	end
 
 	private
 
-	def generate_pricing_plan_pm_sci(price, name)
+	def generate_pricing_plan_pm_sci(name, price)
 		PerfectMoneyMerchant::SCI.new(
-			price: '20',
+			price: price,
 			payee: PerfectMoneyMerchant::Account.obtain_deposit_account(:usd),
 			additional: {
 				user_id: current_user.id,
-				pricing_plan_name: 'vk_contacts_collector',
-				pricing_plan_price: '20'
+				pricing_plan_name: name,
+				pricing_plan_price: price
 			},
 			verification: [:user_id, :pricing_plan_name, :pricing_plan_price],
 			purpose: 'pricing_plan'

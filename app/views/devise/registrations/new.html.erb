@@ -1,10 +1,10 @@
+<h2><%= t('translations.sign_up_noun') -%></h2>
+<div>
+  <%= ah_markdown(t('translations.registration_instructions')) %>
+</div>
 <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
     <%= f.input :email, label: false, autofocus: true, placeholder: 'Email', required: true, class: 'form-control' %>
     <%= f.input :password, label: false, autocomplete: "off", placeholder: t('translations.password'), required: true, class: 'form-control' %>
     <%= f.input :password_confirmation, label: false, autocomplete: "off", placeholder: t('translations.password_confirmation'), required: true, class: 'form-control' %>
     <%= f.button :submit, t('translations.sign_up'), class: 'btn-primary btn-block' %>
-    <div class="m-t">
-      <%= render "devise/shared/links" %>
-    </div>
-
 <% end %>

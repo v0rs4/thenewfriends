@@ -1,42 +1,102 @@
 ru:
   translations:
-    sign_up: Sign up
-    sign_in: Sign in
-    sign_out: Sign out
-    logout: Logout
-    password: Password
-    password_confirmation: Password confirmation
+    sign_up: Зарегистрироваться
+    sign_in: Войти
+    sign_out: Выйти
+    logout: Выйти
+    password: Пароль
+    password_confirmation: Подтверждение пароля
     regular_user: Обычный пользователь
-    profile: Profile
-    not_given: not given
-    not_given_what: '%{what} not given'
-    edit: Edit
-    full_name: Full name
-    first_name: First name
-    last_name: Last name
-    about: About
-    country: Country
-    city: City
-    contact_phone: Contact phone
-    contact_email: Contact email
-    vkontakte_id: Vkontakte personal page ID
-    facebook_id: Facebook personal page ID
-    twitter_id: Twitter personal page ID
+    profile: Профиль
+    not_given: не указано
+    not_given_what: '%{what} не указан(-а)'
+    edit: Редактировать
+    full_name: ФИО
+    first_name: Имя
+    last_name: Фамилия
+    about: Обо мне
+    country: Страна
+    city: Город
+    contact_phone: Контактный телефон
+    contact_email: Контактный email
+    vkontakte_id: ID страницы Вконтакте
+    facebook_id: ID страницы Facebook
+    twitter_id: ID страницы Twitter
     skype: Skype
-    dashboard: Dashboard
-    vk_contacts_collector: Vkontakte Contacts Collector
-    vkontakte: Vkontakte
-    actions: Actions
-    my_friends: My friends
-    my_communities: My communities
-    search_people: Search people
-    search_communities: Search communities
-    search: Search
-    name: Name
-    members_quantity: Members quantity
-    see_all: See all
-    files: Files
-    refresh: Refresh
-    active_processes: Active processes
-    archived: Archived
-    news: News
+    dashboard: Главная панель
+    vk_contacts_collector: Сборщик контактов Вконтакте
+    vkontakte: Вконтакте
+    actions: Действия
+    my_friends: Мои друзья
+    my_communities: Мои сообщества
+    search_people: Поиск людей
+    search_communities: Поиск сообществ
+    search: Поиск
+    name: Название
+    members_quantity: Кол-во участников
+    see_all: Посмотреть все
+    files: Файлы
+    refresh: Обновить
+    active_processes: Активные процессы
+    archived: Архивные
+    news: Новости
+    language: Язык
+    to_archive: Архивировать
+    ago: назад
+    created: Создан
+    last_n_files: Последние %{number} файлов
+    download: Скачать
+    new_ones: Новые
+    current_ones: Текущие
+    user_vk_contacts_file:
+      no_permission:
+        not_paid: У вас нет прав использовать сбор контактов.
+        create: У вас нет прав использовать собирать контакты. Ограничено администратором TNF.
+        read:  У вас нет прав просматривать. Ограничено администратором TNF.
+    go_to: Перейти к
+    pricing_n_plans: Тарифы & Цены
+    admin: Админ
+    users: Пользователи
+    pm_accounts: PM Аккаунты
+    pm_payments: PM платежи
+    create: Создать
+    update: Обновить
+    delete: Удалить
+    activate: Активировать
+    activated: Активировано
+    pricing_plan:
+          vk_contacts_collector: |
+            Сбор контактов
+            Загрузка на сервер
+            Хранение контактов на сервере
+            Скачка контактов с сервера
+            Архивирование контактов
+    how_to_use:
+      vk_contacts_collector: |
+        ## Сборщик контактов Вконтакте
+        **Skype рассыльщик:** http://tnf.palmary.travel
+      vk_contacts_files: |
+        ### Легенда
+        <i class="fa fa-refresh"></i> - Обновить
+        <i class="fa fa-eye"></i> - Открыть все файлы
+        <i class="fa fa-archive"></i> - положить файл в архив
+        <i class="fa fa-download"></i> - скачать xlsx файл со скачанными контактами.
+    learn_more: Узнать больше
+    my_files: Мои файлы
+    pmvf: Меркурий
+    pmvf_full: Меркурий Взаимный Фонд
+    table_n: Таблица %{number}
+    table: Таблица
+    description: Описание
+    features: Особенности
+    sign_up_noun: Регистрация
+    sign_in_noun: Вход
+    forgot_password: Забыли пароль?
+    restore: Восстановить
+    confirmation_instructions: Инструкции подтверждения аккаунта
+    send: Отправить
+    schedule: Расписание
+    registration_instructions: |
+      1. Ввести email и пароль.
+      2. Зайти в почту и подтвердить свой email, иначе TNF не даст вам войти в кабинет.
+      3. Войти в TNF.

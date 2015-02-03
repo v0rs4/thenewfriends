@@ -1,4 +1,4 @@
-#= depend_on_asset "ng-app/components/vkontakte_collector_widget/vkontakte_collector_processors/vkontakte_collector_processors.html"
+#= depend_on_asset "ng-app/components/vkontakte_collector_widget/vkontakte_collector_processors.html"
 angular.module('vkontakteCollectorWidget', ['ngResource'])
 .directive('vkontakteCollectorProcessors',
 		[
@@ -6,7 +6,7 @@ angular.module('vkontakteCollectorWidget', ['ngResource'])
 			'VkontakteCollectorService',
 			($rootScope, VkontakteCollectorService) ->
 				restrict: 'E'
-				templateUrl: '<%= asset_path('ng-app/components/vkontakte_collector_widget/vkontakte_collector_processors/vkontakte_collector_processors.html') %>'
+				templateUrl: '<%= asset_path('ng-app/components/vkontakte_collector_widget/vkontakte_collector_processors.html') %>'
 				controller: [
 					'$scope', '$element', '$attrs',
 					($scope, $element, $attrs) ->
@@ -16,151 +16,6 @@ angular.module('vkontakteCollectorWidget', ['ngResource'])
 				]
 		]
 )
-#.directive('vkontakteCollectorSearch',
-#		[
-#			() ->
-#				restrict: "E"
-#				scope: {}
-#				templateUrl: '<%= asset_path('ng-app/components/vkontakte_collector_widget/vkontakte_collector_search/vkontakte_collector_search.html') %>'
-#				link: ($scope, $element, $attrs) ->
-#					$scope.communitiesEnabled = false
-#					$scope.usersEnabled = false
-#
-#					$scope.toggleCommunities = () ->
-#						$scope.communitiesEnabled = !$scope.communitiesEnabled
-#					$scope.toggleUsers = () ->
-#						$scope.usersEnabled = !$scope.usersEnabled
-#		]
-#)
-#.directive('vkontakteCollectorSearchUsers',
-#		[
-#			'$compile'
-#			'$cookies'
-#			'$timeout'
-#			'$uiblock'
-#			'VkontakteApiResource'
-#			'VkontakteCollectorService'
-#			($compile, $cookies, $timeout, $uiblock, VkontakteApiResource, VkontakteCollectorService) ->
-#				restrict: "E"
-#				scope: {}
-#				templateUrl: '<%= asset_path('ng-app/components/vkontakte_collector_widget/vkontakte_collector_search/vkontakte_collector_search_users/vkontakte_collector_search_users.html') %>'
-#				link: ($scope, $element, $attrs) ->
-#					jqTable = $element.find('table')
-#					dt = jqTable.DataTable(
-#						lengthChange: false
-#						searching: false
-#						pagingType: 'simple'
-#						columns: [
-#							{
-#								data: "photo_50"
-#								render: (photo_50) ->
-#									"<img src=\"#{photo_50}\" alt=\"Аватар\"/>"
-#							},
-#							{data: "first_name"},
-#							{data: "last_name"},
-#							{
-#								className: 'table-action'
-#								data: (row) ->
-#									id: row.id
-#									name: "#{row.first_name} #{row.last_name}"
-#								render: (data) ->
-#									"<a href=\"\" ng-click=\"startCollecting(#{data.id},'#{data.name}')\"><i class=\"fa fa-download\"></i></a>"
-#								createdCell: (td) ->
-#									$compile(td)($scope)
-#								orderable: false
-#							}
-#						]
-#					)
-#
-#					$scope.query = ""
-#					queryChangedTimeout = undefined
-#					$scope.queryChanged = () ->
-#						if queryChangedTimeout
-#							$timeout.cancel(queryChangedTimeout)
-#						queryChangedTimeout = $timeout () ->
-#							if $scope.query.length == 0
-#								dt.clear().draw()
-#							else
-#								$uiblock.block(jqTable)
-#								VkontakteApiResource.searchUsers(
-#									q: $scope.query
-#									access_token: $cookies.vk_access_token
-#								).$promise.then (data) ->
-#									$uiblock.unblock(jqTable)
-#									dt.clear().rows.add(data.response.items).draw()
-#						, 1000
-#
-#					$scope.startCollecting = (id, name) ->
-#						VkontakteCollectorService.collectFromAccount(name, id)
-#		]
-#)
-#.directive('vkontakteCollectorSearchCommunities',
-#		[
-#			'$compile'
-#			'$cookies'
-#			'$timeout'
-#			'$uiblock'
-#			'VkontakteApiResource'
-#			'VkontakteCollectorService'
-#			($compile, $cookies, $timeout, $uiblock, VkontakteApiResource, VkontakteCollectorService) ->
-#				restrict: "E"
-#				scope: {}
-#				templateUrl: '<%= asset_path('ng-app/components/vkontakte_collector_widget/vkontakte_collector_search/vkontakte_collector_search_communities/vkontakte_collector_search_communities.html') %>'
-#				link: ($scope, $element, $attrs) ->
-#					jqTable = $element.find('table')
-#					dt = jqTable.DataTable(
-#						lengthChange: false
-#						searching: false
-#						pagingType: 'simple'
-#						columns: [
-#							{data: "id"},
-#							{data: "name"},
-#							{data: "members_count"},
-#							{
-#								className: 'table-action'
-#								data: (row) ->
-#									id: row.id
-#									name: (->
-#										name = row.name.replace(/[^A-zА-ф\s]/g, '').trim()
-#										if name.length < 25
-#											name
-#										else
-#											name.substring(0, 25) + "...")()
-#								render: (data) ->
-#									"<a href=\"\" ng-click=\"startCollecting(#{data.id},'#{data.name}')\"><i class=\"fa fa-download\"></i></a>"
-#								createdCell: (td) ->
-#									$compile(td)($scope)
-#								orderable: false
-#							}
-#						]
-#					)
-#
-#					$scope.query = ""
-#					queryChangedTimeout = undefined
-#					$scope.queryChanged = () ->
-#						if queryChangedTimeout
-#							$timeout.cancel(queryChangedTimeout)
-#						queryChangedTimeout = $timeout () ->
-#							if $scope.query.length == 0
-#								dt.clear().draw()
-#							else
-#								$uiblock.block(jqTable)
-#								VkontakteApiResource.searchGroups(
-#									q: $scope.query
-#									access_token: $cookies.vk_access_token
-#								).$promise.then (data) ->
-#									$uiblock.unblock(jqTable)
-#									dt.clear()
-#									_.forEach data.response.items, (x) ->
-#										if x.members_count > 100
-#											dt.row.add(x)
-#									dt.draw()
-#						, 1000
-#
-#					$scope.startCollecting = (group_id, group_name) ->
-#						VkontakteCollectorService.collectFromGroup(group_name, group_id)
-#		]
-#)
 .factory('VkontakteApiResource',
 		[
 			'$resource'
@@ -169,9 +24,10 @@ angular.module('vkontakteCollectorWidget', ['ngResource'])
 			($resource, $cookieStore, $rootScope) ->
 				resourceInterceptor =
 					response: (response) ->
-						if response.data.error && response.data.error.error_code == 5
+						if response.data.error #&& response.data.error.error_code == 5
 							$cookieStore.remove('vk_access_token')
 							$rootScope.$emit('user:vkontakteAccessTokenUpdated')
+							window.location.reload()
 						response.data
 
 				$resource 'https://api.vk.com/method/:method',
@@ -458,9 +314,19 @@ angular.module('vkontakteCollectorWidget', ['ngResource'])
 				link: ($scope, $element, $attrs) ->
 					dt = $element.DataTable(
 						columns: [
-							{data: "id"},
+							{
+								data: "id"
+								render: (data) ->
+									"<a href='https://vk.com/club" + data + "' target='_blank'>" + data + "</a>"
+							},
 							{data: "name"},
-							{data: "members_count"},
+							{
+								data: (row) ->
+									if row.members_count
+										row.members_count
+									else
+										0
+							},
 							{
 								className: 'text-right'
 								data: (row) ->
@@ -566,7 +432,11 @@ angular.module('vkontakteCollectorWidget', ['ngResource'])
 						searching: false
 						pagingType: 'simple'
 						columns: [
-							{data: "id"},
+							{
+								data: "id"
+								render: (data) ->
+									"<a href='https://vk.com/club" + data + "' target='_blank'>" + data + "</a>"
+							},
 							{data: "name"},
 							{
 								data: (row) ->

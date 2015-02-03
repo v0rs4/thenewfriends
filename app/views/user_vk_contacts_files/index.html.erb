@@ -2,12 +2,6 @@
   <div class="col-lg-12">
     <%= ah_ibox(data: { controller: 'VkContactsCollectorController' }) do -%>
         <%= ah_ibox_title(t('translations.files')) -%>
-        <%= ah_ibox_heading do -%>
-            <blockquote>
-              <h3>How to use</h3>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            </blockquote>
-        <%- end -%>
         <%= ah_ibox_content do -%>
             <div class="text-right">
               <%= link_to t('translations.refresh'), url_for(params), class: 'btn btn-white' -%>

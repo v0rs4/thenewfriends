@@ -31,59 +31,17 @@ angular.module('tnf-ng-app', ['ui.router', 'ngCookies', 'ngAnimate', 'vkontakteC
 .factory('$notification',
 		[
 			() ->
-				vkContactsUploaded: () ->
-					jQuery.growl(
-							{
-								message: "Контакты успешно загружены"
-							},
-							{
-								type: 'success'
-								placement: {
-									from: "bottom",
-									align: "left"
-								}
-							}
-					)
+				vkContactsUploadingStarted: () ->
+					toastr.warning('Сохранение контактов начато. Не закрывайте страницу, иначе собранные контакты будут утеряны',
+							'TheNewFriends')
+				vkContactsUploadingFinished: () ->
+					toastr.success('Контакты успешно загружены. Серверная обработка контактов займет от 10 сек до 2 минут. Так что, если вы не обнаружите файл через 10 сек — не спешите скачивать контакты снова.', 'TheNewFriends')
 				vkContactsCollectingStarted: (contacts) ->
-					jQuery.growl(
-							{
-								message: "Сбор контактов начат"
-							},
-							{
-								type: 'info'
-								placement: {
-									from: "bottom",
-									align: "left"
-								}
-							}
-					)
+					toastr.info('Сбор контактов начат', 'TheNewFriends')
 				vkContactsCollectingFinished: (contacts) ->
-					jQuery.growl(
-							{
-								message: "Собрано #{contacts.length} контактов"
-							},
-							{
-								type: 'success'
-								placement: {
-									from: "bottom",
-									align: "left"
-								}
-							}
-					)
+					toastr.info("Собрано #{contacts.length} контактов", 'TheNewFriends')
 				vkContactsCountLimitExceeded: () ->
-					jQuery.growl(
-							{
-								icon: 'fa fa-exclamation-circle'
-								message: "Укажите источник где меньше 100,000 пользователей"
-							},
-							{
-								type: 'danger'
-								placement: {
-									from: "bottom",
-									align: "left"
-								}
-							}
-					)
+					toastr.error('Укажите источник где меньше 100,000 пользователей', 'TheNewFriends')
 		]
 )
 .run(
@@ -93,19 +51,21 @@ angular.module('tnf-ng-app', ['ui.router', 'ngCookies', 'ngAnimate', 'vkontakteC
 			'$notification'
 			($rootScope, $http, $notification) ->
 				$rootScope.$on 'vkontakteCollector:collectingStarted', (e, source) ->
+					console.log(1)
 					$notification.vkContactsCollectingStarted()
 				$rootScope.$on 'vkontakteCollector:collectingFinished', (e, name, source, contacts) ->
 					$notification.vkContactsCollectingFinished(contacts)
 				$rootScope.$on 'vkontakteCollector:countLimitExceeded', (e, source) ->
 					$notification.vkContactsCountLimitExceeded()
 				$rootScope.$on 'vkontakteCollector:collectingFinished', (e, source_name, source_id, source_contacts) ->
+					$notification.vkContactsUploadingStarted()
 					$http.post(VKONTAKTE_CONTACTS_UPLOAD_PATH, {
 						vk_contacts_source_name: source_name
 						vk_contacts_source_identifier: source_id
 						vk_contacts_json: JSON.stringify(source_contacts)
 					}).then(
 						() ->
-							$notification.vkContactsUploaded()
+							$notification.vkContactsUploadingFinished()
 					)
 		]
 )

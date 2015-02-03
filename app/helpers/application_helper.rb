@@ -45,4 +45,19 @@ module ApplicationHelper
 	def ah_prepend_host(path)
 		"#{request.protocol}#{request.host_with_port}#{path}"
 	end
+
+	def controller?(*controller)
+		controller.include?(params[:controller])
+	end
+
+	def action?(*action)
+		action.include?(params[:action])
+	end
+
+	def ah_nav_link(link_text, link_path, active_class_name = 'active')
+		class_name = current_page?(link_path) ? active_class_name : ''
+		content_tag(:li, class: class_name) do
+			link_to link_text, link_path
+		end
+	end
 end

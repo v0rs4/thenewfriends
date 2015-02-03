@@ -13,11 +13,14 @@
       </div>
 
       <ul class="pricing-service m-top-sm">
-        <li>Collecting of contacts</li>
-        <li>Uploadig to a server</li>
-        <li>Storing contacts on a server</li>
-        <li>Downloading from a server</li>
-        <li>Archiving of contacts</li>
+        <%- t('translations.pricing_plan.vk_contacts_collector').each_line do |_feature| -%>
+            <li><%= _feature -%></li>
+        <%- end -%>
+        <!--<li>Collecting of contacts</li>-->
+        <!--<li>Uploadig to a server</li>-->
+        <!--<li>Storing contacts on a server</li>-->
+        <!--<li>Downloading from a server</li>-->
+        <!--<li>Archiving of contacts</li>-->
       </ul>
 
       <div class="m-top-md text-center">
@@ -63,6 +66,9 @@
                     <%= hidden_field_tag :user_id, sci.user_id -%>
                     <%= hidden_field_tag :pricing_plan_name, sci.pricing_plan_name -%>
                     <%= hidden_field_tag :pricing_plan_price, sci.pricing_plan_price -%>
+                    <%= hidden_field_tag :verification_code, sci.verification_code -%>
+                    <%= hidden_field_tag :verification_fields, sci.verification_fields -%>
+                    <%= hidden_field_tag :payment_purpose, sci.payment_purpose -%>
                     <%= button_tag fa_icon('bolt', text: t('translations.activate')), class: 'btn btn-danger', name: :PAYMENT_METHOD -%>
                 <%- end -%>
             <%- end -%>

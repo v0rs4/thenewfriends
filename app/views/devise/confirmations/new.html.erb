@@ -1,6 +1,4 @@
-<h3>Resend confirmation instructions+</h3>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-
+<h2><%= t('translations.confirmation_instructions') -%></h2>
 <% if notice %>
     <div class="alert alert-info">
       <%= notice %>
@@ -19,6 +17,5 @@
       <%= f.email_field :email, autofocus: true, placeholder: 'Email', required: true, class: 'form-control' %>
     </div>
 
-    <%= f.submit "Resend confirmation instructions", class: 'btn btn-primary block full-width m-b' %>
-    <%= render "devise/shared/links" %>
+    <%= f.submit t('translations.send'), class: 'btn btn-primary block full-width m-b' %>
 <% end %>

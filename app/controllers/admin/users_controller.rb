@@ -15,7 +15,7 @@ class Admin::UsersController < Admin::ApplicationController
 		@user = User.find(params[:id])
 		respond_to do |format|
 			if @user.update_attributes(update_params)
-				format.html { redirect_to edit_admin_user_path(@user), notice: 'User was successfully updated.' }
+				format.html { redirect_to edit_work_admin_user_path(@user), notice: 'User was successfully updated.' }
 				format.json { head :no_content }
 			else
 				format.html { render action: "edit" }

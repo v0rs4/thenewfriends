@@ -37,7 +37,7 @@ class VkContactsLoadController < ApplicationController
 		end
 
 		if params[:redirect_to].nil? or params[:redirect_to].blank?
-			redirect_to :root, opts
+			redirect_to :work_root, opts
 		else
 			redirect_to params[:redirect_to], opts
 		end

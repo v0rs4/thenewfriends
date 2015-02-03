@@ -1,22 +1,29 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-	<head>
-		<title>KairosPlanetClub</title>
-		<%= stylesheet_link_tag 'application', media: 'all' %>
-		<%= csrf_meta_tags %>
-	</head>
-	<body class="gray-bg">
-		<div class="middle-box text-center loginscreen animated fadeInDown">
-			<div>
-				<div>
-					<h1 class="logo-name">TNF</h1>
-				</div>
-				<%= yield %>
-				<p class="m-t">
-					<small>KairosPlanet Club &copy; 2014</small>
-				</p>
-			</div>
-		</div>
-		<%= javascript_include_tag 'application' %>
-	</body>
+<head>
+  <title>KairosPlanetClub</title>
+  <%= stylesheet_link_tag 'application', media: 'all' %>
+  <%= csrf_meta_tags %>
+</head>
+<body class="skin-2 boxed-layout" id="wrapper">
+<div class="row">
+  <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+    <div class="gray-bg p-lg m-t-lg">
+      <!--<div class="m-t m-b">-->
+      <!--<%= link_to 'English', url_for(params.merge(locale: :en)), class: 'btn btn-white btn-sm' -%>-->
+      <!--<%= link_to 'Русский', url_for(params.merge(locale: :ru)), class: 'btn btn-white btn-sm' -%>-->
+      <!--</div>-->
+      <h1 class="text-center">TheNewFriends</h1>
+      <%= yield %>
+      <div class="m-t">
+        <%= render "devise/shared/links" %>
+      </div>
+      <p class="m-t text-center">
+        <small>The New Friends &copy; 2015</small>
+      </p>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag 'application' %>
+</body>
 </html>

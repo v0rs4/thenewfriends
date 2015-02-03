@@ -1,4 +1,4 @@
-<%= ah_markdown('') -%>
+<h2><%= t('translations.sign_in_noun') -%></h2>
 
 <% if notice %>
     <div class="alert alert-info">
@@ -21,5 +21,4 @@
       <%= f.password_field :password, autocomplete: "off", placeholder: t('translations.password'), required: true, class: 'form-control' %>
     </div>
     <%= f.submit t('translations.sign_in'), class: 'btn btn-primary block full-width m-b' %>
-    <%= render "devise/shared/links" %>
 <% end %>

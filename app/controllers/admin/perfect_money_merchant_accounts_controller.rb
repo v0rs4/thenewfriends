@@ -8,7 +8,7 @@ class Admin::PerfectMoneyMerchantAccountsController < Admin::ApplicationControll
 
 		respond_to do |format|
 			if @account.save
-				format.html { redirect_to admin_perfect_money_merchant_accounts_path, notice: 'Product was successfully created.' }
+				format.html { redirect_to work_admin_perfect_money_merchant_accounts_path, notice: 'Product was successfully created.' }
 				# format.json { render json: @account, status: :created, location: @product }
 			else
 				format.html { render action: "new" }
@@ -34,7 +34,7 @@ class Admin::PerfectMoneyMerchantAccountsController < Admin::ApplicationControll
 
 		respond_to do |format|
 			if @account.update_attributes(update_params)
-				format.html { redirect_to admin_perfect_money_merchant_accounts_path, notice: 'Product was successfully updated.' }
+				format.html { redirect_to work_admin_perfect_money_merchant_accounts_path, notice: 'Product was successfully updated.' }
 				# format.json { head :no_content }
 			else
 				format.html { render action: "edit" }

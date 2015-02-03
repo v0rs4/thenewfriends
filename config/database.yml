@@ -4,7 +4,7 @@ default: &default
   pool: 5
 development:
   <<: *default
-  database: tnf_dev_2
+  database: tnf_dev_3
   username: kairos
   host: localhost
   port: 5432
@@ -15,6 +15,5 @@ test:
   host: localhost
   port: 5432
 production:
-  production:
-    url:  <%= ENV["DATABASE_URL"] %>
-    pool: <%= ENV["DB_POOL"] || ENV['MAX_THREADS'] || 5 %>
+  url:  <%= ENV["DATABASE_URL"] %>
+  pool: <%= ENV["DB_POOL"] || ENV['MAX_THREADS'] || 5 %>

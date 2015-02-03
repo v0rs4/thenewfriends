@@ -5,7 +5,7 @@ class VkOAuthController < ApplicationController
 				client_id: '4523313',
 				client_secret: 'qlBtRMtbAyvfzvBy4kuh',
 				code: params[:code],
-				redirect_uri: vk_o_auth_authorize_url
+				redirect_uri: work_vk_o_auth_authorize_url
 			}
 		)
 
@@ -14,7 +14,7 @@ class VkOAuthController < ApplicationController
 		if params[:redirect_to]
 			redirect_to params[:redirect_to]
 		else
-			redirect_to vkontakte_contacts_collector_path
+			redirect_to work_vkontakte_contacts_collector_path
 		end
 	end
 

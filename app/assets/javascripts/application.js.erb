@@ -10,7 +10,6 @@
 // Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
 // about supported directives.
 //
-//= require_self
 //= require jquery
 //= require jquery_ujs
 //= require lodash
@@ -24,10 +23,12 @@
 //= require angular-resource
 //= require angular-cookies
 //= require angular-ui-router
-//= require cocoon
+//= require plugins/responsible-video
+//= require plugins/toastr.min
+//= require_self
 //= require_tree ./ng-app
 
-VKONTAKTE_CONTACTS_UPLOAD_PATH = <%= "'#{Rails.application.routes.url_helpers.vkontakte_contacts_upload_path}'" %>;
+VKONTAKTE_CONTACTS_UPLOAD_PATH = <%= "'#{Rails.application.routes.url_helpers.work_vkontakte_contacts_upload_path}'" %>;
 
 var TRANSLITERATE_RU_EN_TABLE = {
 	"Ё": "YO",
@@ -136,3 +137,21 @@ if (!Array.prototype.removeElement) {
 		}
 	};
 }
+
+
+
+toastr.options = {
+	"closeButton": true,
+	"debug": false,
+	"progressBar": true,
+	"positionClass": "toast-bottom-right",
+	"onclick": null,
+	"showDuration": "400",
+	"hideDuration": "1000",
+	"timeOut": "12500",
+	"extendedTimeOut": "500",
+	"showEasing": "swing",
+	"hideEasing": "linear",
+	"showMethod": "fadeIn",
+	"hideMethod": "fadeOut"
+};

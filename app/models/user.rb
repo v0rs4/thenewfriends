@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
 				def run
 					_build_user_profile
 					_build_user_permission
+					_set_as_admin
 				end
 
 				private
@@ -33,6 +34,10 @@ class User < ActiveRecord::Base
 
 				def _build_user_permission
 					user.build_user_permission
+				end
+
+				def _set_as_admin
+					user.is_admin = true if User.count.zero?
 				end
 			end
 

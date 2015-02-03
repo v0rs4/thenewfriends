@@ -12,6 +12,8 @@
  *
  *= require inspinia/style
  *= require font-awesome
- *= require pictonic
+ *= require plugins/pictonic
+ *= require plugins/toastr
+ *= require plugins/animate
  *= require jquery.dataTables.bootstrap
  */

@@ -1,0 +1,35 @@
+<%= ah_ibox do -%>
+    <%= ah_ibox_heading do -%>
+        <%= render partial: 'static_pages/pmvf/heading' -%>
+        <%= render partial: 'static_pages/pmvf/social_networks' -%>
+        <%= render partial: 'static_pages/pmvf/videos' -%>
+    <%- end -%>
+    <%= ah_ibox_content do -%>
+        <%= nav do %>
+            <%= link_to fa_icon('table', text: t('translations.description')), '#pmvf-description', data: { toggle: 'tab' } -%>
+            <%= link_to fa_icon('star', text: t('translations.features')), '#pmvf-features', data: { toggle: 'tab' } -%>
+            <%= link_to fa_icon('question', text: 'FAQ'), '#pmvf-faq', data: { toggle: 'tab' } -%>
+            <%= link_to fa_icon('coffee', text: t('translations.schedule')), '#pmvf-schedule', data: { toggle: 'tab' } -%>
+        <% end %>
+
+        <div class="panel-body">
+          <div class="tab-content">
+            <div class="tab-pane fade active in" id="pmvf-description">
+              <%= render partial: 'static_pages/pmvf/description' -%>
+            </div>
+            <div class="tab-pane fade" id="pmvf-features">
+              <%= render partial: 'static_pages/pmvf/features' -%>
+            </div>
+            <div class="tab-pane fade" id="pmvf-faq">
+              <%= render partial: 'static_pages/pmvf/faq' -%>
+            </div>
+            <div class="tab-pane fade" id="pmvf-schedule">
+              <div class="text-center">
+                <iframe src="https://www.google.com/calendar/embed?src=iupu1br2q89aka9vqj499iibbs%40group.calendar.google.com" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="pmvf"></div>
+          </div>
+        </div>
+    <%- end -%>
+<%- end -%>
