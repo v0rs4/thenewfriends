@@ -6,7 +6,7 @@
               <tbody>
               <tr>
                 <td><b>ВК сборщик контактов</b>
-                  <small class="text-muted">(когда партнер активирует)</small>
+                  <small class="text-muted">(партнер активирует - вы зарабатываете)</small>
                 </td>
                 <td><%= fa_icon('dollar', text: @current_user.referral_award) %></td>
               </tr>
@@ -18,11 +18,16 @@
                 <td>Выплачено</td>
                 <td><%= fa_icon('dollar', text: @current_user.referral_paid_out) %></td>
               </tr>
+              <%- if @current_user.decorate.referral_balance > 0 -%>
+                  <tr>
+                    <td><%= link_to fa_icon('level-up', text: "Выплатить на #{@current_user.user_profile.pm_usd_acct}"), pay_out_work_user_url, method: :post, class: 'text-danger' %></td>
+                    <td class="text-danger"><%= fa_icon('dollar', text: @current_user.decorate.referral_balance) %></td>
+                  </tr>
+              <%- end -%>
               </tbody>
             </table>
 
             <%- if @current_user.referral_award == 0 -%>
-
                 <div class="m-b">
                   <small class="text-danger">Чтобы стать учасником <b>партнерской программы</b>, вам необходимо
                     пригласить больше 5 человек и написать в администрацию, что вы желаете учавствовать в партнерской
@@ -33,15 +38,17 @@
 
             <div class="m-b">
               <small class="text-muted">
-                По вторникам выплачиваются реферральные на ваш счет PerfectMoney. <br/>
+                Выплаты инстант. <br/>
                 Убедитесь, что вы верно его указали в <%= link_to 'настройках профиля', edit_work_user_profile_url %>
+                <br/>
+                Реф. ссылка: <%= root_url(ref: @current_user.user_profile.username) %>
                 <br/>
                 <%= render 'shared/talk_to_admin', text: 'Пообщаться с администрацией' %>
               </small>
             </div>
 
             <h2>Рефералы</h2>
-            <%= render 'static_pages/referrals/table', referrals: @current_user.referrals %>
+            <%= render 'static_pages/referrals/table', referrals: @current_user.referrals.order('created_at DESC') %>
         <%- end -%>
     <%- end -%>
 <%- else -%>

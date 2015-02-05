@@ -87,6 +87,11 @@ class UserDecorator < Draper::Decorator
 	def profile_fields_filled?
 		!(user_profile.first_name.blank? or
 			user_profile.last_name.blank? or
-			user_profile.skype.blank?)
+			user_profile.skype.blank? or
+			user_profile.username.blank?)
+	end
+
+	def referral_balance
+		(object.referral_earned - object.referral_paid_out).round(2)
 	end
 end

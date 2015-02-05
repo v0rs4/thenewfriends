@@ -14,7 +14,7 @@ class Admin::UsersController < Admin::ApplicationController
 	def update
 		@user = User.find(params[:id])
 		respond_to do |format|
-			if @user.update_attributes(update_params)
+			if @user.update(update_params)
 				format.html { redirect_to edit_work_admin_user_path(@user), notice: 'User was successfully updated.' }
 				format.json { head :no_content }
 			else
@@ -37,6 +37,7 @@ class Admin::UsersController < Admin::ApplicationController
 				:user_vk_contacts_files_delete
 			],
 			user_profile_attributes: [
+				:id,
 				:first_name,
 				:last_name,
 				:about,
@@ -47,7 +48,8 @@ class Admin::UsersController < Admin::ApplicationController
 				:contact_email,
 				:vkontakte_id,
 				:facebook_id,
-				:twitter_id
+				:twitter_id,
+				:pm_usd_acct
 			]
 		)
 	end

@@ -21,7 +21,8 @@ class User < ActiveRecord::Base
 
 	module Extensions
 		module DeviseSignUp
-			INVITE_CODE_FIELD = :email
+			INVITE_MODEL = 'UserProfile'
+			INVITE_CODE_FIELD = :username
 
 			extend ActiveSupport::Concern
 
@@ -55,7 +56,7 @@ class User < ActiveRecord::Base
 				end
 
 				def _set_inviter_id
-					user.inviter_id = User.where(INVITE_CODE_FIELD => user.invite_code).take(1).first.id
+					user.inviter_id = UserProfile.where(INVITE_CODE_FIELD => user.invite_code).take(1).first.user_id
 				end
 			end
 
@@ -74,7 +75,7 @@ class User < ActiveRecord::Base
 					if invite_code.nil?
 						add_invite_code_error(:blank)
 					else
-						add_invite_code_error unless User.exists?(INVITE_CODE_FIELD => invite_code)
+						add_invite_code_error unless UserProfile.exists?(INVITE_CODE_FIELD => invite_code)
 					end
 				end
 			end

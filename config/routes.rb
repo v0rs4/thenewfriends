@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
 		root 'static_pages#dashboard'
 
+		resource :user, only: [] do
+			post :pay_out
+		end
 		resource :user_profile, only: [:edit, :update]
 		resources(:user_vk_contacts_files, only: [:index, :show, :update, :edit]) { member { get :download } }
 

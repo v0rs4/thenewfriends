@@ -32,7 +32,9 @@ class UserProfilesController < ApplicationController
 			:contact_email,
 			:vkontakte_id,
 			:facebook_id,
-			:twitter_id
+			:twitter_id,
+			:pm_usd_acct,
+			:username
 		]
 		params.require(:user_profile).permit(*_permitted_params)
 	end

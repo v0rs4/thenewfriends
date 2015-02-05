@@ -12,15 +12,7 @@ class ApplicationController < ActionController::Base
 	before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
 	before_action :set_locale
-
-	def set_locale
-		if params[:locale]
-			if I18n.available_locales.map(&:to_s).include?(params[:locale])
-				cookies[:locale] = { value: params[:locale], expires: 365.days.from_now }
-			end
-		end
-		I18n.locale = cookies[:locale] || I18n.default_locale
-	end
+	before_action :set_referral
 
 	after_filter :set_csrf_cookie_for_ng
 
@@ -49,7 +41,22 @@ class ApplicationController < ActionController::Base
 	end
 
 	def set_app_version
-		@version = '0.0.1-alpha.3'
+		@version = '0.2.0-alpha1'
+	end
+
+	def set_referral
+		if params[:ref]
+			cookies[:ref] = { domain: :all, value: params[:ref], expires: 365.days.from_now }
+		end
+	end
+
+	def set_locale
+		if params[:locale]
+			if I18n.available_locales.map(&:to_s).include?(params[:locale])
+				cookies[:locale] = { value: params[:locale], expires: 365.days.from_now }
+			end
+		end
+		I18n.locale = cookies[:locale] || I18n.default_locale
 	end
 
 	def configure_devise_permitted_parameters

@@ -16,7 +16,9 @@
           <%= t('translations.ago') -%>
         </td>
         <td><%= _referral.full_name %></td>
-        <td><%= _referral.skype %></td>
+        <td>
+          <%= link_to fa_icon('skype', text: _referral.skype), "skype:#{_referral.skype}?chat" %>
+        </td>
         <td><%= _referral.pricing_plan_purchased?(:vk_contacts_collector) ? t('translations.yeah') : t('translations.nah') %></td>
       </tr>
   <%- end -%>

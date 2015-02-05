@@ -2,12 +2,15 @@
     <%= ah_ibox_heading do -%>
         <h3>
           The New Friends
-          <small class="text-danger">version: <%= @version %></small>
+          <small class="text-danger">Версия: <%= @version %></small>
         </h3>
-        <small class="text-danger">
-          <%= @version %> — While the program is working, it is still being tested and the stable version has not yet
-          been released.
-        </small>
+        <% if @version =~ /alpha|beta/ %>
+            <small class="text-danger">
+              <%= @version %>
+              - программа работает и находиться в стадии тестирования. Стабильная версия будет скоро выпущена.
+              <!--— While the program is working, it is still being tested and the stable version has not yet been released.-->
+            </small>
+        <%- end -%>
         <h4>Ваш незаменимый помощник</h4>
 
         <p>
