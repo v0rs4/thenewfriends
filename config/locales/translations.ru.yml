@@ -100,3 +100,9 @@ ru:
       1. Ввести email и пароль.
       2. Зайти в почту и подтвердить свой email, иначе TNF не даст вам войти в кабинет.
       3. Войти в TNF.
+    invite_code: Пригласительный код
+    invite_email: Email пригласителя
+    invite_email_hint: Если у вас нету **email`а пригласителя**, обратитесь в тех. поддержку thenewfriendsnet@gmail.com
+    referrals: Рефералы
+    yeah: Да
+    nah: Нет

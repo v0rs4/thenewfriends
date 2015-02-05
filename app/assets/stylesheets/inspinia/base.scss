@@ -14,9 +14,10 @@ body.boxed-layout #wrapper {
   background-color: #2f4050;
   max-width: $boxed-width;
   margin: 0 auto;
-  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  border: 1px solid #ccc;
+//  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+//  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+//  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .block {
@@ -249,6 +250,9 @@ body.body-small .footer.fixed {
 }
 
 /* TABLES */
+.table {
+  background-color: #fff;
+}
 
 .table-bordered {
   border: 1px solid #ebebeb;

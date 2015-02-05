@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
 	layout :layout_by_resource
 	# noinspection RailsParamDefResolve
 	before_action :authenticate_user!
+	# noinspection RailsParamDefResolve
 	before_action :set_current_user, if: :user_signed_in?
+	before_action :set_app_version
 	# noinspection RailsParamDefResolve
 	before_action :configure_devise_permitted_parameters, if: :devise_controller?
 
@@ -46,7 +48,11 @@ class ApplicationController < ActionController::Base
 		@current_user_d = current_user.decorate
 	end
 
+	def set_app_version
+		@version = '0.0.1-alpha.3'
+	end
+
 	def configure_devise_permitted_parameters
-		devise_parameter_sanitizer.for(:sign_up) << :inviter_code
+		devise_parameter_sanitizer.for(:sign_up) << :invite_code
 	end
 end

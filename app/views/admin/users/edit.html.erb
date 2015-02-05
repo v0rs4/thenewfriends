@@ -8,6 +8,9 @@
                 <%= f.error_notification %>
                 <%= f.input :email, required: true %>
                 <%= f.input :is_admin %>
+                <%= f.input :referral_earned, disabled: true %>
+                <%= f.input :referral_paid_out, disabled: true %>
+                <%= f.input :referral_award %>
 
                 <div class="row">
                   <div class="col-sm-offset-3 col-sm-9">

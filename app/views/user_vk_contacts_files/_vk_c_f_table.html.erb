@@ -13,7 +13,7 @@
           <%= distance_of_time_in_words_to_now(_u_vk_c_f.created_at) -%>
           <%= t('translations.ago') -%>
         </td>
-        <td><%= _u_vk_c_f.vk_contacts_file.name -%></td>
+        <td><%= _u_vk_c_f.vk_contacts_file.file.file.filename -%></td>
         <td class="text-right">
           <%= link_to download_work_user_vk_contacts_file_path(_u_vk_c_f), data: { confirm: 'Вы точно хотите скачать файл?' }, class: 'btn btn-white btn-sm', target: '_blank' do -%>
               <%= fa_icon('download') -%>

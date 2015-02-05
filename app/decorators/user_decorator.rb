@@ -83,4 +83,10 @@ class UserDecorator < Draper::Decorator
 			false
 		end
 	end
+
+	def profile_fields_filled?
+		!(user_profile.first_name.blank? or
+			user_profile.last_name.blank? or
+			user_profile.skype.blank?)
+	end
 end

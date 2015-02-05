@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150123172534) do
+ActiveRecord::Schema.define(version: 20150205110831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -112,6 +112,10 @@ ActiveRecord::Schema.define(version: 20150123172534) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "is_admin",               default: false, null: false
+    t.integer  "inviter_id"
+    t.float    "referral_earned",        default: 0.0,   null: false
+    t.float    "referral_paid_out",      default: 0.0,   null: false
+    t.float    "referral_award",         default: 0.0,   null: false
   end
 
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree

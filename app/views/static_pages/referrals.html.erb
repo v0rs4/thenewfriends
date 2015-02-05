@@ -1,0 +1,53 @@
+<% if @current_user.decorate.profile_fields_filled? %>
+    <%= ah_ibox(data: { controller: 'VkContactsCollectorController' }) do -%>
+        <%= ah_ibox_content do -%>
+            <h2>Статистика</h2>
+            <table class="table table-white table-striped">
+              <tbody>
+              <tr>
+                <td><b>ВК сборщик контактов</b>
+                  <small class="text-muted">(когда партнер активирует)</small>
+                </td>
+                <td><%= fa_icon('dollar', text: @current_user.referral_award) %></td>
+              </tr>
+              <tr>
+                <td>Заработано</td>
+                <td><%= fa_icon('dollar', text: @current_user.referral_earned) %></td>
+              </tr>
+              <tr>
+                <td>Выплачено</td>
+                <td><%= fa_icon('dollar', text: @current_user.referral_paid_out) %></td>
+              </tr>
+              </tbody>
+            </table>
+
+            <%- if @current_user.referral_award == 0 -%>
+
+                <div class="m-b">
+                  <small class="text-danger">Чтобы стать учасником <b>партнерской программы</b>, вам необходимо
+                    пригласить больше 5 человек и написать в администрацию, что вы желаете учавствовать в партнерской
+                    программе
+                  </small>
+                </div>
+            <%- end -%>
+
+            <div class="m-b">
+              <small class="text-muted">
+                По вторникам выплачиваются реферральные на ваш счет PerfectMoney. <br/>
+                Убедитесь, что вы верно его указали в <%= link_to 'настройках профиля', edit_work_user_profile_url %>
+                <br/>
+                <%= render 'shared/talk_to_admin', text: 'Пообщаться с администрацией' %>
+              </small>
+            </div>
+
+            <h2>Рефералы</h2>
+            <%= render 'static_pages/referrals/table', referrals: @current_user.referrals %>
+        <%- end -%>
+    <%- end -%>
+<%- else -%>
+    <div class="text-center">
+      <h2>Вы не можете видеть своих реферралов, пока не заполните свой профиль</h2>
+
+      <h3><%= t('translations.go_to') -%> <%= link_to t('translations.profile'), edit_work_user_profile_url %></h3>
+    </div>
+<%- end -%>

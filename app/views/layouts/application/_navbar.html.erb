@@ -4,23 +4,20 @@
       <li class="hidden-xs">
         <%= link_to root_url do %>
             <%= fa_icon('external-link') %>
-	        TheNewFriends
+            TheNewFriends
         <% end %>
       </li>
       <li>
-        <%= link_to work_root_url do %>
-            <%= fa_icon('dashboard') %>
-        <% end %>
+        <%= link_to fa_icon('dashboard'), work_root_url %>
       </li>
       <li>
-        <%= link_to edit_work_user_profile_url do %>
-            <%= fa_icon('user') %>
-        <% end %>
+        <%= link_to fa_icon('user'), edit_work_user_profile_url %>
       </li>
       <li>
-        <%= link_to destroy_user_session_url, method: :delete, data: { confirm: 'Are you sure?' } do %>
-            <i class="fa fa-sign-out"></i>
-        <% end %>
+        <%= link_to fa_icon('dollar'), work_referrals_url -%>
+      </li>
+      <li>
+        <%= link_to fa_icon('sign-out'), destroy_user_session_url, method: :delete, data: { confirm: 'Вы точно хотите выйти?' } %>
       </li>
     </ul>
   </nav>

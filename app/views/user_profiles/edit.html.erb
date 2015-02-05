@@ -5,12 +5,12 @@
         <%= ah_ibox_content do %>
             <%= simple_form_for @user_profile, url: work_user_profile_path, html: { class: 'form-horizontal' }, validate: true, wrapper: :horizontal_form, wrapper_mappings: { check_boxes: :horizontal_radio_and_checkboxes, radio_buttons: :horizontal_radio_and_checkboxes, file: :horizontal_file_input, boolean: :horizontal_boolean } do |f| -%>
                 <%= f.error_notification %>
-                <%= f.input :first_name, required: false %>
-                <%= f.input :last_name, required: false %>
+                <%= f.input :first_name, required: true %>
+                <%= f.input :last_name, required: true %>
+                <%= f.input :skype, required: true %>
                 <%= f.input :about, required: false %>
                 <%= f.input :country, required: false %>
                 <%= f.input :city, required: false %>
-                <%= f.input :skype, required: false %>
                 <%= f.input :contact_phone, required: false %>
                 <%= f.input :contact_email, required: false %>
                 <%= f.input :vkontakte_id, required: false %>

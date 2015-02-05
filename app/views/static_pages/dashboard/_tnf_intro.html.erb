@@ -1,9 +1,14 @@
 <%= ah_ibox do -%>
     <%= ah_ibox_heading do -%>
         <h3>
-          The New Friends <small class="text-danger">version: 0.0.1-alpha.2</small>
+          The New Friends
+          <small class="text-danger">version: <%= @version %></small>
         </h3>
-		<h4>Ваш незаменимый помощник</h4>
+        <small class="text-danger">
+          <%= @version %> — While the program is working, it is still being tested and the stable version has not yet
+          been released.
+        </small>
+        <h4>Ваш незаменимый помощник</h4>
 
         <p>
           Программа “The New Friends" без больших денежных затрат поможет Вам создать постоянный поток новых
@@ -59,9 +64,8 @@
 
         <p>
           Как Вы видите, Программа “The New Friends" является мощным ресурсом для работы в социальных сетях. Вы
-          получите возможность быстро и эффективно привлекать новых партнеров в Ваш бизнес, которая станет Вашим незаменимым Помощником!
+          получите возможность быстро и эффективно привлекать новых партнеров в Ваш бизнес, которая станет Вашим
+          незаменимым Помощником!
         </p>
-
-		<small class="text-danger">0.0.1-alpha.2 — While the program is working, it is still being tested and has not yet been released.</small>
     <%- end -%>
 <%- end -%>

@@ -8,6 +8,8 @@ PerfectMoneyMerchant::Configuration.configure do |config|
 		unless (user = User.find_by_id(params[:user_id])).nil?
 			case params[:pricing_plan_name]
 			when 'vk_contacts_collector'
+				UserReferralManager.new(user.inviter).earn unless user.inviter.nil?
+
 				user.user_permission.update_attributes(
 					user_vk_contacts_files_create: true,
 					user_vk_contacts_files_read: true,
@@ -15,7 +17,6 @@ PerfectMoneyMerchant::Configuration.configure do |config|
 				)
 			else
 				# nothing
-
 			end
 		end
 	}

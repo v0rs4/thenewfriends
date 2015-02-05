@@ -4,47 +4,78 @@ class ProcessVkContactsWorker
 	include ::Sidekiq::Worker
 
 	sidekiq_options :retry => false, :backtrace => true
+	class VkContactsFileCreator
+		class VkConctactsSkypeVCFCreator
+			attr_reader :vk_contacts
 
-	class VkConctactsXSLXFileCreator
-		CONTACTS_FIELDS = [:id, :first_name, :last_name, :skype, :mobile_phone, :home_phone, :twitter, :instagram]
-
-		class << self
-			def create_xlsx_file(vk_contacts, opts = {})
-				new(vk_contacts).create_xlsx_file(opts)
+			def initialize(vk_contacts)
+				@vk_contacts = vk_contacts.deep_dup
 			end
-		end
 
-		attr_reader :vk_contacts
+			def create(opts = {})
+				file_name = "#{Time.now.strftime('%Y_%m_%d')}"
+				file_name = "#{opts[:filename_prefix]}_#{file_name}" if opts[:filename_prefix]
+				file_ext = '.vcf'
 
-		def initialize(vk_contacts)
-			@vk_contacts = vk_contacts
-		end
-
-		# @return [String] File path
-		def create_xlsx_file(opts = {})
-			file_name = "#{Time.now.strftime('%Y_%m_%d')}"
-			file_name = "#{opts[:prefix]}_#{file_name}" if opts[:prefix]
-			file_ext = '.xlsx'
-
-			File.join(Rails.root, 'tmp', file_name + file_ext).tap do |xlsx_file_path|
-				WriteXLSX.new(xlsx_file_path).tap do |workbook|
-					worksheet = workbook.add_worksheet
-					CONTACTS_FIELDS.each.each_with_index do |field_name, index|
-						worksheet.write(0, index, field_name)
-					end
-					vk_contacts.each.each_with_index do |contact, row_index|
-						if contact.is_a?(Hash)
+				File.join(Rails.root, 'tmp', file_name + file_ext).tap do |file_path|
+					File.open(file_path, 'w') do |file|
+						vk_contacts.each.each_with_index do |contact, row_index|
 							contact = Hashie::Mash.new(contact)
-							CONTACTS_FIELDS.each.each_with_index do |field_name, col_index|
-								worksheet.write(row_index + 1, col_index, contact[field_name])
+							unless contact.skype.nil? or contact.skype.blank?
+								file.puts 'BEGIN:VCARD'
+								file.puts "N:#{contact.skype}"
+								file.puts "X-SKYPE-USERNAME:#{contact.skype}"
+								file.puts "END:VCARD"
 							end
-						else
-							raise ArgumentError.new('invalid type of contact')
 						end
 					end
-					workbook.close
 				end
 			end
+		end
+
+		class VkConctactsXSLXFileCreator
+			CONTACTS_FIELDS = [:id, :first_name, :last_name, :skype, :mobile_phone, :home_phone, :twitter, :instagram]
+
+			attr_reader :vk_contacts
+
+			def initialize(vk_contacts)
+				@vk_contacts = vk_contacts.deep_dup
+			end
+
+			# @return [String] File path
+			def create(opts = {})
+				file_name = "#{Time.now.strftime('%Y_%m_%d')}"
+				file_name = "#{opts[:prefix]}_#{file_name}" if opts[:prefix]
+				file_ext = '.xlsx'
+
+				File.join(Rails.root, 'tmp', file_name + file_ext).tap do |xlsx_file_path|
+					WriteXLSX.new(xlsx_file_path).tap do |workbook|
+						worksheet = workbook.add_worksheet
+						CONTACTS_FIELDS.each.each_with_index do |field_name, index|
+							worksheet.write(0, index, field_name)
+						end
+						vk_contacts.each.each_with_index do |contact, row_index|
+							if contact.is_a?(Hash)
+								contact = Hashie::Mash.new(contact)
+								CONTACTS_FIELDS.each.each_with_index do |field_name, col_index|
+									worksheet.write(row_index + 1, col_index, contact[field_name])
+								end
+							else
+								raise ArgumentError.new('invalid type of contact')
+							end
+						end
+						workbook.close
+					end
+				end
+			end
+		end
+
+		def self.create_skype_vcf(vk_contacts, opts = {})
+			VkConctactsSkypeVCFCreator.new(vk_contacts).create(opts)
+		end
+
+		def self.create_xlsx_file(vk_contacts, opts = {})
+			VkConctactsXSLXFileCreator.new(vk_contacts).create(opts)
 		end
 	end
 
@@ -93,36 +124,53 @@ class ProcessVkContactsWorker
 		private
 
 		def _save_files
-			files = []
-			files << _save_vk_contacts_file
+			[
+				_save_vk_contacts_skype_vcf,
+				_save_vk_contacts_xlsx_file
+			]
 		end
 
-		def _sort_vk_contacts_filtered
-			vk_contacts_filtered.inject({ skype: [], phone: [], instagram: [], twitter: [] }) do |_hash, _vk_contact|
-				_vk_contact = Hashie::Mash.new(_vk_contact)
-				_hash.merge({
-						skype: _vk_contact.skype.nil? ? _hash[:skype] << _vk_contact.skype : _hash[:skype],
-						phone: _vk_contact.mobile_phone.nil? ? _hash[:phone] << _vk_contact.mobile_phone : _hash[:phone],
-						instagram: _vk_contact.instagram.nil? ? _hash[:instagram] << _vk_contact.instagram : _hash[:instagram],
-						twitter: _vk_contact.twitter.nil? ? _hash[:twitter] << _vk_contact.twitter : _hash[:twitter]
-					})
+		# def _sort_vk_contacts_filtered
+		# 	vk_contacts_filtered.inject({ skype: [], phone: [], instagram: [], twitter: [] }) do |_hash, _vk_contact|
+		# 		_vk_contact = Hashie::Mash.new(_vk_contact)
+		# 		_hash.merge({
+		# 				skype: _vk_contact.skype.nil? ? _hash[:skype] << _vk_contact.skype : _hash[:skype],
+		# 				phone: _vk_contact.mobile_phone.nil? ? _hash[:phone] << _vk_contact.mobile_phone : _hash[:phone],
+		# 				instagram: _vk_contact.instagram.nil? ? _hash[:instagram] << _vk_contact.instagram : _hash[:instagram],
+		# 				twitter: _vk_contact.twitter.nil? ? _hash[:twitter] << _vk_contact.twitter : _hash[:twitter]
+		# 			})
+		# 	end
+		# end
+
+		def _save_vk_contacts_skype_vcf
+			vk_contacts_file_path = VkContactsFileCreator.create_skype_vcf(
+				vk_contacts_filtered,
+				filename_prefix: vk_c_source.name
+			)
+			_open_file(vk_contacts_file_path) do |file|
+				_save_vk_contacts_file("#{vk_c_source.name}_vcf", file, vk_c_source.id)
 			end
 		end
 
-		def _save_vk_contacts_file
-			file_name_prefix = vk_c_source.name
-			vk_contacts_file_path = VkConctactsXSLXFileCreator.create_xlsx_file(
+		def _save_vk_contacts_xlsx_file
+			vk_contacts_file_path = VkContactsFileCreator.create_xlsx_file(
 				vk_contacts_filtered,
-				prefix: file_name_prefix
+				prefix: vk_c_source.name
 			)
-			vk_conctacs_file_io = File.open(vk_contacts_file_path)
-			vk_conctacs_file = __save_vk_contacts_file(file_name_prefix, vk_conctacs_file_io, vk_c_source.id)
-			vk_conctacs_file_io.close
-			File.delete(vk_contacts_file_path)
-			vk_conctacs_file
+			_open_file(vk_contacts_file_path) do |file|
+				_save_vk_contacts_file("#{vk_c_source.name}_xlsx", file, vk_c_source.id)
+			end
 		end
 
-		def __save_vk_contacts_file(name, file, vk_contacts_source_id)
+		def _open_file(file_path)
+			file_io = File.open(file_path, 'r')
+			res = yield(file_io)
+			file_io.close
+			File.delete(file_path)
+			res
+		end
+
+		def _save_vk_contacts_file(name, file, vk_contacts_source_id)
 			if VkContactsFile.exists?(name: name, vk_contacts_source_id: vk_contacts_source_id)
 				VkContactsFile.where(name: name, vk_contacts_source_id: vk_contacts_source_id).take(1).first
 			else
@@ -136,7 +184,6 @@ class ProcessVkContactsWorker
 					VkContactsFile.where(name: name, vk_contacts_source_id: vk_contacts_source_id).take(1).first
 				end
 			end
-
 		end
 	end
 

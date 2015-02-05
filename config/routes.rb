@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 		get 'vkontakte_contacts_collector', to: 'static_pages#vkontakte_contacts_collector'
 		get 'pricing_plans', to: 'static_pages#pricing_plans'
 		get 'pmvf', to: 'static_pages#pmvf'
+		get 'referrals', to: 'static_pages#referrals'
 
 		scope 'vkontakte_oauth', as: :vk_o_auth do
 			get 'authorize', to: 'vk_o_auth#authorize'

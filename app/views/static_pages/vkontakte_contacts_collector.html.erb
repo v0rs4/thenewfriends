@@ -1,3 +1,4 @@
+<% if @current_user.decorate.profile_fields_filled? %>
 <div class="row">
   <div class="col-lg-12">
     <%- if @current_user.decorate.pricing_plan_purchased?(:vk_contacts_collector) -%>
@@ -142,3 +143,9 @@
     <%- end -%>
   </div>
 </div>
+<%- else -%>
+    <div class="text-center">
+      <h2>Вы не можете использовать ВК сборщик контактов, пока не заполните свой профиль</h2>
+      <h3><%= t('translations.go_to') -%> <%= link_to t('translations.profile'), edit_work_user_profile_url %></h3>
+    </div>
+<%- end -%>

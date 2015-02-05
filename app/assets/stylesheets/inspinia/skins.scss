@@ -142,7 +142,7 @@ body.skin-1 {
 // Main colors
 $skin-2-color: #23c6c8;
 $skin-2-nav-bg: #ededed;
-$skin-2-nav-top-bg: #213a53;
+$skin-2-nav-top-bg: #fff;
 
 // Custom style
 
@@ -199,6 +199,7 @@ body.skin-2 {
 
 .skin-2 .logo-element {
   padding: 17px 0;
+  color: #aaa;
 }
 
 .skin-2 .nav > li > a, .skin-2 .welcome-message {
@@ -219,7 +220,7 @@ body.skin-2 {
 }
 
 .skin-2.mini-navbar .nav-header {
-  background: $skin-2-nav-top-bg;
+  background: darken($skin-2-nav-top-bg, 2%);
 }
 
 .skin-2 .navbar-minimalize {
@@ -274,8 +275,9 @@ body.skin-2 #wrapper {
 }
 
 .skin-2 .ibox-content.ibox-heading {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.75);
   border: none !important;
+  border-bottom: 1px solid rgba(0,0,0, 0.1) !important;
 }
 
 .skin-2 .ibox-content {

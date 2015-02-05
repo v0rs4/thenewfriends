@@ -29,6 +29,10 @@ class StaticPagesController < ApplicationController
 
 	end
 
+	def referrals
+		
+	end
+
 	private
 
 	def generate_pricing_plan_pm_sci(name, price)

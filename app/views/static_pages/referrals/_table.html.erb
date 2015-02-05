@@ -1,0 +1,24 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width: 50px;"><%= t('translations.created') %></th>
+    <th><%= t('translations.full_name') %></th>
+    <th>Skype</th>
+    <th><%= t('translations.vk_contacts_collector') -%></th>
+  </tr>
+  </thead>
+  <tbody>
+  <%- referrals.each do |_referral| -%>
+      <% _referral = _referral.decorate %>
+      <tr>
+        <td style="width: 150px;">
+          <%= distance_of_time_in_words_to_now(_referral.created_at) -%>
+          <%= t('translations.ago') -%>
+        </td>
+        <td><%= _referral.full_name %></td>
+        <td><%= _referral.skype %></td>
+        <td><%= _referral.pricing_plan_purchased?(:vk_contacts_collector) ? t('translations.yeah') : t('translations.nah') %></td>
+      </tr>
+  <%- end -%>
+  </tbody>
+</table>

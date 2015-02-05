@@ -1,7 +1,8 @@
 <%= nav layout: :justified, as: :pills, class: 'm-b' do %>
-    <%= link_to fa_icon('users', text: t('translations.pmvf_full')), work_pmvf_path -%>
-    <%= link_to fa_icon('vk', text: t('translations.vk_contacts_collector')), work_vkontakte_contacts_collector_path -%>
-    <%= link_to fa_icon('diamond', text: t('translations.pricing_n_plans')), work_pricing_plans_path -%>
+    <%= link_to fa_icon('users', text: t('translations.pmvf_full')), work_pmvf_url -%>
+    <%= link_to fa_icon('vk', text: t('translations.vk_contacts_collector')), work_vkontakte_contacts_collector_url -%>
+    <%= link_to fa_icon('diamond', text: t('translations.pricing_n_plans')), work_pricing_plans_url -%>
+    <%= link_to fa_icon('dollar', text: t('translations.referrals')), work_referrals_url -%>
 <% end %>
 
 <div class="row">
