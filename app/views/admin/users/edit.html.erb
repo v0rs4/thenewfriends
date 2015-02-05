@@ -8,7 +8,8 @@
                 <%= f.error_notification %>
                 <%= f.input :email, required: true %>
                 <%= f.input :is_admin %>
-                <%= f.input :referral_earned, disabled: true %>
+                <%= f.input :inviter_id %>
+                <%= f.input :referral_earned %>
                 <%= f.input :referral_paid_out, disabled: true %>
                 <%= f.input :referral_award %>
 
@@ -53,6 +54,7 @@
                     <%= user_profile.input :facebook_id %>
                     <%= user_profile.input :twitter_id %>
                     <%= user_profile.input :pm_usd_acct %>
+                    <%= user_profile.input :username %>
                     <div class="row">
                       <div class="col-sm-offset-3 col-sm-9">
                         <%= user_profile.button :submit, class: 'btn-primary' %>

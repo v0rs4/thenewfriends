@@ -28,7 +28,9 @@ class Admin::UsersController < Admin::ApplicationController
 		params.require(:user).permit(
 			:email,
 			:is_admin,
+			:referral_earned,
 			:referral_award,
+			:inviter_id,
 			user_permission_attributes: [
 				:id,
 				:user_vk_contacts_files_create,
@@ -49,7 +51,8 @@ class Admin::UsersController < Admin::ApplicationController
 				:vkontakte_id,
 				:facebook_id,
 				:twitter_id,
-				:pm_usd_acct
+				:pm_usd_acct,
+				:username
 			]
 		)
 	end

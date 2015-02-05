@@ -6,7 +6,11 @@ class UserReferralManager
 	end
 
 	def earn
-		user.update_attributes(referral_earned: (user.referral_earned + user.referral_award).round(2))
+		if user.referral_award > 0
+			user.update_attributes(referral_earned: (user.referral_earned + user.referral_award).round(2))
+		else
+			false
+		end
 	end
 
 	def pay_out(amount)

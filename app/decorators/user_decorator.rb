@@ -65,7 +65,11 @@ class UserDecorator < Draper::Decorator
 
 	def skype
 		_skype = user_profile.skype
-		h.ah_txt_or_not_given_what(_skype, h.t('translations.skype'))
+		if _skype.nil?
+			h.ah_txt_or_not_given_what(_skype, h.t('translations.skype'))
+		else
+			h.link_to(h.fa_icon('skype', text: _skype), "skype:#{_skype}?chat")
+		end
 	end
 
 	def last_n_vk_contacts_files(number)

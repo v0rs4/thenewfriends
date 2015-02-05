@@ -1,4 +1,38 @@
 <div class="row">
   <div class="col-lg-12">
+    <%= ah_ibox do -%>
+        <%= ah_ibox_title('Админ панель') -%>
+        <%= ah_ibox_content do -%>
+            <table class="table table-striped">
+              <tbody>
+              <tr>
+                <td>Всего денег в системе</td>
+                <td><%= fa_icon('dollar', text: @total_usd_amount) %></td>
+              </tr>
+              <tr>
+                <td>На выплату висит</td>
+                <td><%= fa_icon('dollar', text: @pending_pay_out) %></td>
+              </tr>
+              <tr>
+                <td>Всего пользователей</td>
+                <td><%= fa_icon('users', text: @total_users_count) %></td>
+              </tr>
+              <tr>
+                <td>Всего ВК источников</td>
+                <td><%= @total_vk_contacts_sources_count %></td>
+              </tr>
+              <tr>
+                <td>Всего ВК файлов</td>
+                <td><%= @total_vk_contacts_files_count %></td>
+              </tr>
+              <tr>
+                <td>Всего ВК Юзер связей</td>
+                <td><%= @total_user_vk_contacts_files_count %></td>
+              </tr>
+              <!--tr>td*2-->
+              </tbody>
+            </table>
+        <%- end -%>
+    <%- end -%>
   </div>
 </div>

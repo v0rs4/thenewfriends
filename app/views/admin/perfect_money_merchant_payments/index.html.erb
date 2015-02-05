@@ -8,7 +8,7 @@
               <tbody>
               <tr>
                 <td>Общая сумма</td>
-                <td><%= @payments.inject(0) { |m, e| m += e.payment_amount.to_f } -%></td>
+                <td><%= @payments.inject(0) { |m, e| m += e.payment_amount.to_f }.round(2) -%></td>
               </tr>
               </tbody>
             </table>
@@ -22,6 +22,7 @@
                 <th>Amount</th>
                 <th>Payer</th>
                 <th>Payee</th>
+                <th>Created At</th>
               </tr>
               </thead>
               <tbody>
@@ -33,6 +34,7 @@
                     <td><%= _payment.payment_amount -%></td>
                     <td><%= _payment.payer_account -%></td>
                     <td><%= _payment.payee_account -%></td>
+                    <td><%= _payment.created_at.strftime('%F %H:%M:%S ') -%></td>
                     </td>
                   </tr>
               <%- end -%>

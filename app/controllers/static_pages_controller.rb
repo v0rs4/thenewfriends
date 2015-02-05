@@ -21,7 +21,7 @@ class StaticPagesController < ApplicationController
 
 	def pricing_plans
 		@pricing_plan_sci = {
-			vk_contacts_collector: generate_pricing_plan_pm_sci('vk_contacts_collector', 0.01)
+			vk_contacts_collector: generate_pricing_plan_pm_sci('vk_contacts_collector', 20.0)
 		}
 	end
 

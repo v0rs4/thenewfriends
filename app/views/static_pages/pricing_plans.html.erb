@@ -10,48 +10,24 @@
 
           <div class="text-center">
             <h4>Contacts Collector</h4>
-            <h4 class="pricing-value">$25/∞</h4>
+            <h4 style="text-decoration:line-through;">$25/∞</h4>
+            <h4 class="pricing-value">
+              <%= "$#{@pricing_plan_sci[:vk_contacts_collector].payment_amount}/∞" %>
+            </h4>
           </div>
 
           <ul class="pricing-service m-top-sm">
             <%- t('translations.pricing_plan.vk_contacts_collector').each_line do |_feature| -%>
                 <li><%= _feature -%></li>
             <%- end -%>
-            <!--<li>Collecting of contacts</li>-->
-            <!--<li>Uploadig to a server</li>-->
-            <!--<li>Storing contacts on a server</li>-->
-            <!--<li>Downloading from a server</li>-->
-            <!--<li>Archiving of contacts</li>-->
           </ul>
 
           <div class="m-top-md text-center">
-            <!--<form action="https://perfectmoney.is/api/step1.asp" method="POST">-->
-            <!--<input type="hidden" name="PAYEE_ACCOUNT" value="{{merchandise.sci.payee_account}}">-->
-            <!--<input type="hidden" name="PAYEE_NAME" value="{{merchandise.sci.payee_name}}">-->
-            <!--<input type="hidden" name="PAYMENT_ID" value="{{merchandise.sci.payment_id}}">-->
-            <!--<input type="hidden" name="PAYMENT_AMOUNT" value="{{merchandise.sci.payment_amount}}">-->
-            <!--<input type="hidden" name="PAYMENT_UNITS" value="{{merchandise.sci.payment_units}}">-->
-            <!--<input type="hidden" name="STATUS_URL" value="{{merchandise.sci.status_url}}">-->
-            <!--<input type="hidden" name="PAYMENT_URL" value="{{merchandise.sci.payment_url}}">-->
-            <!--<input type="hidden" name="PAYMENT_URL_METHOD"-->
-            <!--value="{{merchandise.sci.payment_url_method}}">-->
-            <!--<input type="hidden" name="NOPAYMENT_URL" value="{{merchandise.sci.nopayment_url}}">-->
-            <!--<input type="hidden" name="NOPAYMENT_URL_METHOD"-->
-            <!--value="{{merchandise.sci.nopayment_url_method}}">-->
-            <!--<input type="hidden" name="SUGGESTED_MEMO" value="{{merchandise.sci.suggested_memo}}">-->
-            <!--<input type="hidden" name="BAGGAGE_FIELDS" value="{{merchandise.sci.baggage_fields}}">-->
-            <!--<input type="hidden" name="merchandise_name" value="{{merchandise.sci.merchandise_name}}">-->
-            <!--<input type="hidden" name="merchandise_price" value="{{merchandise.sci.merchandise_price}}">-->
-            <!--<input type="hidden" name="verification_code" value="{{merchandise.sci.verification_code}}">-->
-            <!--<input type="hidden" name="user_id" value="{{merchandise.sci.user_id}}">-->
-            <!--<input type="submit" name="PAYMENT_METHOD" value="Подтвердить"-->
-            <!--class="btn btn-success btn-block">-->
-            <!--</form>-->
             <%- if @current_user.decorate.pricing_plan_purchased?(:vk_contacts_collector) -%>
                 <a href="" class="btn btn-primary disabled"><%= t('translations.activated') -%></a>
             <%- else -%>
                 <% @pricing_plan_sci[:vk_contacts_collector].tap do |sci| %>
-                    <%= form_tag 'https://perfectmoney.is/api/step1.asp' do -%>
+                    <%= form_tag 'https://perfectmoney.is/api/step1.asp', target: '_blank' do -%>
                         <%= hidden_field_tag :PAYEE_ACCOUNT, sci.payee_account -%>
                         <%= hidden_field_tag :PAYEE_NAME, sci.payee_name -%>
                         <%= hidden_field_tag :PAYMENT_ID, sci.payment_id -%>
@@ -85,6 +61,7 @@
 <%- else -%>
     <div class="text-center">
       <h2>Технические проблемы.</h2>
+
       <h3>Мы уже отправили нашего лучшего специалиста решить их.</h3>
     </div>
 <%- end -%>
