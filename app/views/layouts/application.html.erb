@@ -9,6 +9,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body class="skin-2 mini-navbar boxed-layout" data-ng-app="tnf-ng-app">
+<div class="corner-ribbon top-left sticky red shadow"><%= "v#{@version}" %></div>
 <div id="wrapper">
   <%= render 'layouts/application/sidebar' %>
   <div class="gray-bg" id="page-wrapper">

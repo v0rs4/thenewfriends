@@ -14,10 +14,13 @@ body.boxed-layout #wrapper {
   background-color: #2f4050;
   max-width: $boxed-width;
   margin: 0 auto;
-  border: 1px solid #ccc;
-//  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-//  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
-//  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-left: 2px solid #ccc;;
+  border-right: 2px solid #ccc;;
+  //  -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  //  -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+  //  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 .block {
@@ -68,7 +71,7 @@ a:hover, a:focus {
 .hr-line-solid {
   border-bottom: 1px solid $border-color;
   background-color: rgba(0, 0, 0, 0);
-//  border-style: solid !important;
+  //  border-style: solid !important;
   margin-top: 15px;
   margin-bottom: 15px;
 }
@@ -574,7 +577,7 @@ table.table-mail tr td {
 }
 
 .white-bg {
-  background-color: rgba(255,255,255,0.85);
+  background-color: rgba(255, 255, 255, 0.85);
 }
 
 .navy-bg {
@@ -740,8 +743,7 @@ table.table-mail tr td {
 .dashboards\.dashboard_3 nav.navbar,
 .mailbox\.inbox nav.navbar,
 .mailbox\.email_view nav.navbar,
-.mailbox\.email_compose nav.navbar
-{
+.mailbox\.email_compose nav.navbar {
   background: #fff;
 }
 

@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def set_app_version
-		@version = '0.2.0-alpha1'
+		@version = TheNewFriends::VERSION
 	end
 
 	def set_referral

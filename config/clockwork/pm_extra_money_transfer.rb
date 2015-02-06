@@ -6,5 +6,5 @@ module Clockwork
 		# some code
 	end
 
-	every(5.seconds, 'frequent.job')
+	every(24.hours, 'frequent.job')
 end
