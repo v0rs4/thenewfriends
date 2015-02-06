@@ -3,7 +3,7 @@ require File.expand_path '../environment', File.dirname(__FILE__)
 
 module Clockwork
 	handler do |job|
-		User.last.touch
+		# some code
 	end
 
 	every(5.seconds, 'frequent.job')

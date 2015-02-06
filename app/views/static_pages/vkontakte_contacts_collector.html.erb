@@ -14,7 +14,7 @@
                           <%= link_to t('translations.logout'), work_vk_o_auth_logout_path, class: 'btn btn-danger' -%>
                         </div>
                     <%- else -%>
-                        <h3 class="text-center">In order to use contacts collector service, please sign in</h3>
+                        <h3 class="text-center"><%= t('translations.in_order_to_use_vk_c_c') -%></h3>
                         <%= link_to t('translations.sign_in'), @vk_oauth_url, class: 'btn btn-white btn-lg btn-block' -%>
 
                         <!--<h3>Вам необходимо авторизоваться в Вконтакте </h3>-->

@@ -57,7 +57,9 @@ class User < ActiveRecord::Base
 				end
 
 				def _set_inviter_id
-					user.inviter_id = UserProfile.where(INVITE_CODE_FIELD => user.invite_code).take(1).first.user_id
+					unless User.count.zero?
+						user.inviter_id = UserProfile.where(INVITE_CODE_FIELD => user.invite_code).take(1).first.user_id
+					end
 				end
 
 				def _set_referral_award
@@ -76,7 +78,7 @@ class User < ActiveRecord::Base
 			end
 
 			def ensure_invite_code_exists
-				if User.count > 0
+				unless User.count.zero?
 					if invite_code.nil?
 						add_invite_code_error(:blank)
 					else
