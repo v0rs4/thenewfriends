@@ -1,10 +1,10 @@
 if Rails.env.development?
 	Sidekiq.configure_server do |config|
-		config.redis = { url: 'redis://redistogo:0fac379daadff2194f8e0b2fbaffc81d@dab.redistogo.com:9835' }
+		config.redis = { url: 'redis://redistogo:0fac379daadff2194f8e0b2fbaffc81d@dab.redistogo.com:9835', namespace: 'thenewfriends_dev' }
 	end
 
 	Sidekiq.configure_client do |config|
-		config.redis = { url: 'redis://redistogo:0fac379daadff2194f8e0b2fbaffc81d@dab.redistogo.com:9835' }
+		config.redis = { url: 'redis://redistogo:0fac379daadff2194f8e0b2fbaffc81d@dab.redistogo.com:9835', namespace: 'thenewfriends_dev' }
 	end
 elsif Rails.env.production?
 	raise "ENV['REDISTOGO_URL'] is nil" if ENV['REDISTOGO_URL'].nil?
@@ -18,7 +18,7 @@ elsif Rails.env.production?
 	ENV['REDISTOGO_URL'] ||= local_redis_url.call
 
 	Sidekiq.configure_server do |config|
-		config.redis = { url: ENV['REDISTOGO_URL'], namespace: 'thenewfriends' }
+		config.redis = { url: ENV['REDISTOGO_URL'], namespace: 'thenewfriends_prod' }
 
 		Rails.application.config.after_initialize do
 			ActiveRecord::Base.connection_pool.disconnect!
@@ -35,7 +35,7 @@ elsif Rails.env.production?
 	end
 
 	Sidekiq.configure_client do |config|
-		config.redis = { url: ENV['REDISTOGO_URL'], namespace: 'thenewfriends', :size => 1 }
+		config.redis = { url: ENV['REDISTOGO_URL'], namespace: 'thenewfriends_prod', :size => 1 }
 
 		Rails.application.config.after_initialize do
 			ActiveRecord::Base.connection_pool.disconnect!

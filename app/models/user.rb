@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
 					_build_user_permission
 					_set_as_admin
 					_set_inviter_id
+					_set_referral_award
 				end
 
 				private
@@ -57,6 +58,10 @@ class User < ActiveRecord::Base
 
 				def _set_inviter_id
 					user.inviter_id = UserProfile.where(INVITE_CODE_FIELD => user.invite_code).take(1).first.user_id
+				end
+
+				def _set_referral_award
+					user.referral_award = 3
 				end
 			end
 
