@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.1.5'
 #----
 gem 'rails', '4.1.9'
 gem 'sinatra', :require => nil
@@ -9,7 +10,7 @@ gem "rack-timeout"
 #----
 gem 'pg', '~> 0.18.1'
 #----
-gem 'unicorn', '~> 4.8.3'
+# gem 'unicorn', '~> 4.8.3'
 gem 'puma', '~> 2.11.0'
 #----
 gem 'sass-rails', '~> 4.0.3'
@@ -52,23 +53,23 @@ gem 'faraday_middleware', '~> 0.9.1'
 #----
 gem 'write_xlsx', '~> 0.81.1'
 #----
-gem 'perfect_money_merchant', '~> 0.1.0.alpha.3'
+gem 'perfect_money_merchant', '~> 0.1.0.alpha.4'
 #----
 gem 'rails-i18n', '~> 4.0.3'
 #----
 group :development, :test do
-	gem 'byebug'
-	gem 'web-console', '~> 2.0'
-	gem 'guard-rspec', '~> 4.5.0'
-	gem 'rspec-rails', '~> 3.1.0'
-	gem 'dotenv-rails', '~> 1.0.2'
-	gem 'factory_girl', '~> 4.5.0'
-	gem 'factory_girl_rails', '~> 4.5.0'
-	gem 'database_cleaner', '~> 1.3.0'
-	gem 'capistrano', '~> 3.3.5'
-	gem 'capistrano-bundler', '~> 1.1.4'
-	gem 'capistrano-rails', '~> 1.1.2'
-	gem 'capistrano-rbenv', '~> 2.0.2'
-	gem 'capistrano3-puma', '~> 0.8.4'
+	# gem 'byebug'
+	# gem 'web-console', '~> 2.0'
+	# gem 'guard-rspec', '~> 4.5.0'
+	# gem 'rspec-rails', '~> 3.1.0'
+	gem 'dotenv-rails', '~> 2.0.0.beta'
+	# gem 'factory_girl', '~> 4.5.0'
+	# gem 'factory_girl_rails', '~> 4.5.0'
+	# gem 'database_cleaner', '~> 1.3.0'
+	# gem 'capistrano', '~> 3.3.5'
+	# gem 'capistrano-bundler', '~> 1.1.4'
+	# gem 'capistrano-rails', '~> 1.1.2'
+	# gem 'capistrano-rbenv', '~> 2.0.2'
+	# gem 'capistrano3-puma', '~> 0.8.4'
 end
 #----
