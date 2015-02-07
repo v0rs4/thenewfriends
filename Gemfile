@@ -53,7 +53,7 @@ gem 'faraday_middleware', '~> 0.9.1'
 #----
 gem 'write_xlsx', '~> 0.81.1'
 #----
-gem 'perfect_money_merchant', '~> 0.1.0.alpha.4'
+gem 'perfect_money_merchant', '~> 0.1.1.alpha.1'
 #----
 gem 'rails-i18n', '~> 4.0.3'
 #----
