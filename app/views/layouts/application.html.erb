@@ -9,21 +9,27 @@
   <%= csrf_meta_tags %>
 </head>
 <body class="skin-2 mini-navbar boxed-layout" data-ng-app="tnf-ng-app">
-<div class="corner-ribbon top-left sticky red shadow"><%= "v#{@version}" %></div>
-<div id="wrapper">
-  <%= render 'layouts/application/sidebar' %>
-  <div class="gray-bg" id="page-wrapper">
-    <%= render 'layouts/application/navbar' %>
-    <div class="wrapper wrapper-content">
-      <%- unless @current_user.decorate.profile_fields_filled? -%>
-          <%= alert_box context: :danger do %>
-              Заполните пожалуйста свой профиль.
-              <%= link_to 'Перейти в профиль.', edit_work_user_profile_url %>
-          <%- end -%>
-      <%- end -%>
-      <%= yield %>
+<div class="visible-lg corner-ribbon bottom-left sticky red shadow"><%= "v#{@version}" %></div>
+
+<div class="hidden-xs">
+  <div id="wrapper">
+    <%= render 'layouts/application/sidebar' %>
+    <div class="gray-bg" id="page-wrapper">
+      <%= render 'layouts/application/navbar' %>
+      <div class="wrapper wrapper-content">
+        <%- unless @current_user.decorate.profile_fields_filled? -%>
+            <%= alert_box context: :danger do %>
+                Заполните пожалуйста свой профиль.
+                <%= link_to 'Перейти в профиль.', edit_work_user_profile_url %>
+            <%- end -%>
+        <%- end -%>
+        <%= yield %>
+      </div>
     </div>
   </div>
+</div>
+<div class="visible-xs">
+  <h2 class="text-center m-t-lg">Мобильная версия пока не доступна</h2>
 </div>
 <%= javascript_include_tag 'application' %>
 </body>
