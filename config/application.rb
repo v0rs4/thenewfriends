@@ -7,7 +7,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module TheNewFriends
-	VERSION = '0.2.2-beta2'
+	VERSION = '0.2.3-beta1'
 	class Application < Rails::Application
 		# Settings in config/environments/* take precedence over those specified here.
 		# Application configuration should go into files in config/initializers
@@ -32,7 +32,7 @@ module TheNewFriends
 			:user_name => "vladislavpauk@gmail.com",
 			:password => "Ee_hkB3dlBW6SSOwi7fQnA",
 			:authentication => 'login',
-			:domain => 'apikairosplanetclub.herokuapp.com'
+			:domain => 'thenewfriends.net'
 		}
 	end
 end
