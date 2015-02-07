@@ -74,7 +74,10 @@ ru:
     how_to_use:
       vk_contacts_collector: |
         ## Сборщик контактов Вконтакте
-        **Skype рассыльщик:** http://tnf.palmary.travel
+        **Skype рассыльщик:**
+        - windows: http://bit.ly/skype_mass_sender_win
+        - mac os x: http://bit.ly/skype_mass_sender_mac
+        **Демонстрация работы:** http://bit.ly/tnf_vk_c_c_demo
       vk_contacts_files: |
         ### Легенда
         <i class="fa fa-refresh"></i> - Обновить

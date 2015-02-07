@@ -8,6 +8,11 @@
             <small class="text-danger">
               <%= @version %>
               - программа работает и находиться в стадии тестирования. Стабильная версия будет скоро выпущена.
+              <%= render 'shared/talk_to_admin', text: 'Cвязаться с тех. поддержкой' %> если
+              <ul>
+                <li>Не скачиваються контакты вообще, а не повторно.</li>
+                <li>Была произведена оплата, а ничего не произошло</li>
+              </ul>
               <!--— While the program is working, it is still being tested and the stable version has not yet been released.-->
             </small>
         <%- end -%>
@@ -23,6 +28,10 @@
           социальных сетях, таких как Вонтакте, Facebook, Twitter и т.д.. Ведь друзья в социальных сетях, а их может
           быть очень много, являются вашими потенциальными партнерами.
         </p>
+        <div>
+          <h3>Мы в сети:</h3>
+          <%= link_to fa_icon('vk 2x'), 'https://vk.com/thenewfriendsnet', class: 'btn btn-info btn-outline btn-lg', target: '_blank' -%>
+        </div>
     <%- end -%>
     <%= ah_ibox_content do -%>
         <h3>Как работает программа "New Friends"?</h3>
@@ -49,7 +58,7 @@
         <ul class="list">
           <li>
             Вконтакте, Facebook
-            <small class="text-muted">(Facebook в разработке)</small>
+            <small class="text-muted">(в разработке)</small>
             <ul>
               <li>Отправлять запрос на добавление в друзья&nbsp;</li>
               <li>Рассылка сообщений&nbsp;</li>
@@ -57,7 +66,7 @@
           </li>
           <li>
             Skype
-            <small class="text-muted">(Sender: отдельная десктопная прогамма под Windows)</small>
+            <small class="text-muted">(Clownfish: отдельная десктопная прогамма под Windows\Linux\Mac)</small>
             <ul>
               <li>Отправлять запрос на добавление в контактный лист</li>
               <li>Рассылка сообщений&nbsp;&nbsp;</li>

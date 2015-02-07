@@ -21,6 +21,12 @@
       <div class="m-t">
         <%= render "devise/shared/links" %>
       </div>
+      <% if @version =~ /alpha|beta/ %>
+          <p class="m-t text-center text-danger">
+            Версия <%= @version %> - программа работает, но находиться в стадии тестирования. Стабильная версия не за горами.
+          </p>
+      <%- end -%>
+
       <p class="m-t text-center">
         <small>The New Friends &copy; 2015</small>
       </p>
