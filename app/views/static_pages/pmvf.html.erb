@@ -1,6 +1,7 @@
 <%= ah_ibox do -%>
     <%= ah_ibox_heading do -%>
         <%= render partial: 'static_pages/pmvf/heading' -%>
+        <%= render partial: 'static_pages/pmvf/social_networks', locals: { user: @current_user } -%>
         <%= render partial: 'static_pages/pmvf/videos' -%>
     <%- end -%>
     <%= ah_ibox_content do -%>

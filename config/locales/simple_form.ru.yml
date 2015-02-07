@@ -1,0 +1,21 @@
+ru:
+  simple_form:
+    labels:
+      user_profile:
+        first_name: Имя
+        last_name: Фамилия
+        about: Обо мне
+        country: Страна
+        city: Город
+        skype: Скайп
+        contact_phone: Контактный телефон
+        contact_email: Контактный email
+        created_at: Создан
+        updated_at: Обновлен
+        pm_usd_acct: Долларовый счет PerfectMoney
+        username: Никнейм
+        vk_url: Ссылка на ваш профиль ВК
+        facebook_url: Ссылка на ваш профиль в Facebook
+        odnoklassniki_url: Ссылка на ваш профиль в Одноклассниках
+        google_plus_url: Ссылка на ваш профиль Google Plus
+        youtube_chanel_url: Ссылка на ваш канал Youtube

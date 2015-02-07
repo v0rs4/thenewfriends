@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205162644) do
+ActiveRecord::Schema.define(version: 20150207183151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 20150205162644) do
   end
 
   create_table "user_profiles", force: true do |t|
-    t.integer  "user_id",       null: false
+    t.integer  "user_id",            null: false
     t.string   "first_name"
     t.string   "last_name"
     t.text     "about"
@@ -73,6 +73,11 @@ ActiveRecord::Schema.define(version: 20150205162644) do
     t.datetime "updated_at"
     t.string   "pm_usd_acct"
     t.string   "username"
+    t.string   "vk_url"
+    t.string   "facebook_url"
+    t.string   "odnoklassniki_url"
+    t.string   "google_plus_url"
+    t.string   "youtube_chanel_url"
   end
 
   add_index "user_profiles", ["user_id"], name: "user_profiles_user_id_unique", unique: true, using: :btree

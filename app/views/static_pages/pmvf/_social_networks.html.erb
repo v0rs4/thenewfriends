@@ -1,18 +1,31 @@
-<div>
-  <h3>Мы в сети:</h3>
-  <%= link_to fa_icon('vk 2x'), 'https://vk.com/id65531554', class: 'btn btn-info btn-outline btn-lg', target: '_blank' -%>
-  <%= link_to '#odnoklasniki-skoro', class: 'btn btn-warning btn-outline btn-lg', target: '_blank' do -%>
-      <span class="icon-odnoklassniki fa-2x"></span>
-  <%- end -%>
-  <%= link_to fa_icon('facebook-square 2x'), 'https://www.facebook.com/vladislav.pauk.pmvf', class: 'btn btn-info btn-outline btn-lg', target: '_blank' -%>
-  <%= link_to fa_icon('youtube 2x'), 'https://www.youtube.com/channel/UCB0UWAXU2jutdSHWAcRmcAg', class: 'btn btn-danger btn-outline btn-lg', target: '_blank' -%>
-  <%= link_to fa_icon('google-plus 2x'), 'https://plus.google.com/u/0/101416819845966383944', class: 'btn btn-info btn-outline btn-lg', target: '_blank' -%>
-  <%= link_to fa_icon('twitter 2x'), 'https://twitter.com/vladpaukpmvf', class: 'btn btn-info btn-outline btn-lg', target: '_blank' -%>
-  <h3>
-    <%= render 'shared/talk_to_admin', text: 'Так быстрее, мы всегда онлайн' %>
-  </h3>
+<%- if user.decorate.has_at_least_1_social_network_link? -%>
+    <div>
+      <h3>Мы в сети:</h3>
+      <%- unless user.user_profile.vk_url.blank? -%>
+          <%= link_to fa_icon('vk 2x'), user.user_profile.vk_url, class: 'btn btn-info btn-outline btn-lg', target: '_blank' -%>
+      <%- end -%>
+      <%- unless user.user_profile.odnoklassniki_url.blank? -%>
+          <%= link_to user.user_profile.odnoklassniki_url, class: 'btn btn-warning btn-outline btn-lg', target: '_blank' do -%>
+              <span class="icon-odnoklassniki fa-2x"></span>
+          <%- end -%>
+      <%- end -%>
+      <%- unless user.user_profile.facebook_url.blank? -%>
+          <%= link_to fa_icon('facebook-square 2x'), user.user_profile.facebook_url, class: 'btn btn-info btn-outline btn-lg', target: '_blank' -%>
+      <%- end -%>
+      <%- unless user.user_profile.youtube_chanel_url.blank? -%>
+          <%= link_to fa_icon('youtube 2x'), user.user_profile.youtube_chanel_url, class: 'btn btn-danger btn-outline btn-lg', target: '_blank' -%>
+      <%- end -%>
+      <%- unless user.user_profile.google_plus_url.blank? -%>
+          <%= link_to fa_icon('google-plus 2x'), user.user_profile.google_plus_url, class: 'btn btn-info btn-outline btn-lg', target: '_blank' -%>
+      <%- end -%>
+      <%- unless user.user_profile.skype.blank? -%>
+          <h3>
+            <%= link_to fa_icon('skype', text: user.user_profile.skype), "skype:#{user.user_profile.skype}?chat" %>
+          </h3>
+      <%- end -%>
 
-  <div class="m-b">
-    <small class="text-muted">Акции, новости, уроки, вебинары</small>
-  </div>
-</div>
+      <div class="m-b">
+        <small class="text-muted">Акции, новости, уроки, вебинары</small>
+      </div>
+    </div>
+<%- end -%>

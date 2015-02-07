@@ -98,4 +98,13 @@ class UserDecorator < Draper::Decorator
 	def referral_balance
 		(object.referral_earned - object.referral_paid_out).round(2)
 	end
+
+	def has_at_least_1_social_network_link?
+		!(user_profile.vk_url.blank? and
+			user_profile.facebook_url.blank? and
+			user_profile.odnoklassniki_url.blank? and
+			user_profile.google_plus_url.blank? and
+			user_profile.youtube_chanel_url.blank? and
+			user_profile.skype.blank?)
+	end
 end

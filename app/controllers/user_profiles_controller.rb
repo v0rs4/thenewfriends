@@ -30,11 +30,13 @@ class UserProfilesController < ApplicationController
 			:skype,
 			:contact_phone,
 			:contact_email,
-			:vkontakte_id,
-			:facebook_id,
-			:twitter_id,
 			:pm_usd_acct,
-			:username
+			:username,
+			:vk_url,
+			:facebook_url,
+			:odnoklassniki_url,
+			:google_plus_url,
+			:youtube_chanel_url
 		]
 		params.require(:user_profile).permit(*_permitted_params)
 	end
