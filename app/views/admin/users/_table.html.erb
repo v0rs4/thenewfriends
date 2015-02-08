@@ -1,0 +1,18 @@
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>Поле</th>
+      <th>Значение</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%- ar_object.attributes.each do |_attr_name, _attr_value| -%>
+        <tr>
+          <td><%= ar_object.class.human_attribute_name(_attr_name.to_sym) %></td>
+          <td><%= _attr_value %></td>
+        </tr>
+    <%- end -%>
+    </tbody>
+  </table>
+</div>

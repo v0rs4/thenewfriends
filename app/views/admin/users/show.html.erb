@@ -1,1 +1,79 @@
-<pre><%= @user.as_json(include: [:user_profile,:user_permission]).to_yaml -%></pre>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="m-b">
+      <%= link_to 'Все пользователи', work_admin_users_url, class: 'btn btn-primary' %>
+      <%= link_to 'Редактировать', edit_work_admin_user_path(@user), class: 'btn btn-warning' %>
+    </div>
+    <%= ah_ibox do %>
+        <%= ah_ibox_title('Страница пользователя') %>
+        <%= ah_ibox_content do %>
+            <div class="panel-group" id="pmvf-faq-accordion">
+              <div class="panel">
+                <div class="panel-heading active-panel">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#pmvf-faq-accordion" href="#collapse1">
+                      Данные о пользователе
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapse1" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <%= render partial: 'table', locals: { ar_object: @user } %>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-heading active-panel">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#pmvf-faq-accordion" href="#collapse2">
+                      Данные о профиля пользователя
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <%= render partial: 'table', locals: { ar_object: @user.user_profile } %>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-heading active-panel">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#pmvf-faq-accordion" href="#collapse4">
+                      Данные о доступе пользователя
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapse4" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <%= render partial: 'table', locals: { ar_object: @user.user_permission } %>
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-heading active-panel">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#pmvf-faq-accordion" href="#collapse3">
+                      Скачанные источники ВК
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapse3" class="panel-collapse collapse">
+                  <div class="panel-body">
+                    <div class="table-responsive">
+                      <ul>
+                        <%- @user.vk_contacts_source.distinct.each do |_src| -%>
+                            <li>
+                              <%= link_to _src.name, "https:/vk.com/#{_src.vk_identifier}", target: '_blank' %>
+                            </li>
+                        <%- end -%>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        <%- end -%>
+    <%- end -%>
+  </div>
+</div>

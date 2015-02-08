@@ -9,13 +9,14 @@ class Admin::UsersController < Admin::ApplicationController
 
 	def show
 		@user = User.find(params[:id])
+		@tables = [@user, @user.user_profile, @user.user_permission]
 	end
 
 	def update
 		@user = User.find(params[:id])
 		respond_to do |format|
 			if @user.update(update_params)
-				format.html { redirect_to edit_work_admin_user_path(@user), notice: 'User was successfully updated.' }
+				format.html { redirect_to work_admin_user_path(@user), notice: 'User was successfully updated.' }
 				format.json { head :no_content }
 			else
 				format.html { render action: "edit" }
