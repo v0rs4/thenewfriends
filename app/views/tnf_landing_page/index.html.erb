@@ -94,7 +94,8 @@
 
         <h2>Экономия</h2>
 
-        <p>Без больших денежных затрат TNF поможет Вам создать постоянный поток новых Партнеров, Клиентов и Потребителей в
+        <p>Без больших денежных затрат TNF поможет Вам создать постоянный поток новых Партнеров, Клиентов и Потребителей
+          в
           ваш собственный бизнес.</p>
       </div>
       <div class="m-t-lg">
@@ -261,18 +262,53 @@
         <i class="fa fa-comment big-icon"></i>
 
         <h1>
-          Что наши пользователи говорят о <br/> проекте "Меркурий Взаимный Фонд"
+          Привет, меня зовут <b><%= @referral.decorate.full_name %></b>
         </h1>
 
         <div class="testimonials-text">
-          <i>"
-            Удивительно, но большинство людей ищет противположность тому, чего они хотят!
+
+
+          <p>За время участия в фонде Меркурий, ко мне пришла одна мысли, что у людей совсем утеряно доверие к
+            окружению. Все
+            думают, что <b>людям главное впихнуть свой товар и "наварится" на этом</b>, они думают, что
+            <b>если куда-то вкладывать
+              деньги, то его в итоге обманут</b> и проект/компания/фонд пропадёт с его вкладом. Сетевой бизнес для них
+            это только
+            "заманиловка" людей с целью собственной наживы.</p>
+
+          <p>А если посмотреть с другой стороны.. Возможно тебе написали, что бы предложить тебе начать получать
+            достаточно?
+          </p>
+
+          <p>А вдруг тебе написали, что бы развивать бизнес именно с тобой? В январе этого года ежедневная
+            аудитория сайта «ВКонтакте» составляет примерно <b>100.000 человек</b>, но из всей данной аудитории выбрали
+            ИМЕННО ТЕБЯ.</p>
+
+          <p>
+            Случай всегда имеет силу. Держите крючок наготове. В том пруду, где Вы меньше всего этого ожидаете, водится
+            рыба.
+          </p>
+
+          <p>Каждый деньнужно прожить так, что бы он был лучше чем вчера.</p>
+
+          <p>
+            Надо пробовать что-то новое, надо развивать себя вразличных сферах и заниматься тем делом, которое тебе, и
+            только тебе, будет нравиться.
+          </p>
+
+          <p>Удивительно, но большинство людей ищет противположность тому, чего они хотят!
             Если Вы хотите стать частью чего то Настоящего, Стабильного, по настоящему Ценного!
             Тогда присоединяйтесь к нам - Меркурий взаимный фонд!
-            И через пол года Вы совершенно перестанете думать о деньгах и начнете развивать себя Настоящего!"</i>
+            И через пол года Вы совершенно перестанете думать о деньгах и начнете развивать себя Настоящего!</p>
+
+          <p class="underline">P.S. Если мы с Вами являемся единомышленниками, у Вас не пропало доверие к людям и Вы не
+            мыслите шаблонно, то
+            обращайтесь ко мне в соц. сетях или Skype, пообщаемся и возможно уже в этот же день начнём развиваться в
+            одной команде.</p>
+
         </div>
         <small>
-          <strong>Андрей Певцов</strong>
+          <strong><%= @referral.decorate.full_name %></strong>
         </small>
       </div>
     </div>
@@ -286,29 +322,40 @@
       <div class="col-lg-12 text-center">
         <div class="navy-line"></div>
         <h1>Контакты</h1>
-
-        <p>Email, Вконтакте, Facebook, Twitter</p>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-12 text-center">
-        <a href="mailto:thenewfriendsnet@gmail.com" class="btn btn-primary">Напишите нам</a>
+        <%- unless @referral.user_profile.contact_email.blank? -%>
+            <%= link_to 'Напишите нам', "mailto:#{@referral.user_profile.contact_email}", class: 'btn btn-primary m-b-sm' %>
+        <%- end -%>
 
-        <p class="m-t-sm">
-          Следите за нами в социальных сетях
-        </p>
-        <ul class="list-inline social-icon">
-          <li><a target="_blank" href="https://twitter.com/thenewfriendnet"><i class="fa fa-twitter"></i></a>
-          </li>
-          <li><a target="_blank" href="https://www.facebook.com/thenewfriendsnet"><i class="fa fa-facebook"></i></a>
-          </li>
-          <li><a target="_blank" href="http://vk.com/thenewfriendsnet"><i class="fa fa-vk"></i></a>
-          </li>
-        </ul>
+        <%- if @referral.decorate.has_at_least_1_social_network_link? -%>
+            <h3>Я в социальных сетях</h3>
+            <ul class="list-inline social-icon">
+              <%- unless @referral.user_profile.vk_url.blank? -%>
+                  <li><%= link_to fa_icon('vk 2x'), @referral.user_profile.vk_url, target: '_blank' -%></li>
+              <%- end -%>
+              <%- unless @referral.user_profile.facebook_url.blank? -%>
+                  <li><%= link_to fa_icon('facebook-square 2x'), @referral.user_profile.facebook_url, target: '_blank' -%></li>
+              <%- end -%>
+              <%- unless @referral.user_profile.youtube_chanel_url.blank? -%>
+                  <li><%= link_to fa_icon('youtube 2x'), @referral.user_profile.youtube_chanel_url, target: '_blank' -%></li>
+              <%- end -%>
+              <%- unless @referral.user_profile.google_plus_url.blank? -%>
+                  <li><%= link_to fa_icon('google-plus 2x'), @referral.user_profile.google_plus_url, target: '_blank' -%></li>
+              <%- end -%>
+              <%- unless @referral.user_profile.skype.blank? -%>
+                  <li><%= link_to fa_icon('skype 2x'), "skype:#{@referral.user_profile.skype}?chat" %></li>
+              <%- end -%>
+            </ul>
+        <%- end -%>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
+        <p><strong><%= @referral.decorate.full_name %></strong><br/></p>
+
         <p><strong>&copy; 2015 The New Friends</strong><br/></p>
       </div>
     </div>
