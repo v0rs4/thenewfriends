@@ -45,7 +45,6 @@
       </li>
       <%= ah_nav_link(fa_icon('dashboard', text: content_tag(:span) { t('translations.dashboard') }), work_root_path) -%>
       <%= ah_nav_link(fa_icon('vk', text: content_tag(:span) { t('translations.vkontakte') }), work_vkontakte_contacts_collector_path) -%>
-      <%= ah_nav_link(fa_icon('users', text: content_tag(:span) { t('translations.pmvf') }), work_pmvf_path) -%>
       <%= ah_nav_link(fa_icon('diamond', text: content_tag(:span) { t('translations.pricing_n_plans') }), work_pricing_plans_path) -%>
       <%- if @current_user.is_admin? -%>
           <li>
