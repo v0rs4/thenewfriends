@@ -5,6 +5,7 @@
     <th><%= t('translations.full_name') %></th>
     <th>Skype</th>
     <th><%= t('translations.vk_contacts_collector') -%></th>
+    <th>Рефералов</th>
   </tr>
   </thead>
   <tbody>
@@ -20,6 +21,7 @@
           <%= _referral.skype %>
         </td>
         <td><%= _referral.pricing_plan_purchased?(:vk_contacts_collector) ? t('translations.yeah') : t('translations.nah') %></td>
+        <td><%= _referral.referrals.count %></td>
       </tr>
   <%- end -%>
   </tbody>

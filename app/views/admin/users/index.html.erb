@@ -7,6 +7,7 @@
               <thead>
               <tr>
                 <th>ID</th>
+                <th>Inviter ID</th>
                 <th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
@@ -17,15 +18,13 @@
               <%- @users.each do |_user| -%>
                   <tr>
                     <td><%= _user.id -%></td>
+                    <td><%= _user.inviter_id -%></td>
                     <td><%= _user.email -%></td>
                     <td><%= _user.user_profile.first_name -%></td>
                     <td><%= _user.user_profile.last_name -%></td>
                     <td class="text-right">
-                      <%= link_to work_admin_user_path(_user), class: 'btn btn-white btn-sm' do -%>
-                          <%= fa_icon('eye') -%>
-                      <%- end -%>
-                      <%= link_to edit_work_admin_user_path(_user), class: 'btn btn-white btn-sm' do -%>
-                          <%= fa_icon('pencil') -%>
+                      <%= link_to work_admin_user_path(_user), class: 'text-muted' do -%>
+                          <%= fa_icon('folder-open', text: 'Open') -%>
                       <%- end -%>
                     </td>
                   </tr>

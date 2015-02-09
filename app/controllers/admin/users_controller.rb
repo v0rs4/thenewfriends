@@ -1,6 +1,6 @@
 class Admin::UsersController < Admin::ApplicationController
 	def index
-		@users = User.all
+		@users = User.all.order('created_at DESC')
 	end
 
 	def edit
@@ -30,7 +30,8 @@ class Admin::UsersController < Admin::ApplicationController
 			:email,
 			:is_admin,
 			:referral_earned,
-			:referral_award,
+			:referral_award_level_1,
+			:referral_award_level_2,
 			:inviter_id,
 			user_permission_attributes: [
 				:id,

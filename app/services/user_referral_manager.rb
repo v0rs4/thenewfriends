@@ -5,9 +5,9 @@ class UserReferralManager
 		@user = user
 	end
 
-	def earn
-		if user.referral_award > 0
-			user.update_attributes(referral_earned: (user.referral_earned + user.referral_award).round(2))
+	def earn(level)
+		if user.referral_award_level(level) > 0
+			user.update_attributes(referral_earned: (user.referral_earned + user.referral_award_level(level)).round(2))
 		else
 			false
 		end
@@ -21,6 +21,19 @@ class UserReferralManager
 				true
 			else
 				false
+			end
+		end
+	end
+
+	def self.pay_the_inviter(user)
+		user_to_pay = user.inviter
+
+		1.upto(2) do |level|
+			if user_to_pay.nil?
+				break
+			else
+				new(user_to_pay).earn(level)
+				user_to_pay = user_to_pay.inviter
 			end
 		end
 	end

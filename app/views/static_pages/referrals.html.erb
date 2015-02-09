@@ -5,10 +5,12 @@
             <table class="table table-white table-striped">
               <tbody>
               <tr>
-                <td><b>ВК сборщик контактов</b>
-                  <small class="text-muted">(партнер активирует - вы зарабатываете)</small>
-                </td>
-                <td><%= fa_icon('dollar', text: @current_user.referral_award) %></td>
+                <td>Реферальные от 1 уровня</td>
+                <td><%= fa_icon('dollar', text: @current_user.referral_award_level_1) %></td>
+              </tr>
+              <tr>
+                <td>Реферальные от 2 уровня</td>
+                <td><%= fa_icon('dollar', text: @current_user.referral_award_level_2) %></td>
               </tr>
               <tr>
                 <td>Заработано</td>

@@ -1,6 +1,6 @@
 <%- if PerfectMoneyMerchant::Account.count > 0 -%>
     <div class="row">
-      <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="col-lg-4 col-md-4 col-sm-6">
         <div class="pricing-widget white-bg colorful-widget">
           <div class="pricing-icon">
             <div class="pricing-icon-inner">
@@ -11,14 +11,14 @@
           <div class="text-center">
             <h4>Contacts Collector</h4>
             <h4 style="text-decoration:line-through;">$25/∞</h4>
-            <h4 class="pricing-value">
+            <h2 class="pricing-value">
               <%= "$#{@pricing_plan_sci[:vk_contacts_collector].payment_amount}/∞" %>
-            </h4>
+            </h2>
           </div>
 
-          <ul class="pricing-service m-top-sm">
+          <ul class="pricing-service">
             <%- t('translations.pricing_plan.vk_contacts_collector').each_line do |_feature| -%>
-                <li><%= _feature -%></li>
+                <li><%= raw(_feature) -%></li>
             <%- end -%>
           </ul>
 

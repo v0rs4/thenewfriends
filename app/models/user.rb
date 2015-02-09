@@ -66,7 +66,8 @@ class User < ActiveRecord::Base
 				end
 
 				def _set_referral_award
-					user.referral_award = 3
+					user.referral_award_level_1 = 2
+					user.referral_award_level_2 = 1
 				end
 			end
 
@@ -97,7 +98,14 @@ class User < ActiveRecord::Base
 				errors.add(:invite_code, message)
 			end
 		end
+
+		module Functions
+			def referral_award_level(level)
+				respond_to?("referral_award_level_#{level}") ? send("referral_award_level_#{level}") : 0
+			end
+		end
 	end
 
 	include Extensions::DeviseSignUp
+	include Extensions::Functions
 end

@@ -4,6 +4,7 @@
       <%= link_to 'Все пользователи', work_admin_users_url, class: 'btn btn-primary' %>
       <%= link_to 'Редактировать', edit_work_admin_user_path(@user), class: 'btn btn-warning' %>
     </div>
+
     <%= ah_ibox do %>
         <%= ah_ibox_title('Страница пользователя') %>
         <%= ah_ibox_content do %>
@@ -12,13 +13,14 @@
                 <div class="panel-heading active-panel">
                   <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#pmvf-faq-accordion" href="#collapse1">
-                      Данные о пользователе
+                      Данные о пользователе и рефералы
                     </a>
                   </h4>
                 </div>
                 <div id="collapse1" class="panel-collapse collapse">
                   <div class="panel-body">
                     <%= render partial: 'table', locals: { ar_object: @user } %>
+                    <%= render partial: 'static_pages/referrals/table', locals: { referrals: @user.referrals } %>
                   </div>
                 </div>
               </div>
