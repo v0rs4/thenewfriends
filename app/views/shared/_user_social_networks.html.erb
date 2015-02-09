@@ -1,0 +1,20 @@
+<%- unless user.user_profile.vk_url.blank? -%>
+    <%= link_to fa_icon('vk 2x'), user.user_profile.vk_url, class: 'btn btn-info btn-outline ', target: '_blank' -%>
+<%- end -%>
+<%- unless user.user_profile.odnoklassniki_url.blank? -%>
+    <%= link_to user.user_profile.odnoklassniki_url, class: 'btn btn-warning btn-outline ', target: '_blank' do -%>
+        <span class="icon-odnoklassniki fa-2x"></span>
+    <%- end -%>
+<%- end -%>
+<%- unless user.user_profile.facebook_url.blank? -%>
+    <%= link_to fa_icon('facebook-square 2x'), user.user_profile.facebook_url, class: 'btn btn-info btn-outline', target: '_blank' -%>
+<%- end -%>
+<%- unless user.user_profile.youtube_chanel_url.blank? -%>
+    <%= link_to fa_icon('youtube 2x'), user.user_profile.youtube_chanel_url, class: 'btn btn-danger btn-outline ', target: '_blank' -%>
+<%- end -%>
+<%- unless user.user_profile.google_plus_url.blank? -%>
+    <%= link_to fa_icon('google-plus 2x'), user.user_profile.google_plus_url, class: 'btn btn-info btn-outline ', target: '_blank' -%>
+<%- end -%>
+<%- unless user.user_profile.skype.blank? -%>
+    <%= link_to fa_icon('skype 2x'), "skype:#{user.user_profile.skype}?chat", class: 'btn btn-info btn-outline ' %>
+<%- end -%>

@@ -1,0 +1,24 @@
+ru:
+  activerecord:
+      models:
+        user: Пользователь
+        user_profile: Профиль пользователя
+      attributes:
+        user_profile:
+          first_name: Имя
+          last_name: Фамилия
+          about: Обо мне
+          country: Страна
+          city: Город
+          skype: Skype
+          contact_phone: Контактный телефон
+          contact_email: Контактный email
+          created_at: Создан в
+          updated_at: Создан в
+          pm_usd_acct: Долларовый счет Perfect Money
+          username: Никнейм
+          vk_url: Ссылка на Вконтакте
+          facebook_url: Ссылка на Facebook
+          odnoklassniki_url: Ссылка на Одноклассники
+          google_plus_url: Ссылка на Google Plus
+          youtube_chanel_url: Ссылка на канал YouTube

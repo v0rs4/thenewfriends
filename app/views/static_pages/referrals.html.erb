@@ -1,6 +1,69 @@
 <% if @current_user.decorate.profile_fields_filled? %>
     <%= ah_ibox(data: { controller: 'VkContactsCollectorController' }) do -%>
         <%= ah_ibox_content do -%>
+            <%- unless @current_user.inviter.nil? -%>
+                <h2>Пригласитель</h2>
+
+                <table class="table table-striped">
+                  <tbody>
+                  <tr>
+                    <td><%= UserProfile.human_attribute_name(:first_name) %></td>
+                    <td><%= @current_user.inviter.user_profile.first_name %></td>
+                  </tr>
+                  <tr>
+                    <td><%= UserProfile.human_attribute_name(:last_name) %></td>
+                    <td><%= @current_user.inviter.user_profile.last_name %></td>
+                  </tr>
+                  <tr>
+                    <td><%= UserProfile.human_attribute_name(:about) %></td>
+                    <td><%= @current_user.inviter.user_profile.about %></td>
+                  </tr>
+                  <tr>
+                    <td><%= UserProfile.human_attribute_name(:country) %></td>
+                    <td><%= @current_user.inviter.user_profile.country %></td>
+                  </tr>
+                  <tr>
+                    <td><%= UserProfile.human_attribute_name(:city) %></td>
+                    <td><%= @current_user.inviter.user_profile.city %></td>
+                  </tr>
+                  <!--<tr>-->
+                  <!--<td><%= UserProfile.human_attribute_name(:skype) %></td>-->
+                  <!--<td><%= @current_user.inviter.user_profile.skype %></td>-->
+                  <!--</tr>-->
+                  <!--<tr>-->
+                  <!--<td><%= UserProfile.human_attribute_name(:contact_phone) %></td>-->
+                  <!--<td><%= @current_user.inviter.user_profile.contact_phone %></td>-->
+                  <!--</tr>-->
+                  <!--<tr>-->
+                  <!--<td><%= UserProfile.human_attribute_name(:contact_email) %></td>-->
+                  <!--<td><%= @current_user.inviter.user_profile.contact_email %></td>-->
+                  <!--</tr>-->
+                  <!--<tr>-->
+                  <!--<td><%= UserProfile.human_attribute_name(:vk_url) %></td>-->
+                  <!--<td><%= @current_user.inviter.user_profile.vk_url %></td>-->
+                  <!--</tr>-->
+                  <!--<tr>-->
+                  <!--<td><%= UserProfile.human_attribute_name(:facebook_url) %></td>-->
+                  <!--<td><%= @current_user.inviter.user_profile.facebook_url %></td>-->
+                  <!--</tr>-->
+                  <!--<tr>-->
+                  <!--<td><%= UserProfile.human_attribute_name(:odnoklassniki_url) %></td>-->
+                  <!--<td><%= @current_user.inviter.user_profile.odnoklassniki_url %></td>-->
+                  <!--</tr>-->
+                  <!--<tr>-->
+                  <!--<td><%= UserProfile.human_attribute_name(:google_plus_url) %></td>-->
+                  <!--<td><%= @current_user.inviter.user_profile.google_plus_url %></td>-->
+                  <!--</tr>-->
+                  <!--<tr>-->
+                  <!--<td><%= UserProfile.human_attribute_name(:youtube_chanel_url) %></td>-->
+                  <!--<td><%= @current_user.inviter.user_profile.youtube_chanel_url %></td>-->
+                  <!--</tr>-->
+                  </tbody>
+                </table>
+
+                <%= render partial: 'shared/user_social_networks', locals: { user: @current_user.inviter } %>
+
+            <%- end -%>
             <h2>Статистика</h2>
             <table class="table table-white table-striped">
               <tbody>
