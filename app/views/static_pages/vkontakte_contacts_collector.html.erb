@@ -1,151 +1,54 @@
 <% if @current_user.decorate.profile_fields_filled? %>
-<div class="row">
-  <div class="col-lg-12">
-    <%- if @current_user.decorate.pricing_plan_purchased?(:vk_contacts_collector) -%>
-        <%- if can? :create, UserVkContactsFile -%>
-            <%= ah_ibox(data: { controller: 'VkContactsCollectorController' }) do -%>
-                <%= ah_ibox_heading do -%>
-                    <%= ah_markdown(t('translations.how_to_use.vk_contacts_collector')) -%>
-                <%- end -%>
-                <%= ah_ibox_content do -%>
-                    <%- if cookies[:vk_access_token] -%>
-                        <div class="text-right m-b">
-                          <%= link_to t('translations.my_files'), work_user_vk_contacts_files_path, class: 'btn btn-white' -%>
-                          <%= link_to t('translations.logout'), work_vk_o_auth_logout_path, class: 'btn btn-danger' -%>
-                        </div>
-                    <%- else -%>
-                        <h3 class="text-center"><%= t('translations.in_order_to_use_vk_c_c') -%></h3>
-                        <%= link_to t('translations.sign_in'), @vk_oauth_url, class: 'btn btn-white btn-lg btn-block' -%>
-
-                        <!--<h3>Вам необходимо авторизоваться в Вконтакте </h3>-->
+    <div class="row">
+      <div class="col-lg-12">
+        <%- if @current_user_d.pricing_plan_purchased?(:vk_contacts_collector) -%>
+            <%- if can? :create, UserVkContactsFile -%>
+                <%= render 'static_pages/vkontakte_contacts_collector/vk_contacts_collector' %>
+            <%- else -%>
+                <% if @current_user.vcc_permission.can_create? %>
+                    <%- if @current_user_d.vk_contacts_request_left.zero? -%>
+                        <%= render 'static_pages/vkontakte_contacts_collector/out_of_limit' %>
+                        <hr/>
                     <%- end -%>
-                    <%- if cookies[:vk_access_token] -%>
-
-                        <vkontakte-collector-processors></vkontakte-collector-processors>
-
-                        <div class="vk-contacts-collector-parent-box" data-ng-controller="vkContactsCollectorParentBoxController">
-                          <%= nav do %>
-                              <%= link_to t('translations.my_friends'), '#vk-collector-w-friends-tab', data: { toggle: 'tab' } %>
-                              <%= link_to t('translations.my_communities'), '#vk-collector-w-communities-tab', data: { toggle: 'tab' } %>
-                              <%= link_to t('translations.search_people'), '#vk-collector-w-search-people-tab', data: { toggle: 'tab' } %>
-                              <%= link_to t('translations.search_communities'), '#vk-collector-w-search-communities-tab', data: { toggle: 'tab' } %>
-                          <% end %>
-
-                          <div class="panel-body">
-                            <div class="tab-content">
-                              <div class="tab-pane fade active in" id="vk-collector-w-friends-tab">
-                                <table class="table table-striped vk-contacts-collector-friends-table">
-                                  <thead>
-                                  <tr>
-                                    <th><%= t('translations.first_name') -%></th>
-                                    <th><%= t('translations.last_name') -%></th>
-                                    <th class="text-right"><%= t('translations.actions') -%></th>
-                                  </tr>
-                                  </thead>
-                                  <tbody></tbody>
-                                </table>
-                              </div>
-                              <div class="tab-pane fade" id="vk-collector-w-communities-tab">
-                                <table class="table table-striped vk-contacts-collector-communities-table">
-                                  <thead>
-                                  <tr>
-                                    <th>ID</th>
-                                    <th><%= t('translations.name') -%></th>
-                                    <th><%= t('translations.members_quantity') -%></th>
-                                    <th class="text-right"><%= t('translations.actions') -%></th>
-                                  </tr>
-                                  </thead>
-                                  <tbody></tbody>
-                                </table>
-                              </div>
-                              <div class="tab-pane fade" id="vk-collector-w-search-people-tab">
-                                <input type="text" class="form-control mb20" data-ng-model="searchUsersQuery" placeholder="Введите имя и фамилию пользователя"/>
-                                <table class="table table-striped vk-contacts-collector-search-users-table" data-query-string="searchUsersQuery">
-                                  <thead>
-                                  <tr>
-                                    <th></th>
-                                    <th><%= t('translations.first_name') -%></th>
-                                    <th><%= t('translations.last_name') -%></th>
-                                    <th class="text-right"><%= t('translations.actions') -%></th>
-                                  </tr>
-                                  </thead>
-                                  <tbody></tbody>
-                                </table>
-                              </div>
-                              <div class="tab-pane fade" id="vk-collector-w-search-communities-tab">
-                                <input type="text" class="form-control mb20" data-ng-model="searchCommunitiesQuery" placeholder="Введите название сообщества"/>
-                                <table class="table table-striped vk-contacts-collector-search-communities-table" data-query-string="searchCommunitiesQuery">
-                                  <thead>
-                                  <tr>
-                                    <th>ID</th>
-                                    <th><%= t('translations.name') -%></th>
-                                    <th><%= t('translations.members_quantity') -%></th>
-                                    <th class="text-right"><%= t('translations.actions') -%></th>
-                                  </tr>
-                                  </thead>
-                                  <tbody></tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                    <%- end -%>
+                <%- else -%>
+                    <div class="text-center">
+                      <div>
+                        <%= fa_icon('exclamation-triangle 4x') -%>
+                      </div>
+                      <h2><%= raw(t('translations.user_vk_contacts_file.no_permission.create')) -%></h2>
+                    </div>
+                    <hr/>
                 <%- end -%>
+            <%- end -%>
+            <%- if can? :read, UserVkContactsFile -%>
+                <%= render 'static_pages/vkontakte_contacts_collector/last_n_files' %>
+            <%- else -%>
+                <div class="text-center">
+                  <div>
+                    <%= fa_icon('exclamation-triangle 4x') -%>
+                  </div>
+                  <h2><%= raw(t('translations.user_vk_contacts_file.no_permission.read')) -%></h2>
+                </div>
             <%- end -%>
         <%- else -%>
             <div class="text-center">
               <div>
-                <%= fa_icon('exclamation-triangle 2x') -%>
+                <%= fa_icon('exclamation-triangle 4x') -%>
               </div>
-              <h3><%= t('translations.user_vk_contacts_file.no_permission.create') -%></h3>
-            </div>
-        <%- end -%>
-        <%- if can? :read, UserVkContactsFile -%>
-            <%= ah_ibox(data: { controller: 'VkContactsCollectorController' }) do -%>
-                <%= ah_ibox_title(t('translations.last_n_files', number: 10)) -%>
-                <%= ah_ibox_content do -%>
-                    <div class="text-right">
-                      <%= link_to url_for(params), class: 'btn btn-white' do -%>
-                          <%= fa_icon('refresh') -%>
-                          <!--<%= t('translations.refresh') -%>-->
-                      <%- end -%>
-                      <%= link_to work_user_vk_contacts_files_path, class: 'btn btn-white' do -%>
-                          <%= fa_icon('eye') -%>
-                          <!--<%= t('translations.see_all') -%>-->
-                      <%- end -%>
-                    </div>
-                    <div class="table-responsive">
-                      <%= render partial: 'user_vk_contacts_files/vk_c_f_table', locals: { user_vk_contacts_files: @user_vk_contacts_files } -%>
-                    </div>
-                <%- end -%>
-            <%- end -%>
-        <%- else -%>
-            <div class="text-center">
-              <div>
-                <%= fa_icon('exclamation-triangle 2x') -%>
-              </div>
-              <h3><%= t('translations.user_vk_contacts_file.no_permission.read') -%></h3>
-            </div>
-        <%- end -%>
-    <%- else -%>
-        <div class="text-center">
-          <div>
-            <%= fa_icon('exclamation-triangle 4x') -%>
-          </div>
-          <h2><%= t('translations.user_vk_contacts_file.no_permission.not_paid') -%></h2>
+              <h2><%= t('translations.user_vk_contacts_file.no_permission.not_paid') -%></h2>
 
-          <h3>
-            <%= t('translations.go_to') -%>
-            <%= link_to t('translations.pricing_n_plans'), work_pricing_plans_url %>
-          </h3>
-        </div>
-    <%- end -%>
-  </div>
-</div>
+              <h3>
+                <%= t('translations.go_to') -%>
+                <%= link_to t('translations.pricing_n_plans'), work_pricing_plans_url %>
+              </h3>
+            </div>
+        <%- end -%>
+      </div>
+    </div>
 <%- else -%>
     <div class="text-center">
       <h2>Вы не можете использовать ВК сборщик контактов, пока не заполните свой профиль</h2>
+
       <h3><%= t('translations.go_to') -%> <%= link_to t('translations.profile'), edit_work_user_profile_url %></h3>
     </div>
 <%- end -%>

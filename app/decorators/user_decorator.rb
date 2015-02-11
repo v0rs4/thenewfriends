@@ -80,9 +80,7 @@ class UserDecorator < Draper::Decorator
 	def pricing_plan_purchased?(name)
 		case name
 		when :vk_contacts_collector
-			user_permission.user_vk_contacts_files_create? or
-				user_permission.user_vk_contacts_files_read? or
-				user_permission.user_vk_contacts_files_update?
+			!vcc_permission.package.blank?
 		else
 			false
 		end
@@ -96,7 +94,7 @@ class UserDecorator < Draper::Decorator
 	end
 
 	def referral_balance
-		(object.referral_earned - object.referral_paid_out).round(2)
+		(referral_earned - referral_paid_out).round(2)
 	end
 
 	def has_at_least_1_social_network_link?
@@ -106,5 +104,30 @@ class UserDecorator < Draper::Decorator
 			user_profile.google_plus_url.blank? and
 			user_profile.youtube_chanel_url.blank? and
 			user_profile.skype.blank?)
+	end
+
+	def vk_contacts_requests_count(date)
+		case date
+		when :today
+			((_count = user_vk_contacts_files.created_today.count/2) > 0) ? _count : 0
+		else
+			0
+		end
+	end
+
+	def vk_contacts_request_left
+		if (res = vcc_permission.requests_limit_per_day - vk_contacts_requests_count(:today)) > 0
+			res
+		else
+			0
+		end
+	end
+
+	def current_vcc_package
+		if (_p = vcc_purchases.last).nil?
+			h.t('translations.nah')
+		else
+			_p.name.camelcase
+		end
 	end
 end

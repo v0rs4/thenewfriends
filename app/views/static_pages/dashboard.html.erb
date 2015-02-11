@@ -1,3 +1,10 @@
+<%= alert_box context: :warning do %>
+    <p>
+      <b>Внимание:</b> перед тем как оплачивать услуги TNF и пользоваться ими,
+      сначала <%= link_to 'прочтите FAQ', work_faq_url %>.
+    </p>
+<%- end -%>
+
 <%= nav layout: :justified, as: :pills, class: 'm-b' do %>
     <%= link_to fa_icon('vk', text: t('translations.vk_contacts_collector')), work_vkontakte_contacts_collector_url -%>
     <%= link_to fa_icon('diamond', text: t('translations.pricing_n_plans')), work_pricing_plans_url -%>

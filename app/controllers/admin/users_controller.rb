@@ -9,7 +9,6 @@ class Admin::UsersController < Admin::ApplicationController
 
 	def show
 		@user = User.find(params[:id])
-		@tables = [@user, @user.user_profile, @user.user_permission]
 	end
 
 	def update
@@ -33,13 +32,28 @@ class Admin::UsersController < Admin::ApplicationController
 			:referral_award_level_1,
 			:referral_award_level_2,
 			:inviter_id,
-			user_permission_attributes: [
+			user_vk_contacts_collector_permission_attributes: [
 				:id,
-				:user_vk_contacts_files_create,
-				:user_vk_contacts_files_read,
-				:user_vk_contacts_files_update,
-				:user_vk_contacts_files_delete
+				:package,
+				:expires_at,
+				:requests_limit_per_day,
+				:can_create,
+				:can_read,
+				:can_update,
+				:can_delete
 			],
+			# user_permission_attributes: [
+			# 	:id,
+			# 	:user_vk_contacts_files_create,
+			# 	:user_vk_contacts_files_read,
+			# 	:user_vk_contacts_files_update,
+			# 	:user_vk_contacts_files_delete,
+			# 	:user_vk_contacts_files_create_expires_at,
+			# 	:user_vk_contacts_files_read_expires_at,
+			# 	:user_vk_contacts_files_update_expires_at,
+			# 	:user_vk_contacts_files_delete_expires_at,
+			# 	:vk_contacts_requests_limit_per_day
+			# ],
 			user_profile_attributes: [
 				:id,
 				:first_name,

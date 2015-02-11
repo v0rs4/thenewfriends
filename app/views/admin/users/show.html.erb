@@ -42,13 +42,13 @@
                 <div class="panel-heading active-panel">
                   <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#pmvf-faq-accordion" href="#collapse4">
-                      Данные о доступе пользователя
+                      Данные о доступе пользователя к сборщику контактов ВК
                     </a>
                   </h4>
                 </div>
                 <div id="collapse4" class="panel-collapse collapse">
                   <div class="panel-body">
-                    <%= render partial: 'table', locals: { ar_object: @user.user_permission } %>
+                    <%= render partial: 'table', locals: { ar_object: @user.user_vk_contacts_collector_permission } %>
                   </div>
                 </div>
               </div>

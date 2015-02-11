@@ -25,6 +25,9 @@
 //= require angular-ui-router
 //= require plugins/responsible-video
 //= require plugins/toastr.min
+//= require plugins/moment
+//= require plugins/moment/ru
+//= require plugins/bootstrap-datetimepicker.min
 //= require_self
 //= require_tree ./ng-app
 
@@ -169,3 +172,10 @@ toastr.options = {
 //	}
 //}
 //window.onbeforeunload=goodbye;
+
+$(document).ready(function () {
+	$('.form_datetime').datetimepicker({
+		locale: 'ru',
+		format: 'YYYY-MM-DD HH:mm:ss UTC'
+	});
+});

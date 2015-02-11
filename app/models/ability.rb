@@ -1,22 +1,13 @@
 class Ability
 	include CanCan::Ability
 
+	attr_reader :user, :user_d
+
 	def initialize(user)
-		if user.user_permission.user_vk_contacts_files_create?
-			can :create, UserVkContactsFile
-		end
+		@user = user
+		@user_d = user.decorate
 
-		if user.user_permission.user_vk_contacts_files_read?
-			can :read, UserVkContactsFile
-		end
-
-		if user.user_permission.user_vk_contacts_files_update?
-			can :update, UserVkContactsFile
-		end
-
-		if user.user_permission.user_vk_contacts_files_delete?
-			can :delete, UserVkContactsFile
-		end
+		_permit_vk_contacts_collector
 
 		# Define abilities for the passed in user here. For example:
 		#
@@ -44,5 +35,36 @@ class Ability
 		#
 		# See the wiki for details:
 		# https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
+	end
+
+	private
+
+	def _permit_vk_contacts_collector
+		u_vcc_p = user.user_vk_contacts_collector_permission
+		if u_vcc_p.can_create?
+			if u_vcc_p.expires_at > Time.zone.now
+				if user_d.vk_contacts_requests_count(:today) < u_vcc_p.requests_limit_per_day
+					can :create, UserVkContactsFile
+				end
+			end
+		end
+
+		if u_vcc_p.can_read?
+			if u_vcc_p.expires_at > Time.zone.now
+				can :read, UserVkContactsFile
+			end
+		end
+
+		if u_vcc_p.can_update?
+			if u_vcc_p.expires_at > Time.zone.now
+				can :update, UserVkContactsFile
+			end
+		end
+
+		if u_vcc_p.can_delete?
+			if u_vcc_p.expires_at > Time.zone.now
+				can :delete, UserVkContactsFile
+			end
+		end
 	end
 end

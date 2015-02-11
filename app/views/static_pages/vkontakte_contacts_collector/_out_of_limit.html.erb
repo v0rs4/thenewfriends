@@ -1,0 +1,17 @@
+<div class="text-center">
+  <div>
+    <%= fa_icon('exclamation-triangle 4x') -%>
+  </div>
+  <h2><%= raw(t('translations.user_vk_contacts_file.no_permission.request_limit')) -%></h2>
+
+  <h3>Осталось запросов на сегодня</h3>
+
+  <h1>
+    <%= @current_user_d.vk_contacts_request_left %>
+    из
+    <%= @current_user.vcc_permission.requests_limit_per_day %>
+  </h1>
+  <small>
+    <%= link_to 'Хотите больше?', work_pricing_plans_url, class: 'text-muted' %>
+  </small>
+</div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150209000959) do
+ActiveRecord::Schema.define(version: 20150211114004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,16 +46,6 @@ ActiveRecord::Schema.define(version: 20150209000959) do
 
   add_index "perfect_money_merchant_payments", ["payment_batch_num"], name: "pmmp_pbn_unq", unique: true, using: :btree
 
-  create_table "user_permissions", force: true do |t|
-    t.integer  "user_id",                                       null: false
-    t.boolean  "user_vk_contacts_files_create", default: false, null: false
-    t.boolean  "user_vk_contacts_files_read",   default: false, null: false
-    t.boolean  "user_vk_contacts_files_update", default: false, null: false
-    t.boolean  "user_vk_contacts_files_delete", default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "user_profiles", force: true do |t|
     t.integer  "user_id",            null: false
     t.string   "first_name"
@@ -83,13 +73,26 @@ ActiveRecord::Schema.define(version: 20150209000959) do
   add_index "user_profiles", ["user_id"], name: "user_profiles_user_id_unique", unique: true, using: :btree
 
   create_table "user_purchases", force: true do |t|
-    t.integer  "user_id",    null: false
-    t.string   "name",       null: false
+    t.integer  "user_id",                  null: false
+    t.string   "name",                     null: false
+    t.string   "type",                     null: false
+    t.integer  "perfect_money_payment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "user_purchases", ["user_id", "name"], name: "user_purchases_user_id_name_unq", unique: true, using: :btree
+  create_table "user_vk_contacts_collector_permissions", force: true do |t|
+    t.integer  "user_id",                                null: false
+    t.string   "package"
+    t.datetime "expires_at"
+    t.boolean  "can_create",             default: false, null: false
+    t.boolean  "can_read",               default: false, null: false
+    t.boolean  "can_update",             default: false, null: false
+    t.boolean  "can_delete",             default: false, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "requests_limit_per_day", default: 0,     null: false
+  end
 
   create_table "user_vk_contacts_files", force: true do |t|
     t.integer  "user_id",                             null: false
@@ -142,10 +145,11 @@ ActiveRecord::Schema.define(version: 20150209000959) do
   add_index "vk_contacts_files", ["name", "vk_contacts_source_id"], name: "vk_c_files_name_v_c_source_id_unq", unique: true, using: :btree
 
   create_table "vk_contacts_sources", force: true do |t|
-    t.string   "name",          null: false
-    t.string   "vk_identifier", null: false
+    t.string   "name",                      null: false
+    t.string   "vk_identifier",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "total_count",   default: 0, null: false
   end
 
   add_index "vk_contacts_sources", ["vk_identifier"], name: "vk_c_sources_vk_identifier_unq", unique: true, using: :btree

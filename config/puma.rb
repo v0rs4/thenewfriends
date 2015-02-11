@@ -31,7 +31,7 @@ on_worker_boot do
 
 	# if ENV['NUM_SIDEKIQ_WORKERS'].to_i > 0
 	jobs = {
-		worker_1: (@worker_1_pid ||= spawn("bundle exec sidekiq -c 2")),
+		worker_1: (@worker_1_pid ||= spawn("bundle exec sidekiq -c 1")),
 	}
 
 	jobs.each do |name, pid|

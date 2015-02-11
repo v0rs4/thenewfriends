@@ -3,12 +3,13 @@
 <head>
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0"/>
   <title>The New Friends</title>
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= csrf_meta_tags %>
 </head>
-<body class="skin-2 mini-navbar boxed-layout" data-ng-app="tnf-ng-app">
+<!--<body class="skin-2 mini-navbar boxed-layout" data-ng-app="tnf-ng-app">-->
+<body class="skin-2 mini-navbar" data-ng-app="tnf-ng-app">
 <div class="visible-lg corner-ribbon bottom-left sticky red shadow"><%= "v#{@version}" %></div>
 
 <div class="hidden-xs">
@@ -19,8 +20,10 @@
       <div class="wrapper wrapper-content">
         <%- unless @current_user.decorate.profile_fields_filled? -%>
             <%= alert_box context: :danger do %>
-                Заполните пожалуйста свой профиль.
-                <%= link_to 'Перейти в профиль.', edit_work_user_profile_url %>
+                <p>
+                  Заполните пожалуйста свой профиль.
+                  <%= link_to 'Перейти в профиль.', edit_work_user_profile_url %>
+                </p>
             <%- end -%>
         <%- end -%>
         <%= yield %>

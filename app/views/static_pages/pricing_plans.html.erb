@@ -1,62 +1,68 @@
 <%- if PerfectMoneyMerchant::Account.count > 0 -%>
-    <div class="row">
-      <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="pricing-widget white-bg colorful-widget">
-          <div class="pricing-icon">
-            <div class="pricing-icon-inner">
-              <i class="fa fa-vk"></i>
-            </div>
-          </div>
+    <%- unless @current_user.vcc_permission.package.blank? -%>
+        <div class="row">
+          <div class="col-md-6">
+            <%= ah_ibox do -%>
+                <%= ah_ibox_content do -%>
+                    <h2>Мои оплаченные пакеты</h2>
 
-          <div class="text-center">
-            <h4>Contacts Collector</h4>
-            <h4 style="text-decoration:line-through;">$25/∞</h4>
-            <h2 class="pricing-value">
-              <%= "$#{@pricing_plan_sci[:vk_contacts_collector].payment_amount}/∞" %>
-            </h2>
-          </div>
-
-          <ul class="pricing-service">
-            <%- t('translations.pricing_plan.vk_contacts_collector').each_line do |_feature| -%>
-                <li><%= raw(_feature) -%></li>
-            <%- end -%>
-          </ul>
-
-          <div class="m-top-md text-center">
-            <%- if @current_user.decorate.pricing_plan_purchased?(:vk_contacts_collector) -%>
-                <a href="" class="btn btn-primary disabled"><%= t('translations.activated') -%></a>
-            <%- else -%>
-                <% @pricing_plan_sci[:vk_contacts_collector].tap do |sci| %>
-                    <%= form_tag 'https://perfectmoney.is/api/step1.asp' do -%>
-                        <%= hidden_field_tag :PAYEE_ACCOUNT, sci.payee_account -%>
-                        <%= hidden_field_tag :PAYEE_NAME, sci.payee_name -%>
-                        <%= hidden_field_tag :PAYMENT_ID, sci.payment_id -%>
-                        <%= hidden_field_tag :PAYMENT_AMOUNT, sci.payment_amount -%>
-                        <%= hidden_field_tag :PAYMENT_UNITS, sci.payment_units -%>
-                        <%= hidden_field_tag :STATUS_URL, ah_prepend_host(sci.status_url) -%>
-                        <%= hidden_field_tag :PAYMENT_URL, ah_prepend_host(sci.payment_url) -%>
-                        <%= hidden_field_tag :PAYMENT_URL_METHOD, sci.payment_url_method -%>
-                        <%= hidden_field_tag :NOPAYMENT_URL, ah_prepend_host(sci.nopayment_url) -%>
-                        <%= hidden_field_tag :NOPAYMENT_URL_METHOD, sci.nopayment_url_method -%>
-                        <%= hidden_field_tag :SUGGESTED_MEMO, sci.suggested_memo -%>
-                        <%= hidden_field_tag :BAGGAGE_FIELDS, sci.baggage_fields -%>
-                        <%= hidden_field_tag :user_id, sci.user_id -%>
-                        <%= hidden_field_tag :pricing_plan_name, sci.pricing_plan_name -%>
-                        <%= hidden_field_tag :pricing_plan_price, sci.pricing_plan_price -%>
-                        <%= hidden_field_tag :verification_code, sci.verification_code -%>
-                        <%= hidden_field_tag :verification_fields, sci.verification_fields -%>
-                        <%= hidden_field_tag :payment_purpose, sci.payment_purpose -%>
-                        <%= hidden_field_tag :redirect_url, sci.redirect_url -%>
-                        <%= button_tag fa_icon('bolt', text: t('translations.activate')), class: 'btn btn-primary', name: :PAYMENT_METHOD -%>
-                    <%- end -%>
+                    <h3>Сборщик контактов Вконтакте</h3>
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Название пакета</th>
+                        <th>Осталось до конца</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td><%= fa_icon('vk',text: @current_user.vcc_permission.package.to_s.camelcase) %></td>
+                        <td><%= fa_icon('clock-o',text: @current_user.vcc_permission.decorate.expires_in_words) %></td>
+                      </tr>
+                      </tbody>
+                    </table>
                 <%- end -%>
-
             <%- end -%>
-
           </div>
         </div>
-        <!-- ./pricing-widget -->
-      </div>
+    <%- end -%>
+    <%- if @pricing_plan_sci.size.zero? -%>
+        <h2>У вас сейчас оплачен максимальный пакет</h2>
+    <%- end -%>
+    <div class="row">
+      <%- @pricing_plan_sci.each do |name, sci| -%>
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="pricing-widget white-bg colorful-widget">
+              <div class="pricing-icon">
+                <div class="pricing-icon-inner">
+                  <i class="fa fa-vk"></i>
+                </div>
+              </div>
+
+              <div class="text-center">
+                <h4>Сборщик контактов Вконтакте</h4>
+
+                <h2 class="text-navy"><%= name.to_s.camelcase %></h2>
+
+                <h2 class="pricing-value">
+                  <%= "$#{sci.payment_amount}" %>/
+                  <small><%= "#{UserVkContactsCollectorPermission.get_package_by(:name, name)[:duration_in_days]} дней" %></small>
+                </h2>
+              </div>
+
+              <ul class="pricing-service">
+                <%- t("translations.pricing_plan.#{name}").each_line do |_feature| -%>
+                    <li><%= raw(_feature) -%></li>
+                <%- end -%>
+              </ul>
+
+              <div class="m-top-md text-center">
+                <%= render partial: 'static_pages/pricing_plans/perfect_money_form', locals: { sci: sci } %>
+              </div>
+            </div>
+            <!-- ./pricing-widget -->
+          </div>
+      <%- end -%>
       <!-- .col -->
     </div>
 <%- else -%>

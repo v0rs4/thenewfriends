@@ -10,17 +10,24 @@ class UserPermissionManager
 		when :vk_contacts_collector
 			_permit_vk_contacts_collector(opts)
 		else
-			#nothing
+			false
 		end
 	end
 
 	private
 
 	def _permit_vk_contacts_collector(opts = {})
-		user.user_permission.update_attributes(
-			user_vk_contacts_files_create: true,
-			user_vk_contacts_files_read: true,
-			user_vk_contacts_files_update: true
-		)
+		if (package = UserVkContactsCollectorPermission.get_package_by(:name, opts[:package_name].to_sym)).nil?
+			false
+		else
+			user.vcc_permission.update_attributes!(
+				package: package[:name].to_s,
+				requests_limit_per_day: package[:requests_limit_per_day],
+				can_create: true,
+				can_read: true,
+				can_update: true,
+				expires_at: package[:duration_in_days].days.from_now
+			)
+		end
 	end
 end

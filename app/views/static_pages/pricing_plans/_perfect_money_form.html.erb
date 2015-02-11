@@ -1,0 +1,22 @@
+<%= form_tag 'https://perfectmoney.is/api/step1.asp' do -%>
+    <%= hidden_field_tag :PAYEE_ACCOUNT, sci.payee_account -%>
+    <%= hidden_field_tag :PAYEE_NAME, sci.payee_name -%>
+    <%= hidden_field_tag :PAYMENT_ID, sci.payment_id -%>
+    <%= hidden_field_tag :PAYMENT_AMOUNT, sci.payment_amount -%>
+    <%= hidden_field_tag :PAYMENT_UNITS, sci.payment_units -%>
+    <%= hidden_field_tag :STATUS_URL, ah_prepend_host(sci.status_url) -%>
+    <%= hidden_field_tag :PAYMENT_URL, ah_prepend_host(sci.payment_url) -%>
+    <%= hidden_field_tag :PAYMENT_URL_METHOD, sci.payment_url_method -%>
+    <%= hidden_field_tag :NOPAYMENT_URL, ah_prepend_host(sci.nopayment_url) -%>
+    <%= hidden_field_tag :NOPAYMENT_URL_METHOD, sci.nopayment_url_method -%>
+    <%= hidden_field_tag :SUGGESTED_MEMO, sci.suggested_memo -%>
+    <%= hidden_field_tag :BAGGAGE_FIELDS, sci.baggage_fields -%>
+    <%= hidden_field_tag :user_id, sci.user_id -%>
+    <%= hidden_field_tag :pricing_plan_name, sci.pricing_plan_name -%>
+    <%= hidden_field_tag :pricing_plan_price, sci.pricing_plan_price -%>
+    <%= hidden_field_tag :verification_code, sci.verification_code -%>
+    <%= hidden_field_tag :verification_fields, sci.verification_fields -%>
+    <%= hidden_field_tag :payment_purpose, sci.payment_purpose -%>
+    <%= hidden_field_tag :redirect_url, sci.redirect_url -%>
+    <%= button_tag fa_icon('bolt', text: t('translations.activate')), class: 'btn btn-primary', name: :PAYMENT_METHOD -%>
+<%- end -%>

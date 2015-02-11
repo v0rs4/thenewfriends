@@ -1,79 +1,45 @@
 <% if @current_user.decorate.profile_fields_filled? %>
-    <%= ah_ibox(data: { controller: 'VkContactsCollectorController' }) do -%>
-        <%= ah_ibox_content do -%>
-            <%- unless @current_user.inviter.nil? -%>
+    <%- unless @current_user.inviter.nil? -%>
+        <%= ah_ibox do -%>
+            <%= ah_ibox_content do -%>
                 <h2>Пригласитель</h2>
 
                 <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th><%= UserProfile.human_attribute_name(:first_name) %></th>
+                    <th><%= UserProfile.human_attribute_name(:last_name) %></th>
+                    <th><%= UserProfile.human_attribute_name(:country) %></th>
+                    <th><%= UserProfile.human_attribute_name(:city) %></th>
+                  </tr>
+                  </thead>
                   <tbody>
                   <tr>
-                    <td><%= UserProfile.human_attribute_name(:first_name) %></td>
                     <td><%= @current_user.inviter.user_profile.first_name %></td>
-                  </tr>
-                  <tr>
-                    <td><%= UserProfile.human_attribute_name(:last_name) %></td>
                     <td><%= @current_user.inviter.user_profile.last_name %></td>
-                  </tr>
-                  <tr>
-                    <td><%= UserProfile.human_attribute_name(:about) %></td>
-                    <td><%= @current_user.inviter.user_profile.about %></td>
-                  </tr>
-                  <tr>
-                    <td><%= UserProfile.human_attribute_name(:country) %></td>
                     <td><%= @current_user.inviter.user_profile.country %></td>
-                  </tr>
-                  <tr>
-                    <td><%= UserProfile.human_attribute_name(:city) %></td>
                     <td><%= @current_user.inviter.user_profile.city %></td>
                   </tr>
-                  <!--<tr>-->
-                  <!--<td><%= UserProfile.human_attribute_name(:skype) %></td>-->
-                  <!--<td><%= @current_user.inviter.user_profile.skype %></td>-->
-                  <!--</tr>-->
-                  <!--<tr>-->
-                  <!--<td><%= UserProfile.human_attribute_name(:contact_phone) %></td>-->
-                  <!--<td><%= @current_user.inviter.user_profile.contact_phone %></td>-->
-                  <!--</tr>-->
-                  <!--<tr>-->
-                  <!--<td><%= UserProfile.human_attribute_name(:contact_email) %></td>-->
-                  <!--<td><%= @current_user.inviter.user_profile.contact_email %></td>-->
-                  <!--</tr>-->
-                  <!--<tr>-->
-                  <!--<td><%= UserProfile.human_attribute_name(:vk_url) %></td>-->
-                  <!--<td><%= @current_user.inviter.user_profile.vk_url %></td>-->
-                  <!--</tr>-->
-                  <!--<tr>-->
-                  <!--<td><%= UserProfile.human_attribute_name(:facebook_url) %></td>-->
-                  <!--<td><%= @current_user.inviter.user_profile.facebook_url %></td>-->
-                  <!--</tr>-->
-                  <!--<tr>-->
-                  <!--<td><%= UserProfile.human_attribute_name(:odnoklassniki_url) %></td>-->
-                  <!--<td><%= @current_user.inviter.user_profile.odnoklassniki_url %></td>-->
-                  <!--</tr>-->
-                  <!--<tr>-->
-                  <!--<td><%= UserProfile.human_attribute_name(:google_plus_url) %></td>-->
-                  <!--<td><%= @current_user.inviter.user_profile.google_plus_url %></td>-->
-                  <!--</tr>-->
-                  <!--<tr>-->
-                  <!--<td><%= UserProfile.human_attribute_name(:youtube_chanel_url) %></td>-->
-                  <!--<td><%= @current_user.inviter.user_profile.youtube_chanel_url %></td>-->
-                  <!--</tr>-->
                   </tbody>
                 </table>
 
                 <%= render partial: 'shared/user_social_networks', locals: { user: @current_user.inviter } %>
 
             <%- end -%>
+        <%- end -%>
+    <%- end -%>
+    <%= ah_ibox do -%>
+        <%= ah_ibox_content do -%>
             <h2>Статистика</h2>
             <table class="table table-white table-striped">
               <tbody>
               <tr>
-                <td>Реферальные от 1 уровня</td>
-                <td><%= fa_icon('dollar', text: @current_user.referral_award_level_1) %></td>
+                <td>Реферальные c 1й линии</td>
+                <td><%= "#{@current_user.referral_award_level_1}%" %></td>
               </tr>
               <tr>
-                <td>Реферальные от 2 уровня</td>
-                <td><%= fa_icon('dollar', text: @current_user.referral_award_level_2) %></td>
+                <td>Реферальные с 2й линии</td>
+                <td><%= "#{@current_user.referral_award_level_2}%" %></td>
               </tr>
               <tr>
                 <td>Заработано</td>
@@ -93,25 +59,45 @@
             </table>
 
             <%- if @current_user.referral_award == 0 -%>
-                <div class="m-b">
-                  <small class="text-danger">Чтобы стать учасником <b>партнерской программы</b>, вам необходимо
-                    пригласить больше 5 человек и написать в администрацию, что вы желаете учавствовать в партнерской
-                    программе
-                  </small>
-                </div>
             <%- end -%>
 
             <div class="m-b">
-              <small class="text-muted">
-                Выплаты инстант. <br/>
-                Убедитесь, что вы верно его указали в <%= link_to 'настройках профиля', edit_work_user_profile_url %>
-                <br/>
-                Реф. ссылка: <%= root_url(ref: @current_user.user_profile.username) %>
-                <br/>
-                <%= render 'shared/talk_to_admin', text: 'Пообщаться с администрацией' %>
-              </small>
+              <p>
+
+              </p>
             </div>
 
+            <div class="m-b text-muted" style="font-size: 0.85em;">
+              <p>Чтобы получить реферальные в <b>30% с первой линии и 20% со второй</b> вам необходимо:</p>
+              <ul>
+                <li>оплатить пакет <b class="text-navy">Skilled120 или выше</b>;</li>
+                <li><b>10 ваших лично-приглашенных человек</b>, должны оплатить пакет
+                  <b class="text-navy">Skilled120 или выше</b></li>
+              </ul>
+
+              <p>Чтобы получить реферальные в <b>45% с первой линии и 30% со второй</b> вам необходимо:</p>
+              <ul>
+                <li>оплатить пакет <b class="text-navy">Seasoned240 или выше</b>;</li>
+                <li><b>5 ваших лично-приглашенных человек</b>, должны оплатить пакет
+                  <b class="text-navy">Seasoned240 или выше</b></li>
+              </ul>
+              <p><b>Выплаты инстант.</b></p>
+
+              <p>
+                Убедитесь, что вы верно указали кошелек Perfect Money
+                в <%= link_to 'настройках профиля', edit_work_user_profile_url %>
+              </p>
+
+              <p><b>Реф. ссылка: <%= root_url(ref: @current_user.user_profile.username) %></b></p>
+
+              <p><%= render 'shared/talk_to_admin', text: 'Пообщаться с администрацией' %></p>
+            </div>
+
+
+        <%- end -%>
+    <%- end -%>
+    <%= ah_ibox do -%>
+        <%= ah_ibox_content do -%>
             <h2>Рефералы</h2>
             <%= render 'static_pages/referrals/table', referrals: @current_user.referrals.order('created_at DESC') %>
         <%- end -%>

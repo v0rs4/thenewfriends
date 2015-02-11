@@ -25,14 +25,14 @@
               <% end %>
             </li>
             <li>
-              <%= link_to edit_work_user_profile_path do %>
+              <%= link_to edit_work_user_profile_url do %>
                   <%= fa_icon('user') %>
                   <%= t('translations.profile') -%>
               <% end %>
             </li>
             <li class="divider"></li>
             <li>
-              <%= link_to destroy_user_session_path, method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <%= link_to destroy_user_session_url, method: :delete, data: { confirm: 'Are you sure?' } do %>
                   <i class="fa fa-sign-out"></i>
                   <%= t('translations.logout') -%>
               <% end %>
@@ -43,9 +43,10 @@
           TNF
         </div>
       </li>
-      <%= ah_nav_link(fa_icon('dashboard', text: content_tag(:span) { t('translations.dashboard') }), work_root_path) -%>
-      <%= ah_nav_link(fa_icon('vk', text: content_tag(:span) { t('translations.vkontakte') }), work_vkontakte_contacts_collector_path) -%>
-      <%= ah_nav_link(fa_icon('diamond', text: content_tag(:span) { t('translations.pricing_n_plans') }), work_pricing_plans_path) -%>
+      <%= ah_nav_link(fa_icon('dashboard', text: content_tag(:span) { t('translations.dashboard') }), work_root_url) -%>
+      <%= ah_nav_link(fa_icon('vk', text: content_tag(:span) { t('translations.vkontakte') }), work_vkontakte_contacts_collector_url) -%>
+      <%= ah_nav_link(fa_icon('diamond', text: content_tag(:span) { t('translations.pricing_n_plans') }), work_pricing_plans_url) -%>
+      <%= ah_nav_link(fa_icon('question', text: content_tag(:span) { t('translations.faq') }), work_faq_url) -%>
       <%- if @current_user.is_admin? -%>
           <li>
             <a href="">
@@ -55,16 +56,19 @@
             </a>
             <ul class="nav nav-second-level collapse in" aria-expanded="true">
               <li>
-                <%= link_to t('translations.dashboard'), work_admin_root_path %>
+                <%= link_to t('translations.dashboard'), work_admin_root_url %>
               </li>
               <li>
-                <%= link_to t('translations.users'), work_admin_users_path %>
+                <%= link_to t('translations.users'), work_admin_users_url %>
               </li>
               <li>
-                <%= link_to t('translations.pm_accounts'), work_admin_perfect_money_merchant_accounts_path %>
+                <%= link_to t('translations.pm_accounts'), work_admin_perfect_money_merchant_accounts_url %>
               </li>
               <li>
-                <%= link_to t('translations.pm_payments'), work_admin_perfect_money_merchant_payments_path %>
+                <%= link_to t('translations.pm_payments'), work_admin_perfect_money_merchant_payments_url %>
+              </li>
+              <li>
+                <%= link_to 'Sidekiq', work_sidekiq_web_url, target: '_blank' %>
               </li>
             </ul>
           </li>

@@ -2,7 +2,8 @@ class User < ActiveRecord::Base
 	devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
 	has_one :user_profile, dependent: :destroy, inverse_of: :user
-	has_one :user_permission, inverse_of: :user
+	# has_one :user_permission, dependent: :destroy, inverse_of: :user
+	has_one :user_vk_contacts_collector_permission, dependent: :destroy, inverse_of: :user
 
 	belongs_to :inviter, class_name: 'User', foreign_key: :inviter_id
 
@@ -13,14 +14,24 @@ class User < ActiveRecord::Base
 
 	has_many :referrals, class_name: 'User', foreign_key: :inviter_id
 
-	accepts_nested_attributes_for :user_permission, allow_destroy: true
-	accepts_nested_attributes_for :user_profile, allow_destroy: true
+	has_many :user_purchases, inverse_of: :user
+	has_many :user_vk_contacts_collector_purchases, inverse_of: :user
+
+	# accepts_nested_attributes_for :user_permission
+	accepts_nested_attributes_for :user_vk_contacts_collector_permission
+	accepts_nested_attributes_for :user_profile
 
 	validates :referral_earned, :referral_paid_out, numericality: { greater_than_or_equal_to: 0 }
-	validates :referral_award, numericality: {
+	validates :referral_award_level_1, :referral_award_level_2, numericality: {
 			greater_than_or_equal_to: 0,
-			less_than_or_equal_to: 25
+			less_than_or_equal_to: 50
 		}
+
+	alias_method :vcc_permission, :user_vk_contacts_collector_permission
+	alias_method :vcc_purchases, :user_vk_contacts_collector_purchases
+	alias_method :profile, :user_profile
+	alias_method :purchases, :user_purchases
+
 
 	module Extensions
 		module DeviseSignUp
@@ -39,6 +50,8 @@ class User < ActiveRecord::Base
 
 				def run
 					_build_user_profile
+					# _build_user_permission
+					_build_user_vk_contacts_collector_permission
 					_build_user_permission
 					_set_as_admin
 					_set_inviter_id
@@ -46,6 +59,10 @@ class User < ActiveRecord::Base
 				end
 
 				private
+
+				def _build_user_vk_contacts_collector_permission
+					user.build_user_vk_contacts_collector_permission
+				end
 
 				def _build_user_profile
 					user.build_user_profile
@@ -66,8 +83,8 @@ class User < ActiveRecord::Base
 				end
 
 				def _set_referral_award
-					user.referral_award_level_1 = 2
-					user.referral_award_level_2 = 1
+					user.referral_award_level_1 = 15
+					user.referral_award_level_2 = 0
 				end
 			end
 
@@ -102,6 +119,35 @@ class User < ActiveRecord::Base
 		module Functions
 			def referral_award_level(level)
 				respond_to?("referral_award_level_#{level}") ? send("referral_award_level_#{level}") : 0
+			end
+
+			def has_purchase?(name, type)
+				case type
+				when :vk_contacts_collector
+					!User.first.purchases.where(name: name, type: 'UserVkContactsCollectorPurchase').count.zero?
+				else
+					false
+				end
+			end
+
+			def get_referrals_by(opts = {})
+				raise_invalid_args = Proc.new { raise '#referrals_with: invalid args' }
+				if opts[:vk_contacts_collector]
+					if opts[:vk_contacts_collector][:package_name]
+						case opts[:vk_contacts_collector][:package_name]
+						when :skilled_120_or_greater
+							referrals.joins(:user_purchases).where(user_purchases: { name: ['skilled_120', 'seasoned_240', 'advanced_360'] })
+						when :seasoned_240_or_greater
+							referrals.joins(:user_purchases).where(user_purchases: { name: ['seasoned_240', 'advanced_360'] })
+						else
+							raise_invalid_args.call()
+						end
+					else
+						raise_invalid_args.call()
+					end
+				else
+					raise_invalid_args.call()
+				end
 			end
 		end
 	end

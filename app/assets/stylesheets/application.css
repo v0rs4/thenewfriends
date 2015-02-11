@@ -15,5 +15,6 @@
  *= require plugins/pictonic
  *= require plugins/toastr
  *= require plugins/animate
+ *= require plugins/bootstrap-datetimepicker
  *= require jquery.dataTables.bootstrap
  */

@@ -80,11 +80,12 @@ class ProcessVkContactsWorker
 	end
 
 	class SaveVkContactsSource
-		attr_reader :vk_c_source_name, :vk_c_source_identifier, :opts
+		attr_reader :vk_c_source_name, :vk_c_source_identifier, :total_count, :opts
 
-		def initialize(vk_c_source_name, vk_c_source_identifier, opts = {})
+		def initialize(vk_c_source_name, vk_c_source_identifier, total_count, opts = {})
 			@vk_c_source_name = vk_c_source_name
 			@vk_c_source_identifier = vk_c_source_identifier
+			@total_count = total_count
 			@opts = opts
 		end
 
@@ -99,7 +100,7 @@ class ProcessVkContactsWorker
 				VkContactsSource.find_by_vk_identifier(vk_c_source_identifier)
 			else
 				begin
-					VkContactsSource.create!(name: vk_c_source_name, vk_identifier: vk_c_source_identifier)
+					VkContactsSource.create!(name: vk_c_source_name, vk_identifier: vk_c_source_identifier, total_count: total_count)
 				rescue ActiveRecord::RecordNotUnique
 					VkContactsSource.find_by_vk_identifier(vk_c_source_identifier)
 				end
@@ -129,18 +130,6 @@ class ProcessVkContactsWorker
 				_save_vk_contacts_xlsx_file
 			]
 		end
-
-		# def _sort_vk_contacts_filtered
-		# 	vk_contacts_filtered.inject({ skype: [], phone: [], instagram: [], twitter: [] }) do |_hash, _vk_contact|
-		# 		_vk_contact = Hashie::Mash.new(_vk_contact)
-		# 		_hash.merge({
-		# 				skype: _vk_contact.skype.nil? ? _hash[:skype] << _vk_contact.skype : _hash[:skype],
-		# 				phone: _vk_contact.mobile_phone.nil? ? _hash[:phone] << _vk_contact.mobile_phone : _hash[:phone],
-		# 				instagram: _vk_contact.instagram.nil? ? _hash[:instagram] << _vk_contact.instagram : _hash[:instagram],
-		# 				twitter: _vk_contact.twitter.nil? ? _hash[:twitter] << _vk_contact.twitter : _hash[:twitter]
-		# 			})
-		# 	end
-		# end
 
 		def _save_vk_contacts_skype_vcf
 			vk_contacts_file_path = VkContactsFileCreator.create_skype_vcf(
@@ -209,20 +198,32 @@ class ProcessVkContactsWorker
 		end
 	end
 
-	class FilterVkContacts
+	# class VkContactsSorter
+	# 	def _sort_vk_contacts_filtered
+	# 		vk_contacts_filtered.inject({ skype: [], phone: [], instagram: [], twitter: [] }) do |_hash, _vk_contact|
+	# 			_vk_contact = Hashie::Mash.new(_vk_contact)
+	# 			_hash.merge({
+	# 					skype: _vk_contact.skype.nil? ? _hash[:skype] << _vk_contact.skype : _hash[:skype],
+	# 					phone: _vk_contact.mobile_phone.nil? ? _hash[:phone] << _vk_contact.mobile_phone : _hash[:phone],
+	# 					instagram: _vk_contact.instagram.nil? ? _hash[:instagram] << _vk_contact.instagram : _hash[:instagram],
+	# 					twitter: _vk_contact.twitter.nil? ? _hash[:twitter] << _vk_contact.twitter : _hash[:twitter]
+	# 				})
+	# 		end
+	# 	end
+	# end
+
+	class VkContactsSorter
 		class << self
-			def filter(contacts)
-				new.filter(contacts)
+			def remove_useless(contacts)
+				new.remove_useless(contacts)
+			end
+
+			def rearrange_by_type(contacts)
+				new.rearrange_by_type(contacts)
 			end
 		end
 
-		def filter(contacts)
-			filter_contacts(contacts)
-		end
-
-		private
-
-		def filter_contacts(contacts)
+		def remove_useless(contacts)
 			contacts.delete_if do |contact|
 				contact['skype'] = skype_filter(contact['skype'])
 				contact['mobile_phone'] = phone_filter(contact['mobile_phone'])
@@ -234,6 +235,20 @@ class ProcessVkContactsWorker
 			end
 			contacts
 		end
+
+		def rearrange_by_type(contacts)
+			contacts.inject({ skype: [], phone: [], instagram: [], twitter: [] }) do |_hash, _vk_contact|
+				_vk_contact = Hashie::Mash.new(_vk_contact)
+				_hash.merge({
+						skype: _vk_contact.skype.nil? ? _hash[:skype] << _vk_contact.skype : _hash[:skype],
+						phone: _vk_contact.mobile_phone.nil? ? _hash[:phone] << _vk_contact.mobile_phone : _hash[:phone],
+						instagram: _vk_contact.instagram.nil? ? _hash[:instagram] << _vk_contact.instagram : _hash[:instagram],
+						twitter: _vk_contact.twitter.nil? ? _hash[:twitter] << _vk_contact.twitter : _hash[:twitter]
+					})
+			end
+		end
+
+		private
 
 		def bullshit?(str)
 			str.nil? or str =~ /http/ or str =~ /@/
@@ -268,8 +283,9 @@ class ProcessVkContactsWorker
 
 	def perform(vk_c_source_name, vk_c_source_identifier, vk_contacts_json, user_id)
 		vk_contacts_parsed = _parse_contacts(vk_contacts_json)
-		vk_contacts_filtered = _filter_vk_contacts(vk_contacts_parsed)
-		vk_c_source = _save_vk_contacts_source(vk_c_source_name, vk_c_source_identifier)
+		vk_contacts_filtered = _remove_useless_contacts(vk_contacts_parsed)
+		# vk_contacts_rearranged_by_type = _rearrange_contacts_by_type(vk_contacts_filtered)
+		vk_c_source = _save_vk_contacts_source(vk_c_source_name, vk_c_source_identifier, vk_contacts_filtered.size)
 		vk_c_files = _save_vk_contacts_files(vk_contacts_filtered, vk_c_source)
 		_link_user_with_vk_c_files(User.find(user_id), vk_c_files)
 	end
@@ -280,8 +296,12 @@ class ProcessVkContactsWorker
 		MultiJson.load(*args)
 	end
 
-	def _filter_vk_contacts(*args)
-		FilterVkContacts.filter(*args)
+	def _remove_useless_contacts(*args)
+		VkContactsSorter.remove_useless(*args)
+	end
+
+	def _rearrange_contacts_by_type(*args)
+		VkContactsSorter.rearrange_by_type(*args)
 	end
 
 	def _save_vk_contacts_files(*args)

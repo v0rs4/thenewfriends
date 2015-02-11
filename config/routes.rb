@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 		get 'pricing_plans', to: 'static_pages#pricing_plans'
 		get 'pmvf', to: 'static_pages#pmvf'
 		get 'referrals', to: 'static_pages#referrals'
+		get 'faq', to: 'static_pages#faq'
 
 		scope 'vkontakte_oauth', as: :vk_o_auth do
 			get 'authorize', to: 'vk_o_auth#authorize'

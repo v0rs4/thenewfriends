@@ -20,7 +20,9 @@
         <td>
           <%= _referral.skype %>
         </td>
-        <td><%= _referral.pricing_plan_purchased?(:vk_contacts_collector) ? t('translations.yeah') : t('translations.nah') %></td>
+        <td>
+          <%= _referral.current_vcc_package %>
+        </td>
         <td><%= _referral.referrals.count %></td>
       </tr>
   <%- end -%>
