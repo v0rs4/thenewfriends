@@ -23,7 +23,7 @@ ru:
     facebook_id: ID страницы Facebook
     twitter_id: ID страницы Twitter
     skype: Skype
-    dashboard: Панелище!!
+    dashboard: Главная
     vk_contacts_collector: Сборщик контактов Вконтакте
     vkontakte: Вконтакте
     actions: Действия
@@ -148,3 +148,5 @@ ru:
     in_order_to_use_vk_c_c: Для того, чтобы воспользоваться сервисом, войдите в ВК
     in_order_to_use_vk_c_c_en: In order to use contacts collector service, please sign in
     faq: FAQ
+    user_profile: Профиль
+    to_the_lp: Перейти на посадочную страницу

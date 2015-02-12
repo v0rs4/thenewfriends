@@ -43,10 +43,10 @@
           TNF
         </div>
       </li>
-      <%= ah_nav_link(fa_icon('dashboard', text: content_tag(:span) { t('translations.dashboard') }), work_root_url) -%>
-      <%= ah_nav_link(fa_icon('vk', text: content_tag(:span) { t('translations.vkontakte') }), work_vkontakte_contacts_collector_url) -%>
-      <%= ah_nav_link(fa_icon('diamond', text: content_tag(:span) { t('translations.pricing_n_plans') }), work_pricing_plans_url) -%>
-      <%= ah_nav_link(fa_icon('question', text: content_tag(:span) { t('translations.faq') }), work_faq_url) -%>
+      <%= ah_nav_link(fa_icon('dashboard', text: content_tag(:span) { t('translations.dashboard') }), work_root_url, data: { toggle: "tooltip", placement: "right", title: t('translations.dashboard') }) -%>
+      <%= ah_nav_link(fa_icon('vk', text: content_tag(:span) { t('translations.vkontakte') }), work_vkontakte_contacts_collector_url, data: { toggle: "tooltip", placement: "right", title: t('translations.vkontakte') }) -%>
+      <%= ah_nav_link(fa_icon('diamond', text: content_tag(:span) { t('translations.pricing_n_plans') }), work_pricing_plans_url, data: { toggle: "tooltip", placement: "right", title: t('translations.pricing_n_plans') }) -%>
+      <%= ah_nav_link(fa_icon('question', text: content_tag(:span) { t('translations.faq') }), work_faq_url, data: { toggle: "tooltip", placement: "right", title: t('translations.faq') }) -%>
       <%- if @current_user.is_admin? -%>
           <li>
             <a href="">

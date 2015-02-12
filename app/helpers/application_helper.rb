@@ -54,9 +54,9 @@ module ApplicationHelper
 		action.include?(params[:action])
 	end
 
-	def ah_nav_link(link_text, link_path, active_class_name = 'active')
+	def ah_nav_link(link_text, link_path, opts = {}, active_class_name = 'active')
 		class_name = current_page?(link_path) ? active_class_name : ''
-		content_tag(:li, class: class_name) do
+		content_tag(:li, opts.merge({ class: class_name })) do
 			link_to link_text, link_path
 		end
 	end

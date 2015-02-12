@@ -2,19 +2,19 @@
   <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0; padding-right: 15px;">
     <ul class="nav navbar-top-links navbar-right">
       <li class="hidden-xs">
-        <%= link_to root_url do %>
+        <%= link_to root_url, data: { toggle: "tooltip", placement: "bottom", title: t('translations.to_the_lp') } do %>
             <%= fa_icon('external-link') %>
             TheNewFriends
         <% end %>
       </li>
       <li>
-        <%= link_to fa_icon('user'), edit_work_user_profile_url %>
+        <%= link_to fa_icon('user'), edit_work_user_profile_url, data: { toggle: "tooltip", placement: "bottom", title: t('translations.user_profile') } %>
       </li>
       <li>
-        <%= link_to fa_icon('dollar'), work_referrals_url -%>
+        <%= link_to fa_icon('dollar'), work_referrals_url, data: { toggle: "tooltip", placement: "bottom", title: t('translations.referrals') } -%>
       </li>
       <li>
-        <%= link_to fa_icon('sign-out'), destroy_user_session_url, method: :delete, data: { confirm: 'Вы точно хотите выйти?' } %>
+        <%= link_to fa_icon('sign-out'), destroy_user_session_url, method: :delete, data: { toggle: "tooltip", placement: "bottom", title: t('translations.sign_out'), confirm: 'Вы точно хотите выйти?' } %>
       </li>
     </ul>
   </nav>
