@@ -63,11 +63,11 @@
               <%- end -%>
               <tr>
                 <td>Реферралов с Skilled120 или выше</td>
-                <td><%= current_user.get_referrals_by(vk_contacts_collector: {package_name: :skilled_120_or_greater}).count %></td>
+                <td><%= current_user.get_referrals_by(vk_contacts_collector: { package_name: :skilled_120_or_greater }).count %></td>
               </tr>
               <tr>
                 <td>Реферралов с Seasoned240 или выше</td>
-                <td><%= current_user.get_referrals_by(vk_contacts_collector: {package_name: :seasoned_240_or_greater}).count %></td>
+                <td><%= current_user.get_referrals_by(vk_contacts_collector: { package_name: :seasoned_240_or_greater }).count %></td>
               </tr>
               </tbody>
             </table>
@@ -115,10 +115,18 @@
     <%- end -%>
     <%= ah_ibox do -%>
         <%= ah_ibox_content do -%>
-            <h2>Рефералы
+            <h2>
+              Рефералы
               <small class="text-muted">1 уровня</small>
             </h2>
             <%= render 'static_pages/referrals/table', referrals: @current_user.referrals.order('created_at DESC') %>
+        <%- end -%>
+    <%- end -%>
+
+    <%= ah_ibox do -%>
+        <%= ah_ibox_content do -%>
+            <h2>Платежи</h2>
+            <%= render 'static_pages/referrals/r_payments_table', referral_payments: @current_user.user_referral_payments.order('created_at DESC') %>
         <%- end -%>
     <%- end -%>
 <%- else -%>

@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
 
 	has_many :referrals, class_name: 'User', foreign_key: :inviter_id
 
+	has_many :user_referral_payments
+
 	accepts_nested_attributes_for :user_vk_contacts_collector_permission
 	accepts_nested_attributes_for :user_profile
 

@@ -7,7 +7,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module TheNewFriends
-	VERSION = '0.4.0-alpha1'
+	VERSION = '1.0.0-alpha3'
 	class Application < Rails::Application
 		# Settings in config/environments/* take precedence over those specified here.
 		# Application configuration should go into files in config/initializers

@@ -20,17 +20,10 @@ class StaticPagesController < ApplicationController
 	end
 
 	def pricing_plans
-		@pricing_plan_sci = {
-			newbie_30: generate_pricing_plan_pm_sci('newbie_30', 10.0),
-			novice_60: generate_pricing_plan_pm_sci('novice_60', 15.0),
-			skilled_120: generate_pricing_plan_pm_sci('skilled_120', 25.0),
-			seasoned_240: generate_pricing_plan_pm_sci('seasoned_240', 45.0),
-			advanced_360: generate_pricing_plan_pm_sci('advanced_360', 80.0)
-		}
-		unless @current_user.vcc_permission.package.blank?
-			@pricing_plan_sci.delete_if do |name, sci|
-				UserVkContactsCollectorPermission.get_package_by(:name, name)[:level] <= UserVkContactsCollectorPermission.get_package_by(:name, @current_user.vcc_permission.package.to_sym)[:level]
-			end
+		@pricing_plan_sci = UserVkContactsCollectorPermission::PACKAGES.inject({}) do |m, e|
+			if current_user.vcc_permission.package.blank? or e[:level] > UserVkContactsCollectorPermission.get_package_by(:name, @current_user.vcc_permission.package.to_sym)[:level]
+				m[e[:name]] = generate_pricing_plan_pm_sci(e[:name].to_s, e[:price])
+			end; m
 		end
 	end
 

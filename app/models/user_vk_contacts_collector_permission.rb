@@ -3,35 +3,40 @@ class UserVkContactsCollectorPermission < ActiveRecord::Base
 		{
 			name: :newbie_30,
 			level: 1,
-			price: 10.0,
+			# price: 10.0,
+			price: 0.01,
 			duration_in_days: 30,
 			requests_limit_per_day: 1
 		},
 		{
 			name: :novice_60,
 			level: 2,
-			price: 15.0,
+			# price: 15.0,
+			price: 0.02,
 			duration_in_days: 60,
 			requests_limit_per_day: 2
 		},
 		{
 			name: :skilled_120,
 			level: 3,
-			price: 25.0,
+			# price: 25.0,
+			price: 0.03,
 			duration_in_days: 120,
 			requests_limit_per_day: 3
 		},
 		{
 			name: :seasoned_240,
 			level: 4,
-			price: 45.0,
+			# price: 45.0,
+			price: 0.04,
 			duration_in_days: 240,
 			requests_limit_per_day: 4
 		},
 		{
 			name: :advanced_360,
 			level: 5,
-			price: 80.0,
+			# price: 80.0,
+			price: 0.05,
 			duration_in_days: 360,
 			requests_limit_per_day: 5
 		}

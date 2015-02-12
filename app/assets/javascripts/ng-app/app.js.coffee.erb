@@ -35,13 +35,16 @@ angular.module('tnf-ng-app', ['ui.router', 'ngCookies', 'ngAnimate', 'vkontakteC
 					toastr.warning('Сохранение контактов начато. Не закрывайте страницу, иначе собранные контакты будут утеряны',
 							'TheNewFriends')
 				vkContactsUploadingFinished: () ->
-					toastr.success('Контакты успешно загружены. Серверная обработка контактов займет от 10 сек до 2 минут. Так что, если вы не обнаружите файл через 10 сек — не спешите скачивать контакты снова.', 'TheNewFriends')
+					toastr.success('Контакты успешно загружены. Серверная обработка контактов займет от 10 сек до 2 минут. Так что, если вы не обнаружите файл через 10 сек — не спешите скачивать контакты снова.',
+							'TheNewFriends')
 				vkContactsCollectingStarted: (contacts) ->
 					toastr.info('Сбор контактов начат', 'TheNewFriends')
 				vkContactsCollectingFinished: (contacts) ->
 					toastr.info("Собрано #{contacts.length} контактов", 'TheNewFriends')
 				vkContactsCountLimitExceeded: () ->
 					toastr.error('Укажите источник где меньше 100,000 пользователей', 'TheNewFriends')
+				vkContactsUploadingError: () ->
+					toastr.error('Возникла ошибка. Попробуйте еще раз.', 'TheNewFriends')
 		]
 )
 .run(
@@ -66,6 +69,9 @@ angular.module('tnf-ng-app', ['ui.router', 'ngCookies', 'ngAnimate', 'vkontakteC
 					}).then(
 						() ->
 							$notification.vkContactsUploadingFinished()
+					,
+						()->
+							$notification.vkContactsUploadingError()
 					)
 		]
 )

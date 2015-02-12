@@ -1,0 +1,16 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Дата</th>
+    <th>Сумма</th>
+  </tr>
+  </thead>
+  <tbody>
+  <%- referral_payments.each do |_rp| -%>
+      <tr>
+        <td><%= fa_icon('clock-o', text: "#{time_ago_in_words(_rp.created_at)} #{t('translations.ago')}") %></td>
+        <td><%= fa_icon('dollar', text: _rp.amount) %></td>
+      </tr>
+  <%- end -%>
+  </tbody>
+</table>

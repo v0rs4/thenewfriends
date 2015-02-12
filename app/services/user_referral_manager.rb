@@ -61,6 +61,7 @@ class UserReferralManager
 		# end
 		if earned_amount > 0
 			user.update_attributes(referral_earned: (user.referral_earned + earned_amount).round(2))
+			user.user_referral_payments.create(amount: earned_amount.round(2))
 		else
 			false
 		end
@@ -105,7 +106,7 @@ class UserReferralManager
 				UserReferralManager.new(admin).earn(income_amount * (95 - total_percent)/admins.size/100)
 			end
 		end
-		
+
 		true
 	end
 end
