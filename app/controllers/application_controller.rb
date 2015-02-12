@@ -38,6 +38,12 @@ class ApplicationController < ActionController::Base
 	def set_current_user
 		@current_user = current_user
 		@current_user_d = current_user.decorate
+
+		if current_user.is_admin?
+			cookies[:is_admin] = true
+		else
+			cookies.delete(:is_admin) if cookies[:is_admin]
+		end
 	end
 
 	def set_app_version

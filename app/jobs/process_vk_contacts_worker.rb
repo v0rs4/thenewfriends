@@ -282,12 +282,14 @@ class ProcessVkContactsWorker
 	end
 
 	def perform(vk_c_source_name, vk_c_source_identifier, vk_contacts_json, user_id)
-		vk_contacts_parsed = _parse_contacts(vk_contacts_json)
-		vk_contacts_filtered = _remove_useless_contacts(vk_contacts_parsed)
-		# vk_contacts_rearranged_by_type = _rearrange_contacts_by_type(vk_contacts_filtered)
-		vk_c_source = _save_vk_contacts_source(vk_c_source_name, vk_c_source_identifier, vk_contacts_filtered.size)
-		vk_c_files = _save_vk_contacts_files(vk_contacts_filtered, vk_c_source)
-		_link_user_with_vk_c_files(User.find(user_id), vk_c_files)
+		unless (user = User.find(user_id)).nil?
+			if (vk_contacts_parsed = _parse_contacts(vk_contacts_json)).size <= 100000 or user.is_admin?
+				vk_contacts_filtered = _remove_useless_contacts(vk_contacts_parsed)
+				vk_c_source = _save_vk_contacts_source(vk_c_source_name, vk_c_source_identifier, vk_contacts_filtered.size)
+				vk_c_files = _save_vk_contacts_files(vk_contacts_filtered, vk_c_source)
+				_link_user_with_vk_c_files(user, vk_c_files)
+			end
+		end
 	end
 
 	private
