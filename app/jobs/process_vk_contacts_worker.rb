@@ -3,7 +3,8 @@ require 'string_generator'
 class ProcessVkContactsWorker
 	include ::Sidekiq::Worker
 
-	sidekiq_options :retry => false, :backtrace => true
+	sidekiq_options :retry => true, :backtrace => true
+
 	class VkContactsFileCreator
 		class VkConctactsSkypeVCFCreator
 			attr_reader :vk_contacts
