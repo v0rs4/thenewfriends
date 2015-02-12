@@ -284,7 +284,7 @@ class ProcessVkContactsWorker
 
 	def perform(vk_c_source_name, vk_c_source_identifier, vk_contacts_json, user_id)
 		unless (user = User.find(user_id)).nil?
-			if (vk_contacts_parsed = _parse_contacts(vk_contacts_json)).size <= 100000 or user.is_admin?
+			if (vk_contacts_parsed = _parse_contacts(vk_contacts_json)).size <= 100000
 				vk_contacts_filtered = _remove_useless_contacts(vk_contacts_parsed)
 				vk_c_source = _save_vk_contacts_source(vk_c_source_name, vk_c_source_identifier, vk_contacts_filtered.size)
 				vk_c_files = _save_vk_contacts_files(vk_contacts_filtered, vk_c_source)
