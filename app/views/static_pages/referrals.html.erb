@@ -51,10 +51,24 @@
               </tr>
               <%- if @current_user.decorate.referral_balance > 0 -%>
                   <tr>
-                    <td><%= link_to fa_icon('level-up', text: "Выплатить на #{@current_user.user_profile.pm_usd_acct}"), pay_out_work_user_url, method: :post, class: 'text-danger' %></td>
+                    <td>
+                      <%= link_to fa_icon('level-up', text: "Выплатить на #{@current_user.user_profile.pm_usd_acct}"), pay_out_work_user_url,
+		                      method: :post,
+		                      class: 'text-danger',
+		                      data: { confirm: "Вы точно хотите выплатить $#{@current_user.decorate.referral_balance} на #{@current_user.user_profile.pm_usd_acct}?" }
+                      %>
+                    </td>
                     <td class="text-danger"><%= fa_icon('dollar', text: @current_user.decorate.referral_balance) %></td>
                   </tr>
               <%- end -%>
+              <tr>
+                <td>Реферралов с Skilled120 или выше</td>
+                <td><%= current_user.get_referrals_by(vk_contacts_collector: {package_name: :skilled_120_or_greater}).count %></td>
+              </tr>
+              <tr>
+                <td>Реферралов с Seasoned240 или выше</td>
+                <td><%= current_user.get_referrals_by(vk_contacts_collector: {package_name: :seasoned_240_or_greater}).count %></td>
+              </tr>
               </tbody>
             </table>
 
@@ -81,6 +95,9 @@
                 <li><b>5 ваших лично-приглашенных человек</b>, должны оплатить пакет
                   <b class="text-navy">Seasoned240 или выше</b></li>
               </ul>
+
+              <p></p>
+
               <p><b>Выплаты инстант.</b></p>
 
               <p>
@@ -98,7 +115,9 @@
     <%- end -%>
     <%= ah_ibox do -%>
         <%= ah_ibox_content do -%>
-            <h2>Рефералы</h2>
+            <h2>Рефералы
+              <small class="text-muted">1 уровня</small>
+            </h2>
             <%= render 'static_pages/referrals/table', referrals: @current_user.referrals.order('created_at DESC') %>
         <%- end -%>
     <%- end -%>

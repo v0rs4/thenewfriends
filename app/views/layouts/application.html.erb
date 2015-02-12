@@ -26,6 +26,13 @@
                 </p>
             <%- end -%>
         <%- end -%>
+        <%- unless flash[:alert].nil? -%>
+            <%= alert_box context: :danger do %>
+                <p>
+                  <%= flash[:alert] %>
+                </p>
+            <%- end -%>
+        <%- end -%>
         <%= yield %>
       </div>
     </div>

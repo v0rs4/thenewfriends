@@ -47,7 +47,11 @@
     </div>
 <%- else -%>
     <div class="text-center">
-      <h2>Вы не можете использовать ВК сборщик контактов, пока не заполните свой профиль</h2>
+      <div>
+        <%= fa_icon('exclamation-triangle 4x') -%>
+      </div>
+
+      <h2>Вы не можете использовать ВК сборщик контактов. <br/> Заполните свой профиль</h2>
 
       <h3><%= t('translations.go_to') -%> <%= link_to t('translations.profile'), edit_work_user_profile_url %></h3>
     </div>

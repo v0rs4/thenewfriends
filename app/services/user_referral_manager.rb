@@ -21,12 +21,12 @@ class UserReferralManager
 		private
 
 		def can_up_to_45_30?
-			user.has_purchase?([:seasoned_240, :advanced_360], :vk_contacts_collector) and
+			user.has_permission?([:seasoned_240, :advanced_360], :vk_contacts_collector) and
 				user.get_referrals_by(vk_contacts_collector: { package_name: :seasoned_240_or_greater }).count > 5
 		end
 
 		def can_up_to_30_20?
-			user.has_purchase?([:skilled_120, :seasoned_240, :advanced_360], :vk_contacts_collector) and
+			user.has_permission?([:skilled_120, :seasoned_240, :advanced_360], :vk_contacts_collector) and
 				user.get_referrals_by(vk_contacts_collector: { package_name: :skilled_120_or_greater }).count > 5
 		end
 
@@ -76,6 +76,8 @@ class UserReferralManager
 				false
 			end
 		end
+	rescue StandardError
+		false
 	end
 
 	def calculate_referral_awards
@@ -100,10 +102,10 @@ class UserReferralManager
 		admins = User.where(is_admin: true)
 		if admins.size > 0
 			admins.each do |admin|
-				UserReferralManager.new(admin).earn(income_amount * (100 - total_percent)/admins.size/100)
+				UserReferralManager.new(admin).earn(income_amount * (95 - total_percent)/admins.size/100)
 			end
 		end
-
+		
 		true
 	end
 end

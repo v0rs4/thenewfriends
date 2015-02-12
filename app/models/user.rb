@@ -2,7 +2,6 @@ class User < ActiveRecord::Base
 	devise :database_authenticatable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
 	has_one :user_profile, dependent: :destroy, inverse_of: :user
-	# has_one :user_permission, dependent: :destroy, inverse_of: :user
 	has_one :user_vk_contacts_collector_permission, dependent: :destroy, inverse_of: :user
 
 	belongs_to :inviter, class_name: 'User', foreign_key: :inviter_id
@@ -14,10 +13,6 @@ class User < ActiveRecord::Base
 
 	has_many :referrals, class_name: 'User', foreign_key: :inviter_id
 
-	has_many :user_purchases, inverse_of: :user
-	has_many :user_vk_contacts_collector_purchases, inverse_of: :user
-
-	# accepts_nested_attributes_for :user_permission
 	accepts_nested_attributes_for :user_vk_contacts_collector_permission
 	accepts_nested_attributes_for :user_profile
 
@@ -28,9 +23,7 @@ class User < ActiveRecord::Base
 		}
 
 	alias_method :vcc_permission, :user_vk_contacts_collector_permission
-	alias_method :vcc_purchases, :user_vk_contacts_collector_purchases
 	alias_method :profile, :user_profile
-	alias_method :purchases, :user_purchases
 
 
 	module Extensions
@@ -50,9 +43,7 @@ class User < ActiveRecord::Base
 
 				def run
 					_build_user_profile
-					# _build_user_permission
 					_build_user_vk_contacts_collector_permission
-					_build_user_permission
 					_set_as_admin
 					_set_inviter_id
 					_set_referral_award
@@ -60,16 +51,12 @@ class User < ActiveRecord::Base
 
 				private
 
-				def _build_user_vk_contacts_collector_permission
-					user.build_user_vk_contacts_collector_permission
-				end
-
 				def _build_user_profile
 					user.build_user_profile
 				end
 
-				def _build_user_permission
-					user.build_user_permission
+				def _build_user_vk_contacts_collector_permission
+					user.build_user_vk_contacts_collector_permission
 				end
 
 				def _set_as_admin
@@ -121,10 +108,14 @@ class User < ActiveRecord::Base
 				respond_to?("referral_award_level_#{level}") ? send("referral_award_level_#{level}") : 0
 			end
 
-			def has_purchase?(name, type)
+			def has_permission?(name, type)
 				case type
 				when :vk_contacts_collector
-					!User.first.purchases.where(name: name, type: 'UserVkContactsCollectorPurchase').count.zero?
+					if name.is_a?(Array)
+						name.include?(vcc_permission.package.to_sym)
+					else
+						vcc_permission.package.to_sym == name
+					end
 				else
 					false
 				end
@@ -136,9 +127,11 @@ class User < ActiveRecord::Base
 					if opts[:vk_contacts_collector][:package_name]
 						case opts[:vk_contacts_collector][:package_name]
 						when :skilled_120_or_greater
-							referrals.joins(:user_purchases).where(user_purchases: { name: ['skilled_120', 'seasoned_240', 'advanced_360'] })
+							referrals.joins(:user_vk_contacts_collector_permission).where(user_vk_contacts_collector_permissions: { package: ['skilled_120', 'seasoned_240', 'advanced_360'] })
 						when :seasoned_240_or_greater
-							referrals.joins(:user_purchases).where(user_purchases: { name: ['seasoned_240', 'advanced_360'] })
+							referrals.joins(:user_vk_contacts_collector_permission).where(user_vk_contacts_collector_permissions: { package: ['seasoned_240', 'advanced_360'] })
+						when :newbie_30, :novice_60, :skilled_120, :seasoned_240, :advanced_360
+							referrals.joins(:user_vk_contacts_collector_permission).where(user_vk_contacts_collector_permissions: { package: opts[:vk_contacts_collector][:package_name] })
 						else
 							raise_invalid_args.call()
 						end

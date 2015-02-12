@@ -124,10 +124,10 @@ class UserDecorator < Draper::Decorator
 	end
 
 	def current_vcc_package
-		if (_p = vcc_purchases.last).nil?
+		if (_p = vcc_permission.package).nil?
 			h.t('translations.nah')
 		else
-			_p.name.camelcase
+			_p.camelcase
 		end
 	end
 end
