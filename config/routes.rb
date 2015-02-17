@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 		end
 		resource :user_profile, only: [:edit, :update]
 		resources(:user_vk_contacts_files, only: [:index, :show, :update, :edit]) { member { get :download } }
+		resources(:user_vk_contacts_records, only: [:index, :update, :edit, :destroy]) { member { get :download } }
 
 		get 'vkontakte_contacts_collector', to: 'static_pages#vkontakte_contacts_collector'
 		get 'pricing_plans', to: 'static_pages#pricing_plans'

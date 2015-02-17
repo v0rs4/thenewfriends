@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col-lg-12">
+    <%= ah_ibox do -%>
+        <%= ah_ibox_heading do -%>
+            <h3>Мои скачанные контакты</h3>
+        <%- end -%>
+        <%= ah_ibox_content class: 'p-no' do -%>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th>Создан</th>
+                <th>Название</th>
+                <th>Источник</th>
+                <th>Кол-во контактов</th>
+                <th>Кол-во скайпов</th>
+                <th>Кол-во инстаграмов</th>
+                <th>Кол-во твиттеров</th>
+                <th>Кол-во телефонов</th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <%- @user_vk_contacts_records.each do |_item| -%>
+                  <tr>
+                    <td style="font-size: 0.85em;">
+                      <%= time_ago_in_words(_item.created_at) %>
+                      <%= t('translations.ago') %>
+                    </td>
+                    <td><%= _item.name %></td>
+                    <td><%= _item.vk_source_identifier %></td>
+                    <td><%= _item.total_count %></td>
+                    <td><%= _item.skype_count %></td>
+                    <td><%= _item.instagram_count %></td>
+                    <td><%= _item.twitter_count %></td>
+                    <td><%= _item.phone_count %></td>
+                    <td>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-outline btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                          Действие <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                          <li>
+                            <%= link_to fa_icon('download', text: t('translations.download') + ' .vcf'), download_work_user_vk_contacts_record_url(_item, target: :vcf), data: { confirm: 'Вы точно хотите скачать файл .vcf?' }, class: '', target: '_blank' %>
+                          </li>
+                          <li>
+                            <%= link_to fa_icon('download', text: t('translations.download') + ' .xlsx'), download_work_user_vk_contacts_record_url(_item, target: :xlsx), data: { confirm: 'Вы точно хотите скачать файл .xlsx?' }, class: '', target: '_blank' %>
+                          </li>
+                          <%- unless _item.created_today? -%>
+                              <li class="text-danger">
+                                <%= link_to fa_icon('times', text: t('translations.delete')), work_user_vk_contacts_record_url(_item), method: :delete, data: { confirm: 'Вы точно хотите удалить запись?' }, class: '' %>
+                              </li>
+                          <%- end -%>
+                        </ul>
+                      </div>
+                    </td>
+                  </tr>
+              <%- end -%>
+              </tbody>
+            </table>
+        <%- end -%>
+    <%- end -%>
+  </div>
+</div>

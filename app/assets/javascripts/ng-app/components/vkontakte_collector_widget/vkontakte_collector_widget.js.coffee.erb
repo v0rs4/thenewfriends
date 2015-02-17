@@ -209,6 +209,10 @@ angular.module('vkontakteCollectorWidget', ['ngResource'])
 
 						filter_contacts = (contacts) ->
 							_.forEach contacts, (contact) ->
+								#								if typeof(contact.first_name) == 'string'
+								#									contact.first_name = contact.first_name.transliterate()
+								#								if typeof(contact.last_name) == 'string'
+								#									contact.last_name = contact.last_name.transliterate()
 								contact.skype = ContactsFilter.filter_skype(contact.skype)
 								contact.mobile_phone = ContactsFilter.phone_filter(contact.mobile_phone)
 								contact.home_phone = ContactsFilter.phone_filter(contact.home_phone)

@@ -64,11 +64,7 @@
                   <div class="panel-body">
                     <div class="table-responsive">
                       <ul>
-                        <%- @user.vk_contacts_source.distinct.each do |_src| -%>
-                            <li>
-                              <%= link_to _src.name, "https:/vk.com/#{_src.vk_identifier}", target: '_blank' %>
-                            </li>
-                        <%- end -%>
+
                       </ul>
                     </div>
                   </div>

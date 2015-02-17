@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150212093105) do
+ActiveRecord::Schema.define(version: 20150217094319) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,15 +92,22 @@ ActiveRecord::Schema.define(version: 20150212093105) do
     t.integer  "requests_limit_per_day", default: 0,     null: false
   end
 
-  create_table "user_vk_contacts_files", force: true do |t|
-    t.integer  "user_id",                             null: false
-    t.integer  "vk_contacts_file_id",                 null: false
-    t.boolean  "archived",            default: false, null: false
+  create_table "user_vk_contacts_records", force: true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.string   "vcf_file"
+    t.string   "xlsx_file"
+    t.string   "vk_source_identifier"
+    t.integer  "skype_count"
+    t.integer  "instagram_count"
+    t.integer  "twitter_count"
+    t.integer  "phone_count"
+    t.integer  "total_count"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "user_vk_contacts_files", ["user_id", "vk_contacts_file_id"], name: "user_vk_c_files_u_id_vk_c_f_id_unq", unique: true, using: :btree
+  add_index "user_vk_contacts_records", ["user_id", "name", "vk_source_identifier"], name: "uvcr_ui_n_vsi_u", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "",    null: false
@@ -131,25 +138,5 @@ ActiveRecord::Schema.define(version: 20150212093105) do
   add_index "users", ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-
-  create_table "vk_contacts_files", force: true do |t|
-    t.string   "name",                  null: false
-    t.string   "file",                  null: false
-    t.integer  "vk_contacts_source_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "vk_contacts_files", ["name", "vk_contacts_source_id"], name: "vk_c_files_name_v_c_source_id_unq", unique: true, using: :btree
-
-  create_table "vk_contacts_sources", force: true do |t|
-    t.string   "name",                      null: false
-    t.string   "vk_identifier",             null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "total_count",   default: 0, null: false
-  end
-
-  add_index "vk_contacts_sources", ["vk_identifier"], name: "vk_c_sources_vk_identifier_unq", unique: true, using: :btree
 
 end

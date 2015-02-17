@@ -122,6 +122,7 @@ ru:
         <i class="fa fa-download"></i> - скачать xlsx файл со скачанными контактами.
     learn_more: Узнать больше
     my_files: Мои файлы
+    my_downloaded_contacts: Мои скачанные контакты
     pmvf: Меркурий
     pmvf_full: Меркурий Взаимный Фонд
     table_n: Таблица %{number}

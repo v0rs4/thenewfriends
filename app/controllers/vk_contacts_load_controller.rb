@@ -1,17 +1,32 @@
+require 'lzma'
+
 class VkContactsLoadController < ApplicationController
 	def upload_contacts
-		authorize! :create, UserVkContactsFile
+		authorize! :create, UserVkContactsRecord
 
-		vk_c_source_name = params[:vk_contacts_source_name]
+		vk_c_record_name = params[:vk_contacts_record_name]
+		# vk_c_source_name = params[:vk_contacts_source_name]
 		vk_c_source_identifier = params[:vk_contacts_source_identifier]
+
+		# vk_contacts_json = LZMA.decompress(
+		# 	params[:vk_contacts_json]
+		# 		.split(' ')
+		# 		.map(&:hex)
+		# 		.map { |n| n.chr }
+		# 		.reduce(:+)
+		# ).force_encoding('UTF-8')
+
 		vk_contacts_json = params[:vk_contacts_json]
 
-		if vk_c_source_name and vk_c_source_identifier and vk_contacts_json
+		# if vk_c_source_name and vk_c_source_identifier and vk_contacts_json
+		if vk_c_record_name and vk_c_source_identifier and vk_contacts_json
 			ProcessVkContactsWorker.tap do |klass|
 				if Rails.env.test?
-					klass.new.perform(vk_c_source_name, vk_c_source_identifier, vk_contacts_json, current_user.id)
+					# klass.new.perform(vk_c_source_name, vk_c_source_identifier, vk_contacts_json, current_user.id)
+					klass.new.perform(vk_c_record_name, vk_c_source_identifier, vk_contacts_json, current_user.id)
 				else
-					klass.perform_async(vk_c_source_name, vk_c_source_identifier, vk_contacts_json, current_user.id)
+					# klass.perform_async(vk_c_source_name, vk_c_source_identifier, vk_contacts_json, current_user.id)
+					klass.perform_async(vk_c_record_name, vk_c_source_identifier, vk_contacts_json, current_user.id)
 				end
 			end
 

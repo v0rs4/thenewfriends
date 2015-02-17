@@ -42,18 +42,6 @@ class Admin::UsersController < Admin::ApplicationController
 				:can_update,
 				:can_delete
 			],
-			# user_permission_attributes: [
-			# 	:id,
-			# 	:user_vk_contacts_files_create,
-			# 	:user_vk_contacts_files_read,
-			# 	:user_vk_contacts_files_update,
-			# 	:user_vk_contacts_files_delete,
-			# 	:user_vk_contacts_files_create_expires_at,
-			# 	:user_vk_contacts_files_read_expires_at,
-			# 	:user_vk_contacts_files_update_expires_at,
-			# 	:user_vk_contacts_files_delete_expires_at,
-			# 	:vk_contacts_requests_limit_per_day
-			# ],
 			user_profile_attributes: [
 				:id,
 				:first_name,

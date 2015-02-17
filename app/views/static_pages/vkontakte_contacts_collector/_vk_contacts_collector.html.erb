@@ -8,8 +8,8 @@
     <%= ah_ibox_content do -%>
         <%- if cookies[:vk_access_token] -%>
             <div class="text-right m-b">
-              <%= link_to t('translations.my_files'), work_user_vk_contacts_files_path, class: 'btn btn-white' -%>
-              <%= link_to t('translations.logout'), work_vk_o_auth_logout_path, class: 'btn btn-danger' -%>
+              <%= link_to fa_icon('users',text: t('translations.my_downloaded_contacts')), work_user_vk_contacts_records_url, class: 'btn btn-white' -%>
+              <%= link_to fa_icon('sign-out',text: t('translations.logout')), work_vk_o_auth_logout_url, class: 'btn btn-danger' -%>
             </div>
         <%- else -%>
             <h3 class="text-center"><%= t('translations.in_order_to_use_vk_c_c') -%></h3>

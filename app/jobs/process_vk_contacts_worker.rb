@@ -80,77 +80,44 @@ class ProcessVkContactsWorker
 		end
 	end
 
-	class SaveVkContactsSource
-		attr_reader :vk_c_source_name, :vk_c_source_identifier, :total_count, :opts
-
-		def initialize(vk_c_source_name, vk_c_source_identifier, total_count, opts = {})
-			@vk_c_source_name = vk_c_source_name
-			@vk_c_source_identifier = vk_c_source_identifier
-			@total_count = total_count
-			@opts = opts
+	class SaveUserVkContactsRecord
+		def self.run(user, name, vk_contacts_filtered, vk_source_identifier, opts = {})
+			new.run(user, name, vk_contacts_filtered, vk_source_identifier, opts = {})
 		end
 
-		def run
-			_save_source
-		end
+		def run(user, name, vk_contacts_filtered, vk_source_identifier, opts = {})
+			vcf_file_path = VkContactsFileCreator.create_skype_vcf(
+				vk_contacts_filtered,
+				filename_prefix: name
+			)
+			xlsx_file_path = VkContactsFileCreator.create_xlsx_file(
+				vk_contacts_filtered,
+				prefix: name
+			)
 
-		private
+			vk_contacts_rearranged = VkContactsSorter.rearrange_by_type(vk_contacts_filtered)
 
-		def _save_source
-			if VkContactsSource.exists?(vk_identifier: vk_c_source_identifier)
-				VkContactsSource.find_by_vk_identifier(vk_c_source_identifier)
-			else
-				begin
-					VkContactsSource.create!(name: vk_c_source_name, vk_identifier: vk_c_source_identifier, total_count: total_count)
-				rescue ActiveRecord::RecordNotUnique
-					VkContactsSource.find_by_vk_identifier(vk_c_source_identifier)
+			_open_file(vcf_file_path) do |_vcf_file|
+				_open_file(xlsx_file_path) do |_xlsx_file|
+					unless UserVkContactsRecord.exists?(user_id: user.id, name: name, vk_source_identifier: vk_source_identifier)
+						UserVkContactsRecord.create(
+							user_id: user.id,
+							name: name,
+							vcf_file: _vcf_file,
+							xlsx_file: _xlsx_file,
+							vk_source_identifier: vk_source_identifier,
+							skype_count: vk_contacts_rearranged[:skype].size,
+							instagram_count: vk_contacts_rearranged[:instagram].size,
+							twitter_count: vk_contacts_rearranged[:twitter].size,
+							phone_count: vk_contacts_rearranged[:phone].size,
+							total_count: vk_contacts_filtered.size,
+						)
+					end
 				end
 			end
 		end
-	end
-
-	class SaveVkContactsFiles
-		attr_reader :vk_c_source, :vk_contacts_filtered, :user, :opts
-
-		def initialize(vk_contacts_filtered, vk_c_source, opts = {})
-			@vk_contacts_filtered = vk_contacts_filtered
-			@vk_c_source = vk_c_source
-			@user = user
-			@opts = opts
-		end
-
-		def run
-			_save_files
-		end
 
 		private
-
-		def _save_files
-			[
-				_save_vk_contacts_skype_vcf,
-				_save_vk_contacts_xlsx_file
-			]
-		end
-
-		def _save_vk_contacts_skype_vcf
-			vk_contacts_file_path = VkContactsFileCreator.create_skype_vcf(
-				vk_contacts_filtered,
-				filename_prefix: vk_c_source.name
-			)
-			_open_file(vk_contacts_file_path) do |file|
-				_save_vk_contacts_file("#{vk_c_source.name}_vcf", file, vk_c_source.id)
-			end
-		end
-
-		def _save_vk_contacts_xlsx_file
-			vk_contacts_file_path = VkContactsFileCreator.create_xlsx_file(
-				vk_contacts_filtered,
-				prefix: vk_c_source.name
-			)
-			_open_file(vk_contacts_file_path) do |file|
-				_save_vk_contacts_file("#{vk_c_source.name}_xlsx", file, vk_c_source.id)
-			end
-		end
 
 		def _open_file(file_path)
 			file_io = File.open(file_path, 'r')
@@ -159,59 +126,7 @@ class ProcessVkContactsWorker
 			File.delete(file_path)
 			res
 		end
-
-		def _save_vk_contacts_file(name, file, vk_contacts_source_id)
-			if VkContactsFile.exists?(name: name, vk_contacts_source_id: vk_contacts_source_id)
-				VkContactsFile.where(name: name, vk_contacts_source_id: vk_contacts_source_id).take(1).first
-			else
-				begin
-					VkContactsFile.create(
-						name: name,
-						file: file,
-						vk_contacts_source_id: vk_contacts_source_id
-					)
-				rescue ActiveRecord::RecordNotUnique
-					VkContactsFile.where(name: name, vk_contacts_source_id: vk_contacts_source_id).take(1).first
-				end
-			end
-		end
 	end
-
-	class LinkUserWithVkContactsFiles
-		attr_reader :user, :vk_c_files
-
-		def initialize(user, vk_c_files)
-			@user, @vk_c_files = user, vk_c_files
-		end
-
-		def run
-			_link_user_with_vk_c_files
-		end
-
-		private
-
-		def _link_user_with_vk_c_files
-			vk_c_files.inject([]) do |_links, _vk_c_file|
-				unless UserVkContactsFile.exists?(user_id: user.id, vk_contacts_file_id: _vk_c_file.id)
-					_links << UserVkContactsFile.create(user_id: user.id, vk_contacts_file_id: _vk_c_file.id)
-				end
-			end
-		end
-	end
-
-	# class VkContactsSorter
-	# 	def _sort_vk_contacts_filtered
-	# 		vk_contacts_filtered.inject({ skype: [], phone: [], instagram: [], twitter: [] }) do |_hash, _vk_contact|
-	# 			_vk_contact = Hashie::Mash.new(_vk_contact)
-	# 			_hash.merge({
-	# 					skype: _vk_contact.skype.nil? ? _hash[:skype] << _vk_contact.skype : _hash[:skype],
-	# 					phone: _vk_contact.mobile_phone.nil? ? _hash[:phone] << _vk_contact.mobile_phone : _hash[:phone],
-	# 					instagram: _vk_contact.instagram.nil? ? _hash[:instagram] << _vk_contact.instagram : _hash[:instagram],
-	# 					twitter: _vk_contact.twitter.nil? ? _hash[:twitter] << _vk_contact.twitter : _hash[:twitter]
-	# 				})
-	# 		end
-	# 	end
-	# end
 
 	class VkContactsSorter
 		class << self
@@ -240,11 +155,16 @@ class ProcessVkContactsWorker
 		def rearrange_by_type(contacts)
 			contacts.inject({ skype: [], phone: [], instagram: [], twitter: [] }) do |_hash, _vk_contact|
 				_vk_contact = Hashie::Mash.new(_vk_contact)
+
+				phones = []
+				phones << _vk_contact.mobile_phone unless _vk_contact.mobile_phone.nil?
+				phones << _vk_contact.home_phone unless _vk_contact.home_phone.nil?
+
 				_hash.merge({
-						skype: _vk_contact.skype.nil? ? _hash[:skype] << _vk_contact.skype : _hash[:skype],
-						phone: _vk_contact.mobile_phone.nil? ? _hash[:phone] << _vk_contact.mobile_phone : _hash[:phone],
-						instagram: _vk_contact.instagram.nil? ? _hash[:instagram] << _vk_contact.instagram : _hash[:instagram],
-						twitter: _vk_contact.twitter.nil? ? _hash[:twitter] << _vk_contact.twitter : _hash[:twitter]
+						skype: _vk_contact.skype.nil? ? _hash[:skype] : _hash[:skype] << _vk_contact.skype,
+						phone: _hash[:phone] += phones,
+						instagram: _vk_contact.instagram.nil? ? _hash[:instagram] : _hash[:instagram] << _vk_contact.instagram,
+						twitter: _vk_contact.twitter.nil? ? _hash[:twitter] : _hash[:twitter] << _vk_contact.twitter
 					})
 			end
 		end
@@ -282,40 +202,11 @@ class ProcessVkContactsWorker
 		end
 	end
 
-	def perform(vk_c_source_name, vk_c_source_identifier, vk_contacts_json, user_id)
+	def perform(vk_c_record_name, vk_source_identifier, vk_contacts_json, user_id)
 		unless (user = User.find(user_id)).nil?
-			if (vk_contacts_parsed = _parse_contacts(vk_contacts_json)).size <= 100000
-				vk_contacts_filtered = _remove_useless_contacts(vk_contacts_parsed)
-				vk_c_source = _save_vk_contacts_source(vk_c_source_name, vk_c_source_identifier, vk_contacts_filtered.size)
-				vk_c_files = _save_vk_contacts_files(vk_contacts_filtered, vk_c_source)
-				_link_user_with_vk_c_files(user, vk_c_files)
-			end
+			vk_contacts_parsed = MultiJson.load(vk_contacts_json)
+			vk_contacts_filtered = VkContactsSorter.remove_useless(vk_contacts_parsed)
+			SaveUserVkContactsRecord.run(user, vk_c_record_name, vk_contacts_filtered, vk_source_identifier)
 		end
-	end
-
-	private
-
-	def _parse_contacts(*args)
-		MultiJson.load(*args)
-	end
-
-	def _remove_useless_contacts(*args)
-		VkContactsSorter.remove_useless(*args)
-	end
-
-	def _rearrange_contacts_by_type(*args)
-		VkContactsSorter.rearrange_by_type(*args)
-	end
-
-	def _save_vk_contacts_files(*args)
-		SaveVkContactsFiles.new(*args).run
-	end
-
-	def _save_vk_contacts_source(*args)
-		SaveVkContactsSource.new(*args).run
-	end
-
-	def _link_user_with_vk_c_files(*args)
-		LinkUserWithVkContactsFiles.new(*args).run
 	end
 end

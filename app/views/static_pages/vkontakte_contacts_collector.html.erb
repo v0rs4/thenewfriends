@@ -2,7 +2,7 @@
     <div class="row">
       <div class="col-lg-12">
         <%- if @current_user_d.pricing_plan_purchased?(:vk_contacts_collector) -%>
-            <%- if can? :create, UserVkContactsFile -%>
+            <%- if can? :create, UserVkContactsRecord -%>
                 <%= render 'static_pages/vkontakte_contacts_collector/vk_contacts_collector' %>
             <%- else -%>
                 <% if @current_user.vcc_permission.can_create? %>
@@ -20,8 +20,7 @@
                     <hr/>
                 <%- end -%>
             <%- end -%>
-            <%- if can? :read, UserVkContactsFile -%>
-                <%= render 'static_pages/vkontakte_contacts_collector/last_n_files' %>
+            <%- if can? :read, UserVkContactsRecord -%>
             <%- else -%>
                 <div class="text-center">
                   <div>

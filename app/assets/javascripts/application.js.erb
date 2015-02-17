@@ -28,6 +28,7 @@
 //= require plugins/moment
 //= require plugins/moment/ru
 //= require plugins/bootstrap-datetimepicker.min
+//= require plugins/lzma/lzma_worker
 //= require_self
 //= require_tree ./ng-app
 
@@ -46,7 +47,7 @@ var TRANSLITERATE_RU_EN_TABLE = {
 	"Щ": "SCH",
 	"З": "Z",
 	"Х": "H",
-	"Ъ": "",
+	"Ъ": "_",
 	"ё": "yo",
 	"й": "y",
 	"ц": "ts",
@@ -59,7 +60,7 @@ var TRANSLITERATE_RU_EN_TABLE = {
 	"щ": "sch",
 	"з": "z",
 	"х": "h",
-	"ъ": "",
+	"ъ": "_",
 	"Ф": "F",
 	"Ы": "YI",
 	"В": "V",
@@ -88,7 +89,7 @@ var TRANSLITERATE_RU_EN_TABLE = {
 	"М": "M",
 	"И": "I",
 	"Т": "T",
-	"Ь": "",
+	"Ь": "_",
 	"Б": "B",
 	"Ю": "YU",
 	"я": "ya",
@@ -97,7 +98,7 @@ var TRANSLITERATE_RU_EN_TABLE = {
 	"м": "m",
 	"и": "i",
 	"т": "t",
-	"ь": "",
+	"ь": "_",
 	"б": "b",
 	"ю": "yu",
 	"і": "i",
@@ -149,10 +150,10 @@ toastr.options = {
 	"progressBar": true,
 	"positionClass": "toast-bottom-right",
 	"onclick": null,
-	"showDuration": "400",
-	"hideDuration": "1000",
+	"showDuration": "1000",
+	"hideDuration": "500",
 	"timeOut": "20000",
-	"extendedTimeOut": "1000",
+	"extendedTimeOut": "500",
 	"showEasing": "swing",
 	"hideEasing": "linear",
 	"showMethod": "fadeIn",
@@ -181,3 +182,40 @@ $(document).ready(function () {
 
 	$('[data-toggle="tooltip"]').tooltip()
 });
+
+var is_array = function (input) {
+	return typeof(input) === "object" && (input instanceof Array);
+};
+
+var convert_to_formated_hex = function (byte_arr) {
+	var hex_str = "",
+			i,
+			len,
+			tmp_hex;
+
+	if (!is_array(byte_arr)) {
+		return false;
+	}
+
+	len = byte_arr.length;
+
+	for (i = 0; i < len; ++i) {
+		if (byte_arr[i] < 0) {
+			byte_arr[i] = byte_arr[i] + 256;
+		}
+		tmp_hex = byte_arr[i].toString(16);
+
+		/// Add leading zero.
+		if (tmp_hex.length == 1) tmp_hex = "0" + tmp_hex;
+
+		if ((i + 1) % 16 === 0) {
+			tmp_hex += "\n";
+		} else {
+			tmp_hex += " ";
+		}
+
+		hex_str += tmp_hex;
+	}
+
+	return hex_str.trim();
+};

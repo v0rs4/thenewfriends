@@ -72,11 +72,6 @@ class UserDecorator < Draper::Decorator
 		end
 	end
 
-	def last_n_vk_contacts_files(number)
-		user_vk_contacts_files.unarchived.vk_contacts_file_included.order('user_vk_contacts_files.created_at DESC').last(number)
-		# VkContactsFile.joins(:user_vk_contacts_file).where(user_vk_contacts_files: { archived: false, user_id: object.id }).order('created_at DESC').last(5)
-	end
-
 	def pricing_plan_purchased?(name)
 		case name
 		when :vk_contacts_collector
@@ -109,7 +104,7 @@ class UserDecorator < Draper::Decorator
 	def vk_contacts_requests_count(date)
 		case date
 		when :today
-			((_count = user_vk_contacts_files.created_today.count/2) > 0) ? _count : 0
+			((_count = user_vk_contacts_records.created_today.count) > 0) ? _count : 0
 		else
 			0
 		end

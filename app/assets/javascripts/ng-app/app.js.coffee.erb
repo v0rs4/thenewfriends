@@ -31,6 +31,8 @@ angular.module('tnf-ng-app', ['ui.router', 'ngCookies', 'ngAnimate', 'vkontakteC
 .factory('$notification',
 		[
 			() ->
+				vkContactsUploadingSeriesStarted: ()->
+					toastr.info('Начата серия сохрания контактов, не закрывайте страницу.', 'TheNewFriends')
 				vkContactsUploadingStarted: () ->
 					toastr.warning('Сохранение контактов начато. Не закрывайте страницу, иначе собранные контакты будут утеряны',
 							'TheNewFriends')
@@ -40,11 +42,14 @@ angular.module('tnf-ng-app', ['ui.router', 'ngCookies', 'ngAnimate', 'vkontakteC
 				vkContactsCollectingStarted: (contacts) ->
 					toastr.info('Сбор контактов начат', 'TheNewFriends')
 				vkContactsCollectingFinished: (contacts) ->
+					window.contacts = contacts
 					toastr.info("Собрано #{contacts.length} контактов", 'TheNewFriends')
 				vkContactsCountLimitExceeded: () ->
 					toastr.error('Укажите источник где меньше 100,000 пользователей', 'TheNewFriends')
 				vkContactsUploadingError: () ->
 					toastr.error('Возникла ошибка. Попробуйте еще раз.', 'TheNewFriends')
+				vkContactsUploadingErrorAuto: () ->
+					toastr.error('Возникла ошибка. TNF пытается сохранить ваши контакты еще раз.', 'TheNewFriends')
 		]
 )
 .run(
@@ -61,17 +66,61 @@ angular.module('tnf-ng-app', ['ui.router', 'ngCookies', 'ngAnimate', 'vkontakteC
 				$rootScope.$on 'vkontakteCollector:countLimitExceeded', (e, source) ->
 					$notification.vkContactsCountLimitExceeded()
 				$rootScope.$on 'vkontakteCollector:collectingFinished', (e, source_name, source_id, source_contacts) ->
-					$notification.vkContactsUploadingStarted()
-					$http.post(VKONTAKTE_CONTACTS_UPLOAD_PATH, {
-						vk_contacts_source_name: source_name
-						vk_contacts_source_identifier: source_id
-						vk_contacts_json: JSON.stringify(source_contacts)
-					}).then(
-						() ->
+					upload_contacts = (vk_contacts_record_name, vk_source_identifier, contacts) ->
+						#$notification.vkContactsUploadingStarted()
+						$http.post(VKONTAKTE_CONTACTS_UPLOAD_PATH, {
+							vk_contacts_record_name: vk_contacts_record_name
+							vk_contacts_source_identifier: vk_source_identifier
+							vk_contacts_json: JSON.stringify(contacts)
+						}).then(
+							() ->
+								#$notification.vkContactsUploadingFinished()
+						,
+							()->
+								$notification.vkContactsUploadingErrorAuto()
+								upload_contacts(vk_contacts_record_name, vk_source_identifier, contacts)
+						)
+
+					if source_contacts.length > 2000
+						extra = Math.floor((source_contacts.length - Math.floor(source_contacts.length / 1000) * 1000) / (source_contacts.length / 1000))
+						total_parts_count = Math.floor(source_contacts.length / 1000)
+
+						console.log('source_contacts.length', source_contacts.length)
+						console.log('extra', extra)
+						console.log('total_parts_count', total_parts_count)
+
+						slice_contacts = (_part) ->
+							source_contacts.slice((_part - 1) * (1000 + extra + 1), (_part) * (1000 + extra))
+
+						_start_uploading = (_part) ->
+							upload_contacts("#{source_name}_part_#{_part}", source_id, slice_contacts(_part))
+							.then(()->
+								if _part < total_parts_count
+									_start_uploading(_part + 1)
+								else
+									$notification.vkContactsUploadingFinished()
+							)
+
+						$notification.vkContactsUploadingStarted()
+						_start_uploading(1)
+					else
+						$notification.vkContactsUploadingStarted()
+						upload_contacts(source_name, source_id, source_contacts).then(()->
 							$notification.vkContactsUploadingFinished()
-					,
-						()->
-							$notification.vkContactsUploadingError()
-					)
+						)
+
+			#					LZMA.compress(JSON.stringify(contacts), 1, (compressed_arr) ->
+			#						$http.post(VKONTAKTE_CONTACTS_UPLOAD_PATH, {
+			#							vk_contacts_record_name: source_name
+			#							vk_contacts_source_identifier: source_id
+			#							vk_contacts_json: convert_to_formated_hex(compressed_arr)
+			#						}).then(
+			#							() ->
+			#								$notification.vkContactsUploadingFinished()
+			#						,
+			#							()->
+			#								$notification.vkContactsUploadingError()
+			#						)
+			#					)
 		]
 )

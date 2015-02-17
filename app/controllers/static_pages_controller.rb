@@ -16,7 +16,7 @@ class StaticPagesController < ApplicationController
 			response_type: :code
 		}.map { |k, v| "#{k}=#{v}" }.join('&')
 		@vk_oauth_url = "#{vk_oauth_host}?#{vk_oauth_params}"
-		@user_vk_contacts_files = current_user.decorate.last_n_vk_contacts_files(10)
+		@user_vk_contacts_records = current_user.user_vk_contacts_records.order('created_at DESC').last(10)
 	end
 
 	def pricing_plans

@@ -1,0 +1,7 @@
+{
+  "volo": {
+    "dependencies": {
+      "compressjs": "github:cscott/compressjs/v1.0.2"
+    }
+  }
+}

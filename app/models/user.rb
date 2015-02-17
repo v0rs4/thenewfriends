@@ -6,14 +6,11 @@ class User < ActiveRecord::Base
 
 	belongs_to :inviter, class_name: 'User', foreign_key: :inviter_id
 
-	has_many :user_vk_contacts_files, dependent: :destroy, inverse_of: :user
-
-	has_many :vk_contacts_file, through: :user_vk_contacts_files
-	has_many :vk_contacts_source, through: :vk_contacts_file
+	has_many :user_vk_contacts_records, inverse_of: :user, dependent: :destroy
 
 	has_many :referrals, class_name: 'User', foreign_key: :inviter_id
 
-	has_many :user_referral_payments
+	has_many :user_referral_payments, dependent: :destroy
 
 	accepts_nested_attributes_for :user_vk_contacts_collector_permission
 	accepts_nested_attributes_for :user_profile

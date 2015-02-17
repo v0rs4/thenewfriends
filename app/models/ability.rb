@@ -44,26 +44,30 @@ class Ability
 		if u_vcc_p.can_create?
 			if u_vcc_p.expires_at > Time.zone.now
 				if user_d.vk_contacts_requests_count(:today) < u_vcc_p.requests_limit_per_day
-					can :create, UserVkContactsFile
+					# can :create, UserVkContactsFile
+					can :create, UserVkContactsRecord
 				end
 			end
 		end
 
 		if u_vcc_p.can_read?
 			if u_vcc_p.expires_at > Time.zone.now
-				can :read, UserVkContactsFile
+				# can :read, UserVkContactsFile
+				can :read, UserVkContactsRecord
 			end
 		end
 
 		if u_vcc_p.can_update?
 			if u_vcc_p.expires_at > Time.zone.now
-				can :update, UserVkContactsFile
+				# can :update, UserVkContactsFile
+				can :update, UserVkContactsRecord
 			end
 		end
 
 		if u_vcc_p.can_delete?
 			if u_vcc_p.expires_at > Time.zone.now
-				can :delete, UserVkContactsFile
+				# can :delete, UserVkContactsFile
+				can :delete, UserVkContactsRecord
 			end
 		end
 	end

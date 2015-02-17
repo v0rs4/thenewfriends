@@ -11,7 +11,14 @@
     из
     <%= @current_user.vcc_permission.requests_limit_per_day %>
   </h1>
-  <small>
-    <%= link_to 'Хотите больше?', work_pricing_plans_url, class: 'text-muted' %>
-  </small>
+  <div>
+    <small>
+      <%= link_to 'Хотите больше?', work_pricing_plans_url, class: 'text-muted' %>
+    </small>
+  </div>
+  <div>
+    <small>
+      <%= link_to 'Мои скачанные контакты', work_user_vk_contacts_records_url, class: 'text-muted' %>
+    </small>
+  </div>
 </div>

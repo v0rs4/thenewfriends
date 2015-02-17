@@ -48,9 +48,9 @@
 }
 
 .dropdown-menu {
-  border: medium none;
-  border-radius: 3px;
-  box-shadow: 0 0 3px rgba(86, 96, 117, 0.7);
+  border: 1px solid #ddd;
+  border-radius: 0px;
+  box-shadow: 0 0 3px rgba(228, 228, 228, 1);
   display: none;
   float: left;
   font-size: 12px;
@@ -61,7 +61,11 @@
   text-shadow: none;
   top: 100%;
   z-index: 1000;
-  border-radius: 2px;
+}
+
+.dropdown-menu.dropdown-menu-right{
+  left: auto;
+  right: 0;
 }
 
 .dropdown-menu > li > a {
