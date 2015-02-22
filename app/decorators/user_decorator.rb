@@ -104,7 +104,7 @@ class UserDecorator < Draper::Decorator
 	def vk_contacts_requests_count(date)
 		case date
 		when :today
-			((_count = user_vk_contacts_records.created_today.count) > 0) ? _count : 0
+			((_count = user_vk_contacts_records.created_today.select('vk_source_identifier').distinct.count) > 0) ? _count : 0
 		else
 			0
 		end

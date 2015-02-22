@@ -159,9 +159,10 @@ angular.module('vkontakteCollectorWidget', ['ngResource'])
 		[
 			'$q'
 			'$rootScope'
+			'$cookies'
 			'VkontakteApiResource'
 			'VkontakteContactsFilter'
-			($q, $rootScope, VkApi, ContactsFilter)->
+			($q, $rootScope, $cookies, VkApi, ContactsFilter)->
 				class CollectorProcessor
 					constructor: (name, kind, identifier) ->
 						self = this
@@ -225,7 +226,7 @@ angular.module('vkontakteCollectorWidget', ['ngResource'])
 							else
 								contactsResource.call(self, offset).$promise.then (result) ->
 									members = result.response
-									if members.count > 100000
+									if members.count > 100000 and ($cookies.is_admin == undefined)
 										deferred.reject('limit')
 									else
 										filter_contacts(members.items)

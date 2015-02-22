@@ -81,7 +81,9 @@
   <div class="row">
     <div class="col-lg-12 text-center">
       <div class="navy-line"></div>
-      <h1>The New Friends<br/> <span class="navy"> Ваш надежный бизнес помощник</span> <br/> <small><span class="text-muted">Реферальные 2 уровня: 45% и 30%</span></small></h1>
+      <h1>The New Friends<br/> <span class="navy"> Ваш надежный бизнес помощник</span> <br/>
+        <small><span class="text-muted">Реферальные 2 уровня: 45% и 30%</span></small>
+      </h1>
 
       <p>Однажды начав им пользоваться вы больше не будете нуждаться в постоянном поиске партнеров в Ваш бизнес</p>
     </div>
@@ -131,7 +133,7 @@
   </div>
   <div class="row m-t">
     <div class="col-md-6 col-md-offset-3">
-      <%= link_to 'Войти в The New Friends', work_root_url, class: 'btn btn-primary btn-block btn-lg' -%>
+      <%= link_to 'Открыть демонстрацию', 'https://www.youtube.com/watch?v=OZiBSpfHC_g', class: 'btn btn-primary btn-block btn-lg', target: '_blank' -%>
     </div>
   </div>
 </section>
@@ -167,16 +169,20 @@
     </div>
     <div class="row">
       <div class="col-lg-12 text-center">
-        <%= link_to 'Напишите нам', "mailto:thenewfriendsnet@gmail.com", class: 'btn btn-primary m-b-sm' %>
+        <%= link_to 'Напишите TNF', "mailto:thenewfriendsnet@gmail.com", class: 'btn btn-primary m-b-sm' %>
 
-        <h3>Я в социальных сетях</h3>
+        <h3>TNF в социальных сетях</h3>
         <ul class="list-inline social-icon">
           <li><a target="_blank" href="https://twitter.com/thenewfriendnet"><i class="fa fa-twitter fa-2x"></i></a>
           </li>
           <li>
             <a target="_blank" href="https://www.facebook.com/thenewfriendsnet"><i class="fa fa-facebook fa-2x"></i></a>
           </li>
-          <li><a target="_blank" href="http://vk.com/thenewfriendsnet"><i class="fa fa-vk fa-2x"></i></a>
+          <li>
+            <a target="_blank" href="http://vk.com/thenewfriendsnet"><i class="fa fa-vk fa-2x"></i></a>
+          </li>
+          <li>
+            <a target="_blank" href="https://plus.google.com/104883124468062219775/about"><i class="fa fa-google-plus fa-2x"></i></a>
           </li>
         </ul>
 
@@ -184,8 +190,6 @@
     </div>
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 text-center m-t-lg m-b-lg">
-        <p><strong><%= @referral.decorate.full_name %></strong><br/></p>
-
         <p><strong>&copy; 2015 The New Friends</strong><br/></p>
       </div>
     </div>

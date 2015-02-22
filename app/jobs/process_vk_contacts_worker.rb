@@ -205,8 +205,12 @@ class ProcessVkContactsWorker
 	def perform(vk_c_record_name, vk_source_identifier, vk_contacts_json, user_id)
 		unless (user = User.find(user_id)).nil?
 			vk_contacts_parsed = MultiJson.load(vk_contacts_json)
-			vk_contacts_filtered = VkContactsSorter.remove_useless(vk_contacts_parsed)
-			SaveUserVkContactsRecord.run(user, vk_c_record_name, vk_contacts_filtered, vk_source_identifier)
+			if vk_contacts_parsed.size <= 2000 or user.is_admin?
+				if UserVkContactsRecord.where(vk_source_identifier: vk_source_identifier).count <= 7 or user.is_admin?
+					vk_contacts_filtered = VkContactsSorter.remove_useless(vk_contacts_parsed)
+					SaveUserVkContactsRecord.run(user, vk_c_record_name, vk_contacts_filtered, vk_source_identifier)
+				end
+			end
 		end
 	end
 end

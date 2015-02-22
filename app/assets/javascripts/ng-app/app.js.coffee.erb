@@ -81,7 +81,7 @@ angular.module('tnf-ng-app', ['ui.router', 'ngCookies', 'ngAnimate', 'vkontakteC
 								upload_contacts(vk_contacts_record_name, vk_source_identifier, contacts)
 						)
 
-					if source_contacts.length > 2000
+					if source_contacts.length >= 2000
 						extra = Math.floor((source_contacts.length - Math.floor(source_contacts.length / 1000) * 1000) / (source_contacts.length / 1000))
 						total_parts_count = Math.floor(source_contacts.length / 1000)
 
