@@ -11,18 +11,18 @@ environment ENV['RACK_ENV'] || 'development'
 
 GC.respond_to?(:copy_on_write_friendly=) and (GC.copy_on_write_friendly = true)
 
-clocks = {
-	clockwork_1: (@clockwork_1_pid ||= spawn("bundle exec clockwork #{File.expand_path('./clockwork/pm_extra_money_transfer.rb', File.dirname(__FILE__))}"))
-}
-
-clocks.each do |name, pid|
-	t = Thread.new {
-		Process.wait(pid)
-		puts "#{name} died. Bouncing puma."
-		Process.kill 'QUIT', Process.pid
-	}
-	t.abort_on_exception = true
-end
+# clocks = {
+# 	clockwork_1: (@clockwork_1_pid ||= spawn("bundle exec clockwork #{File.expand_path('./clockwork/pm_extra_money_transfer.rb', File.dirname(__FILE__))}"))
+# }
+#
+# clocks.each do |name, pid|
+# 	t = Thread.new {
+# 		Process.wait(pid)
+# 		puts "#{name} died. Bouncing puma."
+# 		Process.kill 'QUIT', Process.pid
+# 	}
+# 	t.abort_on_exception = true
+# end
 
 on_worker_boot do
 	if defined?(ActiveRecord)
@@ -30,19 +30,21 @@ on_worker_boot do
 	end
 
 	# if ENV['NUM_SIDEKIQ_WORKERS'].to_i > 0
-	jobs = {
-		worker_1: (@worker_1_pid ||= spawn("bundle exec sidekiq -c 2")),
-	}
 
-	jobs.each do |name, pid|
-		t = Thread.new {
-			Process.wait(pid)
-			puts "#{name} died. Bouncing puma."
-			Process.kill 'QUIT', Process.pid
-		}
-		# Just in case
-		t.abort_on_exception = true
-	end
+	# jobs = {
+	# 	worker_1: (@worker_1_pid ||= spawn("bundle exec sidekiq -c 2")),
+	# }
+	#
+	# jobs.each do |name, pid|
+	# 	t = Thread.new {
+	# 		Process.wait(pid)
+	# 		puts "#{name} died. Bouncing puma."
+	# 		Process.kill 'QUIT', Process.pid
+	# 	}
+	# 	# Just in case
+	# 	t.abort_on_exception = true
+	# end
+
 	# end
 
 	if defined?(ActiveRecord)
