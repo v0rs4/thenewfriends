@@ -24,8 +24,8 @@
 </div>
 <div id="inSlider" class="carousel slide carousel-fade" data-ride="carousel">
   <ol class="carousel-indicators">
-    <li data-target="#inSlider" data-slide-to="0" class="active"></li>
-    <li data-target="#inSlider" data-slide-to="1"></li>
+    <!--<li data-target="#inSlider" data-slide-to="0" class="active"></li>-->
+    <!--<li data-target="#inSlider" data-slide-to="1"></li>-->
   </ol>
   <div class="carousel-inner" role="listbox">
     <div class="item active">
@@ -43,7 +43,8 @@
           </p>
         </div>
         <div class="carousel-image wow zoomIn">
-          <%= image_tag('tnf_landing_page/laptop.png', class: 'img-responsive', alt: 'laptop') -%>
+          <iframe width="600" height="338" src="https://www.youtube.com/embed/OZiBSpfHC_g?controls=1&autoplay=1&theme=light" frameborder="0" allowfullscreen></iframe>
+          <!--<%= image_tag('tnf_landing_page/laptop.png', class: 'img-responsive', alt: 'laptop') -%>-->
         </div>
       </div>
       <!-- Set background for slide in css -->
@@ -66,14 +67,14 @@
     <!--<div class="header-back two"></div>-->
     <!--</div>-->
   </div>
-  <a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#inSlider" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
+  <!--<a class="left carousel-control" href="#inSlider" role="button" data-slide="prev">-->
+  <!--<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
+  <!--<span class="sr-only">Previous</span>-->
+  <!--</a>-->
+  <!--<a class="right carousel-control" href="#inSlider" role="button" data-slide="next">-->
+  <!--<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
+  <!--<span class="sr-only">Next</span>-->
+  <!--</a>-->
 </div>
 
 
@@ -133,7 +134,7 @@
   </div>
   <div class="row m-t">
     <div class="col-md-6 col-md-offset-3">
-      <%= link_to 'Открыть демонстрацию', 'https://www.youtube.com/watch?v=OZiBSpfHC_g', class: 'btn btn-primary btn-block btn-lg', target: '_blank' -%>
+      <%= link_to fa_icon('bolt', text: 'Зарегистрироваться'), new_user_registration_url, class: 'btn btn-primary btn-block btn-lg', target: '_blank' -%>
     </div>
   </div>
 </section>
