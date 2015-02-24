@@ -52,7 +52,11 @@ class ApplicationController < ActionController::Base
 
 	def set_referral
 		if params[:ref]
-			cookies[:ref] = { domain: :all, value: params[:ref], expires: 365.days.from_now }
+			if UserProfile.exists?(username: params[:ref])
+				cookies[:ref] = { domain: :all, value: params[:ref], expires: 365.days.from_now }
+			else
+				cookies.delete(:ref) if cookies[:ref]
+			end
 		end
 	end
 
