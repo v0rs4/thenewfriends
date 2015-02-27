@@ -69,10 +69,14 @@ class UserReferralManager
 
 	def pay_out(amount_to_pay_out)
 		user.with_lock do
-			if user.decorate.referral_balance >= amount_to_pay_out
-				PerfectMoneyMerchant::Account.transfer!(user.user_profile.pm_usd_acct, amount_to_pay_out)
-				user.update_attributes(referral_paid_out: (user.referral_paid_out + amount_to_pay_out).round(2))
-				true
+			if user.decorate.referral_balance.round(2) >= amount_to_pay_out.round(2)
+				if user.user_profile.pm_usd_acct.nil?
+					false
+				else
+					PerfectMoneyMerchant::Account.transfer!(user.user_profile.pm_usd_acct, amount_to_pay_out.round(2))
+					user.update_attributes(referral_paid_out: (user.referral_paid_out + amount_to_pay_out).round(2))
+					true
+				end
 			else
 				false
 			end

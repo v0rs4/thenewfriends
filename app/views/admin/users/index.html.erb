@@ -11,6 +11,7 @@
                 <th>Email</th>
                 <th>First name</th>
                 <th>Last name</th>
+                <th><%= fa_icon('vk') %></th>
                 <th></th>
               </tr>
               </thead>
@@ -22,6 +23,7 @@
                     <td><%= _user.email -%></td>
                     <td><%= _user.user_profile.first_name -%></td>
                     <td><%= _user.user_profile.last_name -%></td>
+                    <td><%= _user.decorate.current_vcc_package -%></td>
                     <td class="text-right">
                       <%= link_to work_admin_user_path(_user), class: 'text-muted' do -%>
                           <%= fa_icon('folder-open', text: 'Open') -%>
