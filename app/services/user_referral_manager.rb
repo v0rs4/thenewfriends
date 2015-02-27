@@ -73,7 +73,7 @@ class UserReferralManager
 				if user.user_profile.pm_usd_acct.nil?
 					false
 				else
-					PerfectMoneyMerchant::Account.transfer!(user.user_profile.pm_usd_acct, amount_to_pay_out.round(2))
+					PerfectMoneyMerchant::Account.transfer!(user.user_profile.pm_usd_acct, (amount_to_pay_out*0.995).round(2))
 					user.update_attributes(referral_paid_out: (user.referral_paid_out + amount_to_pay_out).round(2))
 					true
 				end
