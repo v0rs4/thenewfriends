@@ -69,8 +69,8 @@ class User < ActiveRecord::Base
 				end
 
 				def _set_referral_award
-					user.referral_award_level_1 = 15
-					user.referral_award_level_2 = 0
+					user.referral_award_level_1 = 45
+					user.referral_award_level_2 = 30
 				end
 			end
 
