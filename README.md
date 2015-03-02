@@ -11,7 +11,7 @@ TheNewFriends works with VK social network (sources: groups' members and users' 
 
 To see demo please login, [visit **thenewfriends.net**](http://thenewfriends.net) and login with
 - **login: demo@thenewfriends.net**
-- **password: demo**
+- **password: demodemo**
 
 ## Installation
 
